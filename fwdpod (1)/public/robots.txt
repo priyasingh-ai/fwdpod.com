@@ -1,0 +1,24 @@
+# Fwdpod — AI Engineering Pods
+# https://www.fwdpod.com
+
+User-agent: *
+Allow: /
+
+# Crawl-delay guidance for polite bots
+Crawl-delay: 10
+
+# Sitemap
+Sitemap: https://www.fwdpod.com/sitemap.xml
+
+# -------------------------------------------------------
+# Planned content architecture (not yet live):
+#   /services/ai-development
+#   /services/llm-development
+#   /services/rag-development
+#   /services/ai-agents
+#   /services/team-augmentation
+#   /blog
+#   /case-studies
+#   /authors
+# These paths will be enabled as static routes are built.
+# -------------------------------------------------------
