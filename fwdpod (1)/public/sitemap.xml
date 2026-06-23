@@ -1,100 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml"
->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Home -->
   <url>
-    <loc>https://www.fwdpod.com/</loc>
-    <lastmod>2026-06-10</lastmod>
+    <loc>https://fwdpod.com/</loc>
+    <lastmod>2026-06-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
+  <!-- Pod Catalogue -->
   <url>
-    <loc>https://www.fwdpod.com/catalogue</loc>
-    <lastmod>2026-06-10</lastmod>
+    <loc>https://fwdpod.com/catalogue</loc>
+    <lastmod>2026-06-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
+  <!-- Configure -->
   <url>
-    <loc>https://www.fwdpod.com/configure</loc>
-    <lastmod>2026-06-10</lastmod>
+    <loc>https://fwdpod.com/configure</loc>
+    <lastmod>2026-06-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
+  <!-- Live Telemetry -->
   <url>
-    <loc>https://www.fwdpod.com/live-pods</loc>
-    <lastmod>2026-06-10</lastmod>
+    <loc>https://fwdpod.com/live-pods</loc>
+    <lastmod>2026-06-12</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
 
+  <!-- Insights & Blogs -->
   <url>
-    <loc>https://www.fwdpod.com/blog</loc>
-    <lastmod>2026-06-10</lastmod>
+    <loc>https://fwdpod.com/blog</loc>
+    <lastmod>2026-06-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
+  <!-- Contact Us -->
   <url>
-    <loc>https://www.fwdpod.com/contact</loc>
-    <lastmod>2026-06-10</lastmod>
+    <loc>https://fwdpod.com/contact</loc>
+    <lastmod>2026-06-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!--
-    Planned routes (uncomment as pages go live):
+  <!-- Services: AI Development -->
+  <url>
+    <loc>https://fwdpod.com/services/ai-development</loc>
+    <lastmod>2026-06-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 
-    <url>
-      <loc>https://www.fwdpod.com/services/ai-development</loc>
-      <lastmod>2026-06-10</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.9</priority>
-    </url>
+  <!-- Services: LLM Development -->
+  <url>
+    <loc>https://fwdpod.com/services/llm-development</loc>
+    <lastmod>2026-06-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 
-    <url>
-      <loc>https://www.fwdpod.com/services/llm-development</loc>
-      <lastmod>2026-06-10</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.9</priority>
-    </url>
+  <!-- Services: RAG Development -->
+  <url>
+    <loc>https://fwdpod.com/services/rag-development</loc>
+    <lastmod>2026-06-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 
-    <url>
-      <loc>https://www.fwdpod.com/services/rag-development</loc>
-      <lastmod>2026-06-10</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.9</priority>
-    </url>
+  <!-- Services: AI Agents -->
+  <url>
+    <loc>https://fwdpod.com/services/ai-agents</loc>
+    <lastmod>2026-06-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 
-    <url>
-      <loc>https://www.fwdpod.com/services/ai-agents</loc>
-      <lastmod>2026-06-10</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.9</priority>
-    </url>
+  <!-- Services: Team Augmentation -->
+  <url>
+    <loc>https://fwdpod.com/services/team-augmentation</loc>
+    <lastmod>2026-06-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 
-    <url>
-      <loc>https://www.fwdpod.com/services/team-augmentation</loc>
-      <lastmod>2026-06-10</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.9</priority>
-    </url>
-
-    <url>
-      <loc>https://www.fwdpod.com/case-studies</loc>
-      <lastmod>2026-06-10</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.8</priority>
-    </url>
-
-    <url>
-      <loc>https://www.fwdpod.com/authors</loc>
-      <lastmod>2026-06-10</lastmod>
-      <changefreq>monthly</changefreq>
-      <priority>0.6</priority>
-    </url>
-  -->
+  <!-- Services: AI Consulting -->
+  <url>
+    <loc>https://fwdpod.com/services/ai-consulting</loc>
+    <lastmod>2026-06-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 </urlset>

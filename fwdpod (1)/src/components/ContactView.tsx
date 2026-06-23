@@ -25,7 +25,7 @@ const CONTACT_JSON_LD = {
     {
       '@type': 'ContactPoint',
       'contactType': 'customer support',
-      'email': 'contact@fwdpod.com',
+      'email': 'contact.fwdpod@gmail.com',
       'telephone': '+1-800-555-0199',
       'contactOption': 'TollFree',
       'areaServed': 'Worldwide',
@@ -370,7 +370,7 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
 
             {/* Direct Email Block */}
             <a 
-              href="mailto:contact@fwdpod.com"
+              href="mailto:contact.fwdpod@gmail.com"
               className="p-5 border border-zinc-200/85 bg-zinc-50/40 hover:border-[#0066FF] hover:bg-zinc-50 hover:shadow-sm rounded-2xl transition-all duration-200 flex items-center gap-4 group text-left block"
             >
               <div className="w-12 h-12 bg-[#0066FF]/5 text-[#0066FF] rounded-full flex items-center justify-center shrink-0 border border-[#0066FF]/10 group-hover:bg-[#0066FF] group-hover:text-white transition-all">
@@ -379,7 +379,7 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
               <div className="flex-1">
                 <span className="text-[10px] uppercase font-mono text-zinc-400 tracking-wider block">Instant Email Response</span>
                 <span className="text-sm sm:text-base font-semibold text-[#0A0A0A] group-hover:text-[#0066FF] transition-colors flex items-center gap-1.5 font-mono">
-                  <span>contact@fwdpod.com</span>
+                  <span>contact.fwdpod@gmail.com</span>
                   <ArrowRight className="w-3.5 h-3.5 opacity-60 group-hover:translate-x-0.5 transition-transform text-[#0066FF]" />
                 </span>
                 <span className="text-[10px] text-zinc-500 font-sans block mt-0.5">Encrypted operations dispatcher queue</span>

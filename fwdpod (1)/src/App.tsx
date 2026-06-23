@@ -21,6 +21,12 @@ import LivePodsView from './components/LivePodsView';
 import BlogsView from './components/BlogsView';
 import ContactView from './components/ContactView';
 import FwdpodLogo from './components/FwdpodLogo';
+import AiDevelopmentView from './components/AiDevelopmentView';
+import LlmDevelopmentView from './components/LlmDevelopmentView';
+import RagDevelopmentView from './components/RagDevelopmentView';
+import AiAgentsView from './components/AiAgentsView';
+import TeamAugmentationView from './components/TeamAugmentationView';
+import AiConsultingView from './components/AiConsultingView';
 
 // ── Route map — maps legacy page-name strings to URL paths ────────────────────
 const ROUTE_MAP: Record<string, string> = {
@@ -86,6 +92,15 @@ export default function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  // GA4: fire page_view on every client-side navigation
+  useEffect(() => {
+    if (typeof (window as any).gtag === 'function') {
+      (window as any).gtag('config', 'G-M0WXDC95BE', {
+        page_path: location.pathname + location.search,
+      });
+    }
+  }, [location.pathname, location.search]);
 
   const triggerNotification = (msg: string) => {
     setNotificationMsg(msg);
@@ -296,6 +311,7 @@ export default function App() {
           />
           <Route path="/live-pods" element={<LivePodsView />} />
           <Route path="/blog" element={<BlogsView />} />
+          <Route path="/blog/category/:categorySlug" element={<BlogsView />} />
           <Route
             path="/contact"
             element={
@@ -305,6 +321,12 @@ export default function App() {
               />
             }
           />
+          <Route path="/services/ai-development" element={<AiDevelopmentView />} />
+          <Route path="/services/llm-development" element={<LlmDevelopmentView />} />
+          <Route path="/services/rag-development" element={<RagDevelopmentView />} />
+          <Route path="/services/ai-agents" element={<AiAgentsView />} />
+          <Route path="/services/team-augmentation" element={<TeamAugmentationView />} />
+          <Route path="/services/ai-consulting" element={<AiConsultingView />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
@@ -530,10 +552,10 @@ export default function App() {
             </div>
           </div>
 
-          <div className="flex flex-col lg:flex-row justify-between items-start gap-12 text-[#555555]">
+          <div className="flex flex-col lg:flex-row justify-between items-start gap-8 text-[#555555]">
 
             {/* Logo + tagline */}
-            <div className="space-y-4 max-w-xs">
+            <div className="space-y-4 max-w-sm flex-shrink-0">
               <Link to="/" aria-label="Fwdpod — Home" className="flex items-center select-none">
                 <FwdpodLogo size="sm" />
               </Link>
@@ -542,8 +564,9 @@ export default function App() {
               </p>
             </div>
 
-            {/* Footer nav columns — all real <a href="..."> links */}
-            <div className="flex flex-wrap gap-x-14 gap-y-6">
+            {/* Footer nav columns — compact spacing */}
+            <div className="flex flex-col md:flex-row gap-8 md:gap-6 flex-1">
+              {/* Pods Catalogue */}
               <nav aria-label="Pod catalogue links">
                 <span className="block text-[11px] text-[#0066FF] font-mono font-bold uppercase tracking-wider mb-3">Pods catalogue</span>
                 <ul className="space-y-2 text-[13px] font-medium text-[#555555]">
@@ -595,6 +618,20 @@ export default function App() {
                 </ul>
               </nav>
 
+              {/* Services */}
+              <nav aria-label="Services links">
+                <span className="block text-[11px] text-[#0066FF] font-mono font-bold uppercase tracking-wider mb-3">Services</span>
+                <ul className="space-y-2 text-[13px] font-medium text-[#555555]">
+                  <li><Link to="/services/ai-development" className="hover:text-[#0A0A0A] hover:underline transition-all">AI Development</Link></li>
+                  <li><Link to="/services/llm-development" className="hover:text-[#0A0A0A] hover:underline transition-all">LLM Development</Link></li>
+                  <li><Link to="/services/rag-development" className="hover:text-[#0A0A0A] hover:underline transition-all">RAG Development</Link></li>
+                  <li><Link to="/services/ai-agents" className="hover:text-[#0A0A0A] hover:underline transition-all">AI Agents</Link></li>
+                  <li><Link to="/services/team-augmentation" className="hover:text-[#0A0A0A] hover:underline transition-all">Team Augmentation</Link></li>
+                  <li><Link to="/services/ai-consulting" className="hover:text-[#0A0A0A] hover:underline transition-all">AI Consulting</Link></li>
+                </ul>
+              </nav>
+
+              {/* Scoping Engine */}
               <nav aria-label="Site navigation links">
                 <span className="block text-[11px] text-[#0066FF] font-mono font-bold uppercase tracking-wider mb-3">Scoping engine</span>
                 <ul className="space-y-2 text-[13px] font-medium text-[#555555]">
@@ -632,22 +669,14 @@ export default function App() {
             </div>
 
             {/* Founder Note */}
-            <div className="space-y-3 max-w-md lg:border-l lg:border-[#0A0A0A]/10 lg:pl-10">
+            <div className="space-y-3 max-w-sm flex-shrink-0 lg:border-l lg:border-[#0A0A0A]/10 lg:pl-8">
               <span className="block text-[11px] text-[#0A0A0A] font-mono font-bold uppercase tracking-wider">A note from the founder</span>
-              <div className="flex gap-4 items-start">
-                <img
-                  src="/src/assets/images/founder_avatar_1779703396189.png"
-                  alt="Founder"
-                  className="w-14 h-14 rounded-full object-cover border border-[#0A0A0A]/15 bg-zinc-100 shrink-0"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="space-y-3 flex-1">
-                  <p className="text-[14px] leading-relaxed italic text-[#444444] font-serif">
-                    "We build fully autonomous, pre-formed cognitive pods directly tuned to your product's core needs. Let's bypass legacy hiring friction and engineer the future, today."
-                  </p>
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <span className="text-[12px] font-semibold text-[#0a0a0a]">— Founder</span>
-                  </div>
+              <div className="space-y-2">
+                <p className="text-[13px] leading-relaxed italic text-[#444444] font-serif">
+                  "We build fully autonomous, pre-formed cognitive pods directly tuned to your product's core needs. Let's bypass legacy hiring friction and engineer the future, today."
+                </p>
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-semibold text-[#0a0a0a]">— Founder</span>
                 </div>
               </div>
             </div>
