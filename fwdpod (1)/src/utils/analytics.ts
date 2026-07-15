@@ -1,5 +1,5 @@
 // GA4 Measurement ID — single source of truth
-const GA_ID = 'G-2WCD6BX2LL';
+const GA_ID = 'G-5K3V0MS7WM';
 
 // Safe wrapper: no-ops until gtag.js has loaded
 function gtag(...args: unknown[]): void {
