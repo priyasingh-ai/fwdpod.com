@@ -2,6 +2,11 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
+  trackSearchPerformed,
+  trackBlogPostView,
+  trackBlogCategoryFilter,
+} from '../utils/analytics';
+import {
   BookOpen,
   Plus,
   Search,
@@ -200,21 +205,7 @@ export default function BlogsView() {
     }
   }, [categorySlug]);
 
-  const handleCategorySelect = (cat: string) => {
-    setSelectedCategory(cat);
-    setActiveBlogId(null);
-    if (cat === 'All') {
-      navigate('/blog', { replace: true });
-    } else {
-      navigate(`/blog/category/${getCategorySlug(cat)}`, { replace: true });
-    }
-  };
-
-  const saveCustomBlogs = (updated: BlogPost[]) => {
-    setCustomBlogs(updated);
-    localStorage.setItem('FWDPOD_BLOGS', JSON.stringify(updated));
-  };
-
+  // Derived filtered list — must be declared before the search useEffect that reads .length
   const filteredBlogs = allBlogs.filter(blog => {
     const matchesCategory = selectedCategory === 'All' || blog.category === selectedCategory;
     const q = searchQuery.toLowerCase();
@@ -226,6 +217,38 @@ export default function BlogsView() {
       blog.author.toLowerCase().includes(q);
     return matchesCategory && matchesSearch;
   });
+
+  // Track blog post detail view when a post is opened
+  useEffect(() => {
+    if (!activeBlogId) return;
+    const post = allBlogs.find(b => b.id === activeBlogId);
+    if (post) trackBlogPostView(post.title, post.category);
+  }, [activeBlogId]);
+
+  // Track search queries with 800ms debounce (min 2 chars)
+  useEffect(() => {
+    if (searchQuery.length < 2) return;
+    const timer = setTimeout(() => {
+      trackSearchPerformed(searchQuery, filteredBlogs.length);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [searchQuery, filteredBlogs.length]);
+
+  const handleCategorySelect = (cat: string) => {
+    setSelectedCategory(cat);
+    setActiveBlogId(null);
+    trackBlogCategoryFilter(cat);
+    if (cat === 'All') {
+      navigate('/blog', { replace: true });
+    } else {
+      navigate(`/blog/category/${getCategorySlug(cat)}`, { replace: true });
+    }
+  };
+
+  const saveCustomBlogs = (updated: BlogPost[]) => {
+    setCustomBlogs(updated);
+    localStorage.setItem('FWDPOD_BLOGS', JSON.stringify(updated));
+  };
 
   const handleCreateBlog = (e: React.FormEvent) => {
     e.preventDefault();

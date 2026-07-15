@@ -14,6 +14,13 @@ import {
   PodSKU
 } from './data';
 
+import {
+  trackPageView,
+  trackCtaClick,
+  trackNavClick,
+  trackManifestoEvent,
+  trackPodSpecView,
+} from './utils/analytics';
 import HomeView from './components/HomeView';
 import CatalogueView from './components/CatalogueView';
 import ConfigureView from './components/ConfigureView';
@@ -93,13 +100,9 @@ export default function App() {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  // GA4: fire page_view on every client-side navigation
+  // GA4: fire page_view on every SPA route change
   useEffect(() => {
-    if (typeof (window as any).gtag === 'function') {
-      (window as any).gtag('config', 'G-M0WXDC95BE', {
-        page_path: location.pathname + location.search,
-      });
-    }
+    trackPageView(location.pathname, location.search);
   }, [location.pathname, location.search]);
 
   const triggerNotification = (msg: string) => {
@@ -149,24 +152,25 @@ export default function App() {
 
           {/* Desktop nav — all NavLinks render as <a href="..."> */}
           <nav aria-label="Main navigation" className="hidden md:flex items-center gap-8 text-xs font-medium text-[#555555]">
-            <NavLink to="/" end className={desktopNavClass}>Home</NavLink>
-            <NavLink to="/catalogue" className={desktopNavClass}>Pod Catalogue</NavLink>
-            <NavLink to="/live-pods" className={desktopNavClass}>Live Telemetry</NavLink>
-            <NavLink to="/blog" className={desktopNavClass}>Insights</NavLink>
+            <NavLink to="/" end className={desktopNavClass} onClick={() => trackNavClick('Home', '/')}>Home</NavLink>
+            <NavLink to="/catalogue" className={desktopNavClass} onClick={() => trackNavClick('Pod Catalogue', '/catalogue')}>Pod Catalogue</NavLink>
+            <NavLink to="/live-pods" className={desktopNavClass} onClick={() => trackNavClick('Live Telemetry', '/live-pods')}>Live Telemetry</NavLink>
+            <NavLink to="/blog" className={desktopNavClass} onClick={() => trackNavClick('Insights', '/blog')}>Insights</NavLink>
             {/* Manifesto opens a modal — stays as button (not a page) */}
             <button
-              onClick={() => setManifestoModal(true)}
+              onClick={() => { setManifestoModal(true); trackManifestoEvent('open'); }}
               className="hover:text-[#0A0A0A] transition-colors py-1"
             >
               Manifesto
             </button>
-            <NavLink to="/contact" className={desktopNavClass}>Contact Us</NavLink>
+            <NavLink to="/contact" className={desktopNavClass} onClick={() => trackNavClick('Contact Us', '/contact')}>Contact Us</NavLink>
           </nav>
 
           {/* CTA "Configure pod" — NavLink renders as <a href="/configure"> */}
           <div className="flex items-center gap-2 relative">
             <NavLink
               to="/configure"
+              onClick={() => trackCtaClick('Configure pod', '/configure')}
               className={({ isActive }) =>
                 `bg-[#0066FF] hover:bg-[#0055DD] text-white font-semibold text-xs px-5 py-2.5 transition-all duration-150 rounded-full ${
                   isActive ? 'ring-2 ring-offset-1 ring-[#0066FF]' : ''
@@ -212,7 +216,7 @@ export default function App() {
                       </div>
 
                       {/* Mobile NavLinks — all render as <a href="..."> */}
-                      <NavLink to="/" end onClick={closeMobileMenu} className={mobileNavClass}>
+                      <NavLink to="/" end onClick={() => { closeMobileMenu(); trackNavClick('Home (mobile)', '/'); }} className={mobileNavClass}>
                         {({ isActive }) => (
                           <>
                             <span>Home</span>
@@ -221,7 +225,7 @@ export default function App() {
                         )}
                       </NavLink>
 
-                      <NavLink to="/catalogue" onClick={closeMobileMenu} className={mobileNavClass}>
+                      <NavLink to="/catalogue" onClick={() => { closeMobileMenu(); trackNavClick('Pod Catalogue (mobile)', '/catalogue'); }} className={mobileNavClass}>
                         {({ isActive }) => (
                           <>
                             <span>Pod Catalogue</span>
@@ -230,7 +234,7 @@ export default function App() {
                         )}
                       </NavLink>
 
-                      <NavLink to="/live-pods" onClick={closeMobileMenu} className={mobileNavClass}>
+                      <NavLink to="/live-pods" onClick={() => { closeMobileMenu(); trackNavClick('Live Telemetry (mobile)', '/live-pods'); }} className={mobileNavClass}>
                         {({ isActive }) => (
                           <>
                             <span>Live Telemetry</span>
@@ -239,7 +243,7 @@ export default function App() {
                         )}
                       </NavLink>
 
-                      <NavLink to="/blog" onClick={closeMobileMenu} className={mobileNavClass}>
+                      <NavLink to="/blog" onClick={() => { closeMobileMenu(); trackNavClick('Insights (mobile)', '/blog'); }} className={mobileNavClass}>
                         {({ isActive }) => (
                           <>
                             <span>Insights</span>
@@ -251,13 +255,13 @@ export default function App() {
                       <div className="border-t border-zinc-100 my-1"></div>
 
                       <button
-                        onClick={() => { setManifestoModal(true); closeMobileMenu(); }}
+                        onClick={() => { setManifestoModal(true); closeMobileMenu(); trackManifestoEvent('open'); }}
                         className="w-full text-left px-4 py-2.5 text-xs font-semibold text-zinc-900 transition-all hover:bg-zinc-50 flex items-center justify-between"
                       >
                         <span>Read Manifesto</span>
                       </button>
 
-                      <NavLink to="/contact" onClick={closeMobileMenu} className={mobileNavClass}>
+                      <NavLink to="/contact" onClick={() => { closeMobileMenu(); trackNavClick('Contact Us (mobile)', '/contact'); }} className={mobileNavClass}>
                         {({ isActive }) => (
                           <>
                             <span>Contact Us</span>
@@ -405,6 +409,7 @@ export default function App() {
                 {/* Needs to set pod ID state before navigating — button is correct here */}
                 <button
                   onClick={() => {
+                    trackPodSpecView(selectedSKU.id, 'configure');
                     setSelectedSKU(null);
                     navigateToPage('configure', selectedSKU.id);
                   }}
@@ -501,6 +506,7 @@ export default function App() {
               <div className="flex justify-end gap-3 pt-2">
                 <button
                   onClick={() => {
+                    trackManifestoEvent('download');
                     triggerNotification("Initiated download sequence for fwd_manifesto_revision_2026.pdf");
                     setManifestoModal(false);
                   }}
@@ -545,6 +551,7 @@ export default function App() {
             <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto shrink-0 relative z-10">
               <Link
                 to="/configure"
+                onClick={() => trackCtaClick('Configure Your Pod (footer)', '/configure')}
                 className="bg-[#0066FF] hover:bg-[#0055DD] text-white text-xs font-semibold py-3.5 px-8 rounded-full transition-colors uppercase tracking-wider text-center"
               >
                 Configure Your Pod

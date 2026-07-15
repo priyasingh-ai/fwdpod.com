@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mail, Phone, Clock, ArrowRight, Check, Send, Sparkles, Server } from 'lucide-react';
 import SEO from './SEO';
+import { trackContactFormSubmit } from '../utils/analytics';
 
 const CONTACT_JSON_LD = {
   '@context': 'https://schema.org',
@@ -69,6 +70,7 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
+      trackContactFormSubmit(archetype);
       if (triggerNotification) {
         triggerNotification(`Message from ${name} successfully transmitted to Fwdpod Operations.`);
       }
