@@ -355,10 +355,7 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-2 gap-4 border-t border-b border-[#0A0A0A]/10 py-4 text-xs font-mono">
-                <div>
-                  <span className="text-[#555555] block text-[9px] uppercase">Indicative Budget</span>
-                  <span className="font-semibold text-[#0066FF] text-sm">{selectedSKU.price}</span>
-                </div>
+                {/* TODO(copy): indicative budget. Pricing is not approved for publication. */}
                 <div>
                   <span className="text-[#555555] block text-[9px] uppercase">Execution Cycle</span>
                   <span className="font-semibold text-sm">{selectedSKU.weeks}</span>

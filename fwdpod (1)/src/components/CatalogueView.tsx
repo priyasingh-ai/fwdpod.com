@@ -13,7 +13,7 @@ const CATALOGUE_JSON_LD = {
       '@id': 'https://www.fwdpod.com/#catalogue',
       'url': 'https://www.fwdpod.com/catalogue',
       'name': 'AI Engineering Pod Catalogue — Voice AI, RAG, Agentic Ops, Compliance | Fwdpod',
-      'description': 'Browse Fwdpod\'s five pre-assembled AI engineering pods: Voice AI, Agentic Operations, RAG & Knowledge, Compliance AI, and Custom pods. Fixed scope, transparent pricing from $40K.',
+      'description': 'Browse Fwdpod\'s five pre-assembled AI engineering pods: Voice AI, Agentic Operations, RAG & Knowledge, Compliance AI, and Custom pods. Fixed scope.',
       'isPartOf': { '@id': 'https://www.fwdpod.com/#website' },
       'breadcrumb': {
         '@type': 'BreadcrumbList',
@@ -86,7 +86,7 @@ export default function CatalogueView({ selectedPodId, onPreselectPod }: Catalog
     >
       <SEO
         title="AI Engineering Pod Catalogue — Voice AI, RAG, Agentic Ops, Compliance | Fwdpod"
-        description="Browse Fwdpod's five pre-assembled AI engineering pods: Voice AI, Agentic Operations, RAG & Knowledge, Compliance AI, and Custom pods. Fixed scope, transparent pricing from $40K."
+        description="Browse Fwdpod's five pre-assembled AI engineering pods: Voice AI, Agentic Operations, RAG & Knowledge, Compliance AI, and Custom pods. Fixed scope."
         canonical="/catalogue"
         jsonLd={CATALOGUE_JSON_LD}
       />
@@ -126,9 +126,7 @@ export default function CatalogueView({ selectedPodId, onPreselectPod }: Catalog
                     <span className="bg-[#0066FF]/5 text-[#0066FF] text-[10px] px-2.5 py-0.5 font-medium rounded-md">
                       {pod.weeks}
                     </span>
-                    <span className="bg-[#0A0A0A]/5 text-[#0A0A0A] text-[10px] px-2.5 py-0.5 font-medium rounded-md">
-                      {pod.price}
-                    </span>
+                    {/* TODO(copy): price band. Pricing is not approved for publication. */}
                   </div>
                   <h2 className="text-2xl font-display font-medium text-[#0A0A0A] tracking-tight">
                     {pod.name}
@@ -276,7 +274,7 @@ export default function CatalogueView({ selectedPodId, onPreselectPod }: Catalog
                 <th className="p-4 text-xs font-mono text-[#0A0A0A] font-medium">Pod archetype</th>
                 <th className="p-4 text-xs font-mono text-[#0A0A0A] font-medium">Execution timeline</th>
                 <th className="p-4 text-xs font-mono text-[#0A0A0A] font-medium">Team size</th>
-                <th className="p-4 text-xs font-mono text-[#0A0A0A] font-medium">Price band</th>
+                {/* TODO(copy): "Price band" column. Pricing is not approved for publication. */}
                 <th className="p-4 text-xs font-mono text-[#0A0A0A] font-medium">Best fit for</th>
               </tr>
             </thead>
@@ -289,7 +287,6 @@ export default function CatalogueView({ selectedPodId, onPreselectPod }: Catalog
                   </td>
                   <td className="p-4 text-[#0A0A0A] font-medium">{pod.weeks}</td>
                   <td className="p-4 text-[#0066FF] font-mono font-medium">{pod.teamSize} elite specialists</td>
-                  <td className="p-4 text-[#0A0A0A] font-medium">{pod.price}</td>
                   <td className="p-4 text-[#555555] max-w-xs">{pod.bestFor}</td>
                 </tr>
               ))}

@@ -4,7 +4,7 @@
 
 ## Pods
 
-- [Pod Catalogue](https://www.fwdpod.com/catalogue): Browse Fwdpod's five pre-assembled AI engineering pods: Voice AI, Agentic Operations, RAG & Knowledge, Compliance AI, and Custom pods. Fixed scope, transparent pricing from $40K.
+- [Pod Catalogue](https://www.fwdpod.com/catalogue): Browse Fwdpod's five pre-assembled AI engineering pods: Voice AI, Agentic Operations, RAG & Knowledge, Compliance AI, and Custom pods. Fixed scope.
 - [Configure Your Pod](https://www.fwdpod.com/configure): Answer 5 questions and receive a custom AI engineering pod proposal within 48 hours. Specify your industry, timeline, budget, and compliance requirements.
 - [Live Telemetry](https://www.fwdpod.com/live-pods): TODO(copy): factual one-line description of the live pods page
 

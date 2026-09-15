@@ -639,9 +639,7 @@ export default function HomeView({
                   </p>
 
                   <div className="flex gap-2 pt-2">
-                    <span className="bg-[#0A0A0A]/5 text-[#0A0A0A] text-[10px] px-2.5 py-1 font-medium font-mono rounded-md">
-                      {pod.price}
-                    </span>
+                    {/* TODO(copy): price band. Pricing is not approved for publication. */}
                     <span className="bg-[#0066FF]/5 text-[#0066FF] text-[10px] px-2.5 py-1 font-semibold rounded-md">
                       {pod.teamSize} Person team
                     </span>

@@ -16,7 +16,6 @@ export interface PodSKU {
   oneLiner: string;
   longDescription: string;
   weeks: string;
-  price: string;
   teamSize: number;
   bestFor: string;
   includedRoles: string[];
@@ -75,7 +74,6 @@ export const POD_DETAILS: PodSKU[] = [
     oneLiner: 'Low-latency conversational agents with customized streaming pipelines.',
     longDescription: 'Deploys fully optimized automated voice response units integrated with telephone trunks and private customer service APIs. Engineered for highly responsive, human-like contextual conversational systems.',
     weeks: '8-12 weeks',
-    price: '$45K-$70K',
     teamSize: 5,
     bestFor: 'Healthcare, financial call support, telecommunications providers',
     includedRoles: [
@@ -108,7 +106,6 @@ export const POD_DETAILS: PodSKU[] = [
     oneLiner: 'Self-repairing automation systems and workflow orchestration controllers.',
     longDescription: 'Constructs event-driven multi-agent execution loops capable of managing complex enterprise business procedures (reconciliations, compliance screening, back-office paperwork processing) with integrated monitoring checks.',
     weeks: '10-14 weeks',
-    price: '$60K-$90K',
     teamSize: 5,
     bestFor: 'Back-office workflow pipelines, complex systems billing, operations scale',
     includedRoles: [
@@ -140,7 +137,6 @@ export const POD_DETAILS: PodSKU[] = [
     oneLiner: 'High-throughput semantic indices with automated validation harnesses.',
     longDescription: 'Establishes verified semantic extraction indices and knowledge sync adapters across massive, fragmented enterprise documents. Guarantees fresh real-time retrieval metrics and rigorous output evaluations.',
     weeks: '8-12 weeks',
-    price: '$40K-$60K',
     teamSize: 4,
     bestFor: 'Legal query assistance, internal policy retrieval, product documentation search',
     includedRoles: [
@@ -172,7 +168,6 @@ export const POD_DETAILS: PodSKU[] = [
     oneLiner: 'Rigorous validation logs, privacy filters, and model safety harnesses.',
     longDescription: 'Deploys air-gapped system isolation layers, real-time safety classification runtimes, and strict access filters to protect confidential enterprise transaction paths from data leaks and prompt exploitation.',
     weeks: '12-16 weeks',
-    price: '$75K-$110K',
     teamSize: 6,
     bestFor: 'Highly regulated industries, air-gapped infrastructure, high security standards',
     includedRoles: [
@@ -205,7 +200,6 @@ export const POD_DETAILS: PodSKU[] = [
     oneLiner: 'Tailor-made autonomous units addressing unique legacy system shapes.',
     longDescription: 'A fully custom-aligned 4-6 person elite team designed to solve complex system problems. Integrates directly with old core databases and custom AI models to deliver structured results.',
     weeks: '8-16 weeks',
-    price: 'Variable scope',
     teamSize: 6,
     bestFor: 'Complex on-premise integrations, custom AI architectures, specialized enterprise scopes',
     includedRoles: [
