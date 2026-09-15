@@ -273,7 +273,7 @@ export default function App() {
             element={
               <CatalogueView
                 selectedPodId={selectedPodId}
-                onNavigate={navigateToPage}
+                onPreselectPod={setSelectedPodId}
               />
             }
           />

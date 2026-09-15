@@ -284,15 +284,19 @@ export default function BlogsView() {
     return () => clearTimeout(timer);
   }, [searchQuery, filteredBlogs.length]);
 
-  const handleCategorySelect = (cat: string) => {
+  const categoryPath = (cat: string) =>
+    cat === 'All' ? '/blog' : `/blog/category/${getCategorySlug(cat)}`;
+
+  // Category pills are links; this runs before the link navigates
+  const handleCategoryClick = (cat: string) => {
     setSelectedCategory(cat);
     setActiveBlogId(null);
     trackBlogCategoryFilter(cat);
-    if (cat === 'All') {
-      navigate('/blog', { replace: true });
-    } else {
-      navigate(`/blog/category/${getCategorySlug(cat)}`, { replace: true });
-    }
+  };
+
+  const handleCategorySelect = (cat: string) => {
+    handleCategoryClick(cat);
+    navigate(categoryPath(cat), { replace: true });
   };
 
   const saveCustomBlogs = (updated: BlogPost[]) => {
@@ -398,8 +402,10 @@ export default function BlogsView() {
             <section className="bg-zinc-50 border border-[#0A0A0A]/10 p-4 rounded-3xl flex flex-col gap-4">
               {/* Category filter pills */}
               <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => handleCategorySelect('All')}
+                <Link
+                  to={categoryPath('All')}
+                  replace
+                  onClick={() => handleCategoryClick('All')}
                   className={`text-xs px-4 py-2 transition-all duration-200 rounded-full font-medium whitespace-nowrap ${
                     selectedCategory === 'All'
                       ? 'bg-[#0066FF] text-white shadow-sm'
@@ -410,11 +416,13 @@ export default function BlogsView() {
                   <span className={`ml-1 font-mono ${selectedCategory === 'All' ? 'text-white/70' : 'text-zinc-400'}`}>
                     ({allBlogs.length})
                   </span>
-                </button>
+                </Link>
                 {BLOG_CATEGORIES.map(cat => (
-                  <button
+                  <Link
                     key={cat.slug}
-                    onClick={() => handleCategorySelect(cat.name)}
+                    to={categoryPath(cat.name)}
+                    replace
+                    onClick={() => handleCategoryClick(cat.name)}
                     className={`text-xs px-4 py-2 transition-all duration-200 rounded-full font-medium whitespace-nowrap ${
                       selectedCategory === cat.name
                         ? 'bg-[#0066FF] text-white shadow-sm'
@@ -429,7 +437,7 @@ export default function BlogsView() {
                     >
                       ({categoryCounts[cat.name] ?? 0})
                     </span>
-                  </button>
+                  </Link>
                 ))}
               </div>
 

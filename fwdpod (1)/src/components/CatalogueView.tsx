@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { POD_DETAILS } from '../data';
 import { ChevronDown, ChevronUp, Check, X, ArrowUpRight, HelpCircle } from 'lucide-react';
@@ -40,10 +41,11 @@ const CATALOGUE_JSON_LD = {
 
 interface CatalogueViewProps {
   selectedPodId: string | null;
-  onNavigate: (page: string, selectedPodId?: string) => void;
+  /** Remember the pod to preselect on /configure before the link navigates there. */
+  onPreselectPod: (podId: string) => void;
 }
 
-export default function CatalogueView({ selectedPodId, onNavigate }: CatalogueViewProps) {
+export default function CatalogueView({ selectedPodId, onPreselectPod }: CatalogueViewProps) {
   // Store expanded state for the 5 pods
   const [expandedPods, setExpandedPods] = useState<Record<string, boolean>>({
     'voice-ai': false, // All start collapsed by default
@@ -155,13 +157,14 @@ export default function CatalogueView({ selectedPodId, onNavigate }: CatalogueVi
                       </p>
                     </div>
                     <div className="lg:col-span-4 flex items-start lg:justify-end">
-                      <button 
-                        onClick={() => onNavigate('configure', pod.id)}
+                      <Link
+                        to="/configure"
+                        onClick={() => onPreselectPod(pod.id)}
                         className="w-full lg:w-auto bg-[#0066FF] text-white hover:bg-[#0055DD] text-sm font-semibold py-3 px-8 transition-colors inline-flex items-center justify-center gap-2 rounded-full"
                       >
                         <span>Configure this pod</span>
                         <ArrowUpRight className="w-4 h-4" />
-                      </button>
+                      </Link>
                     </div>
                   </div>
 

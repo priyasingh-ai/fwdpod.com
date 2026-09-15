@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Link } from 'react-router-dom';
 import { Mail, Phone, Clock, ArrowRight, Check, Send, Sparkles, Server } from 'lucide-react';
 import SEO from './SEO';
 import { trackContactFormSubmit } from '../utils/analytics';
@@ -121,12 +122,12 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
               Ready to instantiate a pre-formed AI engineering pod or customize standard execution SLAs? Reach our operations team directly or build a custom layout.
             </p>
           </div>
-          <button
-            onClick={() => onNavigate('home')}
-            className="text-xs font-mono text-zinc-500 hover:text-[#0A0A0A] underline cursor-pointer shrink-0"
+          <Link
+            to="/"
+            className="text-xs font-mono text-zinc-500 hover:text-[#0A0A0A] underline cursor-pointer shrink-0 text-center"
           >
             ← Return to Home
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -299,12 +300,12 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
                   >
                     Send Another Transmission
                   </button>
-                  <button
-                    onClick={() => onNavigate('home')}
-                    className="bg-[#0066FF] hover:bg-[#0055DD] text-white text-xs font-semibold py-3 px-6 rounded-full transition-all cursor-pointer"
+                  <Link
+                    to="/"
+                    className="bg-[#0066FF] hover:bg-[#0055DD] text-white text-xs font-semibold py-3 px-6 rounded-full transition-all cursor-pointer text-center"
                   >
                     Go Back Home
-                  </button>
+                  </Link>
                 </div>
               </motion.div>
             )}
