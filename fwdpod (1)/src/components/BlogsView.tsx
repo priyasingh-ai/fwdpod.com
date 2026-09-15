@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   trackSearchPerformed,
   trackBlogPostView,
@@ -14,7 +14,8 @@ import {
   ArrowLeft,
   X,
 } from 'lucide-react';
-import SEO, { SITE_BASE_URL } from './SEO';
+import SEO, { SITE_BASE_URL, SITE_NAME } from './SEO';
+import NotFoundView from './NotFoundView';
 import {
   BLOG_CATEGORIES,
   STATIC_BLOG_POSTS,
@@ -23,6 +24,17 @@ import {
 } from '../data/blogCatalog';
 
 // ─── Schema builders ──────────────────────────────────────────────────────────
+
+function postUrl(post: BlogPost): string {
+  // Only static posts have a public URL; user-created posts live in localStorage
+  return post.slug ? `${SITE_BASE_URL}/blog/${post.slug}` : `${SITE_BASE_URL}/blog`;
+}
+
+function postAuthor(post: BlogPost) {
+  return post.author === SITE_NAME
+    ? { '@id': `${SITE_BASE_URL}/#organization` }
+    : { '@type': 'Person', name: post.author };
+}
 
 function buildBlogListSchema(posts: BlogPost[]) {
   return {
@@ -55,9 +67,9 @@ function buildBlogListSchema(posts: BlogPost[]) {
           '@type': 'BlogPosting',
           headline: post.title,
           description: post.excerpt,
-          author: { '@type': 'Person', name: post.author },
-          datePublished: post.createdAt,
-          url: `${SITE_BASE_URL}/blog`,
+          author: postAuthor(post),
+          datePublished: post.isoDate,
+          url: postUrl(post),
           keywords: post.category,
         })),
       },
@@ -66,13 +78,14 @@ function buildBlogListSchema(posts: BlogPost[]) {
 }
 
 function buildArticleSchema(post: BlogPost) {
+  const url = postUrl(post);
   return {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'WebPage',
-        '@id': `${SITE_BASE_URL}/#article-${post.id}`,
-        url: `${SITE_BASE_URL}/blog`,
+        '@id': `${url}#webpage`,
+        url,
         name: `${post.title} | Fwdpod Insights`,
         description: post.excerpt,
         isPartOf: { '@id': `${SITE_BASE_URL}/#website` },
@@ -81,21 +94,21 @@ function buildArticleSchema(post: BlogPost) {
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_BASE_URL}/` },
             { '@type': 'ListItem', position: 2, name: 'Insights', item: `${SITE_BASE_URL}/blog` },
-            { '@type': 'ListItem', position: 3, name: post.title, item: `${SITE_BASE_URL}/blog` },
+            { '@type': 'ListItem', position: 3, name: post.title, item: url },
           ],
         },
       },
       {
         '@type': 'BlogPosting',
-        '@id': `${SITE_BASE_URL}/#post-${post.id}`,
+        '@id': `${url}#article`,
         headline: post.title,
         description: post.excerpt,
         articleBody: post.content,
         articleSection: post.category,
-        author: { '@type': 'Person', name: post.author },
+        author: postAuthor(post),
         publisher: { '@id': `${SITE_BASE_URL}/#organization` },
-        datePublished: post.createdAt,
-        url: `${SITE_BASE_URL}/blog`,
+        datePublished: post.isoDate,
+        url,
         inLanguage: 'en-US',
         keywords: `AI engineering, ${post.category.toLowerCase()}, LLM development, Fwdpod`,
       },
@@ -114,6 +127,9 @@ interface BlogPost {
   author: string;
   readTime: string;
   createdAt: string;
+  /** Set for static catalog posts, which are served at /blog/:slug. */
+  slug?: string;
+  isoDate?: string;
 }
 
 // IDs of the original seeded demo posts — filtered out of localStorage on load
@@ -134,12 +150,40 @@ const STATIC_DISPLAY_POSTS: BlogPost[] = STATIC_BLOG_POSTS.map(p => ({
   author: p.author,
   readTime: p.readTime,
   createdAt: p.date,
+  slug: p.slug,
+  isoDate: p.isoDate,
 }));
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
+// Static posts link to their own URL; user-created posts open in place
+function PostLink({
+  post,
+  onOpen,
+  className,
+  children,
+}: {
+  post: BlogPost;
+  onOpen: (id: string) => void;
+  className: string;
+  children: React.ReactNode;
+}) {
+  if (post.slug) {
+    return (
+      <Link to={`/blog/${post.slug}`} className={className}>
+        {children}
+      </Link>
+    );
+  }
+  return (
+    <button onClick={() => onOpen(post.id)} className={className}>
+      {children}
+    </button>
+  );
+}
+
 export default function BlogsView() {
-  const { categorySlug } = useParams<{ categorySlug?: string }>();
+  const { categorySlug, slug } = useParams<{ categorySlug?: string; slug?: string }>();
   const navigate = useNavigate();
 
   // User-created posts stored in localStorage (not the static catalog)
@@ -220,12 +264,16 @@ export default function BlogsView() {
     return matchesCategory && matchesSearch;
   });
 
+  // Static posts are addressed by URL (/blog/:slug); user-created posts only
+  // exist in this browser's localStorage, so they still open in place
+  const routePost = slug ? STATIC_DISPLAY_POSTS.find(p => p.slug === slug) : undefined;
+  const activeBlogDetail =
+    routePost ?? (activeBlogId ? allBlogs.find(b => b.id === activeBlogId) : undefined);
+
   // Track blog post detail view when a post is opened
   useEffect(() => {
-    if (!activeBlogId) return;
-    const post = allBlogs.find(b => b.id === activeBlogId);
-    if (post) trackBlogPostView(post.title, post.category);
-  }, [activeBlogId]);
+    if (activeBlogDetail) trackBlogPostView(activeBlogDetail.title, activeBlogDetail.category);
+  }, [activeBlogDetail?.id]);
 
   // Track search queries with 800ms debounce (min 2 chars)
   useEffect(() => {
@@ -283,7 +331,7 @@ export default function BlogsView() {
     setIsModalOpen(false);
   };
 
-  const activeBlogDetail = allBlogs.find(b => b.id === activeBlogId);
+  if (slug && !routePost) return <NotFoundView />;
 
   return (
     <motion.div
@@ -293,13 +341,13 @@ export default function BlogsView() {
       className="space-y-12 text-[#0A0A0A]"
     >
       {/* Dynamic SEO */}
-      {activeBlogId && activeBlogDetail ? (
+      {activeBlogDetail ? (
         <SEO
           title={`${activeBlogDetail.title} | Fwdpod Insights`}
           description={activeBlogDetail.excerpt}
-          canonical="/blog"
+          canonical={activeBlogDetail.slug ? `/blog/${activeBlogDetail.slug}` : '/blog'}
           ogType="article"
-          articlePublishedTime={activeBlogDetail.createdAt}
+          articlePublishedTime={activeBlogDetail.isoDate}
           jsonLd={buildArticleSchema(activeBlogDetail)}
         />
       ) : (
@@ -312,7 +360,7 @@ export default function BlogsView() {
       )}
 
       <AnimatePresence mode="wait">
-        {!activeBlogId ? (
+        {!activeBlogDetail ? (
           /* ==================== LISTING VIEW ==================== */
           <motion.div
             key="list"
@@ -413,11 +461,10 @@ export default function BlogsView() {
                       <span className="text-[10px] text-zinc-400 font-mono">{blog.readTime}</span>
                     </div>
 
-                    <h3
-                      className="text-xl font-display font-medium text-[#0A0A0A] leading-tight hover:text-[#0066FF] transition-colors cursor-pointer"
-                      onClick={() => setActiveBlogId(blog.id)}
-                    >
-                      {blog.title}
+                    <h3 className="text-xl font-display font-medium text-[#0A0A0A] leading-tight hover:text-[#0066FF] transition-colors cursor-pointer">
+                      <PostLink post={blog} onOpen={setActiveBlogId} className="block w-full text-left">
+                        {blog.title}
+                      </PostLink>
                     </h3>
 
                     <p className="text-xs text-[#555555] leading-relaxed line-clamp-3 font-sans">
@@ -438,13 +485,14 @@ export default function BlogsView() {
                       </div>
                     </div>
 
-                    <button
-                      onClick={() => setActiveBlogId(blog.id)}
+                    <PostLink
+                      post={blog}
+                      onOpen={setActiveBlogId}
                       className="text-xs text-[#0a0a0a] hover:text-[#0066FF] font-medium flex items-center gap-1 transition-colors"
                     >
                       <span>Read speculate</span>
                       <span className="font-mono text-lg leading-none">→</span>
-                    </button>
+                    </PostLink>
                   </div>
                 </div>
               ))}
@@ -476,13 +524,23 @@ export default function BlogsView() {
             exit={{ opacity: 0, x: 10 }}
             className="max-w-3xl mx-auto space-y-8 bg-white"
           >
-            <button
-              onClick={() => setActiveBlogId(null)}
-              className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-black font-semibold transition-colors pb-2 border-b border-zinc-100"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Back to all insights</span>
-            </button>
+            {routePost ? (
+              <Link
+                to="/blog"
+                className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-black font-semibold transition-colors pb-2 border-b border-zinc-100"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back to all insights</span>
+              </Link>
+            ) : (
+              <button
+                onClick={() => setActiveBlogId(null)}
+                className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-black font-semibold transition-colors pb-2 border-b border-zinc-100"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back to all insights</span>
+              </button>
+            )}
 
             {activeBlogDetail ? (
               <article className="space-y-8">
