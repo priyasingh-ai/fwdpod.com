@@ -1,6 +1,9 @@
 RewriteEngine On
 RewriteBase /
 
+# Unmatched URLs get the prerendered not-found page with a real 404 status
+ErrorDocument 404 /_pages/404.html
+
 # ── Canonical URL: a single 301 to https://www.fwdpod.com ────────────────────
 # One hop covers http://, the apex host and trailing slashes together, and the
 # query string is carried over. /.well-known (AutoSSL validation) is exempt.
@@ -21,7 +24,7 @@ RewriteRule ^ https://www.fwdpod.com%1 [R=301,L]
 
 # Direct requests for /_pages/... are not public URLs
 RewriteCond %{ENV:REDIRECT_STATUS} ^$
-RewriteRule ^_pages/ _pages/404.html [L]
+RewriteRule ^_pages/ - [R=404,L]
 RewriteRule ^_pages/ - [L]
 
 RewriteRule ^$ _pages/index.html [L]
@@ -29,6 +32,6 @@ RewriteRule ^$ _pages/index.html [L]
 RewriteCond %{DOCUMENT_ROOT}/_pages/$0.html -f
 RewriteRule ^.+$ _pages/$0.html [L]
 
-# Anything else that is not a real file gets the not-found page
+# Anything else that is not a real file is a 404
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ _pages/404.html [L]
+RewriteRule ^ - [R=404,L]

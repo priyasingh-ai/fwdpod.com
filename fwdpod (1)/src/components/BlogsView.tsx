@@ -335,7 +335,10 @@ export default function BlogsView() {
     setIsModalOpen(false);
   };
 
-  if (slug && !routePost) return <NotFoundView />;
+  // Unknown article or category slugs are real 404s, not an unfiltered listing
+  if ((slug && !routePost) || (categorySlug && !getCategoryFromSlug(categorySlug))) {
+    return <NotFoundView />;
+  }
 
   return (
     <motion.div
