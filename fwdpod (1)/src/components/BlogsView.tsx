@@ -597,13 +597,14 @@ export default function BlogsView() {
                       );
                     }
                     if (trimmed.startsWith('#')) {
+                      // The post title is already this page's <h1>
                       return (
-                        <h1
+                        <h2
                           key={index}
                           className="text-2xl md:text-3xl font-sans font-bold text-zinc-900 tracking-tight pt-5"
                         >
                           {trimmed.slice(1).trim()}
-                        </h1>
+                        </h2>
                       );
                     }
                     if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
