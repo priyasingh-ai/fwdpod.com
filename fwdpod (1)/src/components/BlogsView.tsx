@@ -21,6 +21,7 @@ import {
   STATIC_BLOG_POSTS,
   getCategorySlug,
   getCategoryFromSlug,
+  type BlogCategory,
 } from '../data/blogCatalog';
 
 // ─── Schema builders ──────────────────────────────────────────────────────────
@@ -36,23 +37,32 @@ function postAuthor(post: BlogPost) {
     : { '@type': 'Person', name: post.author };
 }
 
-function buildBlogListSchema(posts: BlogPost[]) {
+const BLOG_TITLE = 'AI Engineering Insights & LLM Development Blog | Fwdpod';
+const BLOG_DESCRIPTION =
+  'Deep-dives into LLM agent architectures, RAG systems, voice AI pipelines, enterprise compliance AI, and the economics of productised AI engineering teams.';
+
+function buildBlogListSchema(posts: BlogPost[], category?: BlogCategory) {
+  const pageUrl = category
+    ? `${SITE_BASE_URL}/blog/category/${category.slug}`
+    : `${SITE_BASE_URL}/blog`;
   return {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'WebPage',
-        '@id': `${SITE_BASE_URL}/#blog`,
-        url: `${SITE_BASE_URL}/blog`,
-        name: 'AI Engineering Insights & LLM Development Blog | Fwdpod',
-        description:
-          'Deep-dives into LLM agent architectures, RAG systems, voice AI pipelines, enterprise compliance AI, and the economics of productised AI engineering teams.',
+        '@id': category ? `${pageUrl}#webpage` : `${SITE_BASE_URL}/#blog`,
+        url: pageUrl,
+        name: category ? `${category.name} | Fwdpod Insights` : BLOG_TITLE,
+        description: category ? category.description : BLOG_DESCRIPTION,
         isPartOf: { '@id': `${SITE_BASE_URL}/#website` },
         breadcrumb: {
           '@type': 'BreadcrumbList',
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_BASE_URL}/` },
             { '@type': 'ListItem', position: 2, name: 'Insights', item: `${SITE_BASE_URL}/blog` },
+            ...(category
+              ? [{ '@type': 'ListItem', position: 3, name: category.name, item: pageUrl }]
+              : []),
           ],
         },
       },
@@ -267,6 +277,7 @@ export default function BlogsView() {
   // Static posts are addressed by URL (/blog/:slug); user-created posts only
   // exist in this browser's localStorage, so they still open in place
   const routePost = slug ? STATIC_DISPLAY_POSTS.find(p => p.slug === slug) : undefined;
+  const routeCategory = categorySlug ? getCategoryFromSlug(categorySlug) : undefined;
   const activeBlogDetail =
     routePost ?? (activeBlogId ? allBlogs.find(b => b.id === activeBlogId) : undefined);
 
@@ -336,7 +347,7 @@ export default function BlogsView() {
   };
 
   // Unknown article or category slugs are real 404s, not an unfiltered listing
-  if ((slug && !routePost) || (categorySlug && !getCategoryFromSlug(categorySlug))) {
+  if ((slug && !routePost) || (categorySlug && !routeCategory)) {
     return <NotFoundView />;
   }
 
@@ -359,10 +370,10 @@ export default function BlogsView() {
         />
       ) : (
         <SEO
-          title="AI Engineering Insights &amp; LLM Development Blog | Fwdpod"
-          description="Deep-dives into LLM agent architectures, RAG systems, voice AI pipelines, enterprise compliance AI, and the economics of productised AI engineering teams."
-          canonical={categorySlug ? `/blog/category/${categorySlug}` : '/blog'}
-          jsonLd={buildBlogListSchema(allBlogs)}
+          title={routeCategory ? `${routeCategory.name} | Fwdpod Insights` : BLOG_TITLE}
+          description={routeCategory ? routeCategory.description : BLOG_DESCRIPTION}
+          canonical={routeCategory ? `/blog/category/${routeCategory.slug}` : '/blog'}
+          jsonLd={buildBlogListSchema(filteredBlogs, routeCategory)}
         />
       )}
 
