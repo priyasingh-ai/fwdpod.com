@@ -1,6 +1,19 @@
 RewriteEngine On
 RewriteBase /
 
+# ── Canonical URL: a single 301 to https://www.fwdpod.com ────────────────────
+# One hop covers http://, the apex host and trailing slashes together, and the
+# query string is carried over. /.well-known (AutoSSL validation) is exempt.
+# %{HTTPS} assumes Apache terminates TLS itself, as on this cPanel host; behind
+# a proxy or CDN, test X-Forwarded-Proto instead or this rule will loop.
+RewriteCond %{REQUEST_URI} !^/[.]well-known/
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} !^www[.]fwdpod[.]com$ [NC,OR]
+RewriteCond %{REQUEST_URI} ^/.+/$
+RewriteCond %{REQUEST_URI} ^(/|/.*?[^/])/*$
+RewriteRule ^ https://www.fwdpod.com%1 [R=301,L]
+
 # ── Prerendered pages ─────────────────────────────────────────────────────────
 # scripts/prerender.mjs writes one HTML file per route into /_pages
 # (/ -> _pages/index.html, /blog/foo -> _pages/blog/foo.html). Keeping them in a
