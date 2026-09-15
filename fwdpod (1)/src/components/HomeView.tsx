@@ -38,6 +38,55 @@ const HOME_JSON_LD = {
   '@context': 'https://schema.org',
   '@graph': [
     {
+      '@type': 'Organization',
+      '@id': 'https://www.fwdpod.com/#organization',
+      'name': 'Fwdpod',
+      'alternateName': 'Fwdpod.com',
+      'url': 'https://www.fwdpod.com/',
+      // TODO(assets): favicon.svg stands in for a logo; replace with a real logo image
+      'logo': {
+        '@type': 'ImageObject',
+        '@id': 'https://www.fwdpod.com/#logo',
+        'url': 'https://www.fwdpod.com/favicon.svg',
+        'contentUrl': 'https://www.fwdpod.com/favicon.svg',
+        'caption': 'Fwdpod logo'
+      },
+      // TODO(profiles): Clutch, G2, Crunchbase and LinkedIn profile URLs
+      'sameAs': [],
+      'description': 'Fwdpod delivers dedicated AI engineering pods — pre-assembled, cross-functional teams of 4–6 senior specialists for LLM development, RAG systems, multi-agent AI, voice AI, compliance AI, and custom enterprise AI product engineering.',
+      'slogan': 'Pre-formed cognitive infrastructure units',
+      'knowsAbout': [
+        'AI Engineering',
+        'LLM Development',
+        'RAG Systems',
+        'AI Agents',
+        'Voice AI',
+        'Compliance AI',
+        'Team Augmentation',
+        'AI Product Engineering',
+        'Machine Learning'
+      ],
+      'contactPoint': [
+        {
+          '@type': 'ContactPoint',
+          'email': 'contact@fwdpod.com',
+          'contactType': 'customer support',
+          'areaServed': 'Worldwide',
+          'availableLanguage': ['English']
+        }
+      ]
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://www.fwdpod.com/#website',
+      'url': 'https://www.fwdpod.com/',
+      'name': 'Fwdpod',
+      'description': 'Dedicated AI Engineering Pods for Startups and Enterprises',
+      'publisher': { '@id': 'https://www.fwdpod.com/#organization' },
+      'inLanguage': 'en-US',
+      'copyrightYear': '2026'
+    },
+    {
       '@type': 'WebPage',
       '@id': 'https://www.fwdpod.com/#home',
       'url': 'https://www.fwdpod.com/',
@@ -49,26 +98,6 @@ const HOME_JSON_LD = {
         '@type': 'BreadcrumbList',
         'itemListElement': [
           { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://www.fwdpod.com/' }
-        ]
-      }
-    },
-    {
-      '@type': 'Service',
-      'name': 'AI Engineering Pods',
-      'alternateName': ['Dedicated AI Teams', 'AI Team Augmentation', 'AI Product Engineering'],
-      'provider': { '@id': 'https://www.fwdpod.com/#organization' },
-      'serviceType': 'AI Engineering Services',
-      'areaServed': 'Worldwide',
-      'description': 'Pre-assembled, cross-functional AI engineering pods of 4–6 senior specialists for LLM development, RAG systems, multi-agent AI, voice AI, and compliance AI. Fixed scope. Outcome-based contracts.',
-      'hasOfferCatalog': {
-        '@type': 'OfferCatalog',
-        'name': 'AI Engineering Pod Catalogue',
-        'itemListElement': [
-          { '@type': 'Offer', 'itemOffered': { '@type': 'Service', 'name': 'Voice AI Pod', 'description': 'Low-latency conversational AI agents with streaming pipelines' } },
-          { '@type': 'Offer', 'itemOffered': { '@type': 'Service', 'name': 'Agentic Operations Pod', 'description': 'Self-repairing automation systems and multi-agent workflow orchestration' } },
-          { '@type': 'Offer', 'itemOffered': { '@type': 'Service', 'name': 'RAG and Knowledge Pod', 'description': 'High-throughput semantic search indices with automated validation harnesses' } },
-          { '@type': 'Offer', 'itemOffered': { '@type': 'Service', 'name': 'Compliance AI Pod', 'description': 'PII scrubbing, prompt safety harnesses, and air-gapped model guardrails' } },
-          { '@type': 'Offer', 'itemOffered': { '@type': 'Service', 'name': 'Custom AI Pod', 'description': 'Tailor-made autonomous units for unique legacy system integrations' } }
         ]
       }
     },
