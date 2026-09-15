@@ -29,11 +29,9 @@ export interface LivePodItem {
   id: string;
   archetype: string;
   industry: string;
-  client: string;
   buildDescription: string;
   weeksLive: number;
   status: 'running' | 'completed';
-  outcomeMetric?: string;
   teamSize: number;
 }
 
@@ -232,132 +230,108 @@ export const LIVE_PODS: LivePodItem[] = [
     id: 'pod-lp1',
     archetype: 'Compliance AI Pod',
     industry: 'Financial Brokerage',
-    client: 'WealthShield Advisors',
     buildDescription: 'Air-gapped PII scrubbing proxies and automated trading data-leak verification layers.',
     weeksLive: 6,
     status: 'running',
-    outcomeMetric: '99.9% PII scrubbing accuracy',
     teamSize: 6
   },
   {
     id: 'pod-lp2',
     archetype: 'Agentic Operations Pod',
     industry: 'Logistics Network',
-    client: 'InterCargo Global',
     buildDescription: 'Autonomous invoice OCR validation loops and self-repairing delivery dispatch controllers.',
     weeksLive: 11,
     status: 'running',
-    outcomeMetric: 'Reduced billing delay by 85%',
     teamSize: 5
   },
   {
     id: 'pod-lp3',
     archetype: 'Voice AI Pod',
     industry: 'Healthcare Services',
-    client: 'Apollo Health Hubs',
     buildDescription: 'Sub-150ms real-time intake routing agents managing concurrent patient scheduling trunks.',
     weeksLive: 3,
     status: 'running',
-    outcomeMetric: 'Handling 1,200 calls concurrently',
     teamSize: 5
   },
   {
     id: 'pod-lp4',
     archetype: 'RAG and Knowledge Pod',
     industry: 'Banking',
-    client: 'Standard Trust India',
     buildDescription: 'Daily knowledge vector index integration for loan assessment regulations.',
     weeksLive: 9,
     status: 'running',
-    outcomeMetric: '99.1% factual recall index',
     teamSize: 4
   },
   {
     id: 'pod-lp5',
     archetype: 'Compliance AI Pod',
     industry: 'Telecommunications',
-    client: 'Reliance Jio Network',
     buildDescription: 'Prompt exploitation testing and filter sandboxes for customer interaction terminals.',
     weeksLive: 14,
     status: 'completed',
-    outcomeMetric: 'Blocks 98.7% malicious injections',
     teamSize: 6
   },
   {
     id: 'pod-lp6',
     archetype: 'Voice AI Pod',
     industry: 'Public Utilities',
-    client: 'Municipal Supply Corp',
     buildDescription: 'Automated municipal water billing query triage systems operating via Vapi integrations.',
     weeksLive: 8,
     status: 'completed',
-    outcomeMetric: '72% call deflation ratio',
     teamSize: 5
   },
   {
     id: 'pod-lp7',
     archetype: 'RAG and Knowledge Pod',
     industry: 'Legal Tech',
-    client: 'LexSynthesize Partners',
     buildDescription: 'Automated retrieval-rerank knowledge parsing across regional arbitration case papers.',
     weeksLive: 5,
     status: 'running',
-    outcomeMetric: '10x average legal doc scan rate',
     teamSize: 4
   },
   {
     id: 'pod-lp8',
     archetype: 'Agentic Operations Pod',
     industry: 'E-commerce platform',
-    client: 'SwiftRetail systems',
     buildDescription: 'Autonomous supplier inventory reconciliation engines reporting anomalies directly to Slack.',
     weeksLive: 12,
     status: 'completed',
-    outcomeMetric: 'Auto-reconciled $1.2M discrepancies',
     teamSize: 5
   },
   {
     id: 'pod-lp9',
     archetype: 'Custom Pod',
     industry: 'Automotive Factory',
-    client: 'Tata Motors Assembly',
     buildDescription: 'Core SCADA telemetry translation models bridging assembly planning loops.',
     weeksLive: 16,
     status: 'completed',
-    outcomeMetric: 'Optimized parts wait times by 14%',
     teamSize: 6
   },
   {
     id: 'pod-lp10',
     archetype: 'Voice AI Pod',
     industry: 'Aviation services',
-    client: 'IndiGo Ground Crew',
     buildDescription: 'Voice dispatch query systems running across localized crew radio relays.',
     weeksLive: 4,
     status: 'running',
-    outcomeMetric: 'Under 180ms processing latency',
     teamSize: 5
   },
   {
     id: 'pod-lp11',
     archetype: 'RAG and Knowledge Pod',
     industry: 'Insurance',
-    client: 'ICICI Lombard Insurance',
     buildDescription: 'Ingestion of medical insurance code updates with automatic parsing and claim assessment validation.',
     weeksLive: 7,
     status: 'running',
-    outcomeMetric: 'Claim review speed boosted 4x',
     teamSize: 4
   },
   {
     id: 'pod-lp12',
     archetype: 'Agentic Operations Pod',
     industry: 'Media distribution',
-    client: 'SunNetwork Streams',
     buildDescription: 'Automated video transcript content tagging and vector descriptor publishing queues.',
     weeksLive: 10,
     status: 'running',
-    outcomeMetric: '100k clips auto-categorized daily',
     teamSize: 5
   }
 ];
