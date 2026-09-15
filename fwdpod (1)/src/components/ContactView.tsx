@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, Clock, ArrowRight, Check, Send, Sparkles, Server } from 'lucide-react';
+import { Check, Send, Server } from 'lucide-react';
 import SEO from './SEO';
 import { trackContactFormSubmit } from '../utils/analytics';
 
@@ -344,48 +344,10 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
             </div>
           </div>
 
-          {/* Interactive Direct Touchpoints */}
-          <div className="space-y-4">
-            <h4 className="text-xs font-mono uppercase tracking-wider text-[#555555] font-bold">
-              Direct Access Paths
-            </h4>
-
-            {/* Direct Phone Block */}
-            <a 
-              href="tel:+18005550199"
-              className="p-5 border border-zinc-200/85 bg-zinc-50/40 hover:border-[#0066FF] hover:bg-zinc-50 hover:shadow-sm rounded-2xl transition-all duration-200 flex items-center gap-4 group text-left block"
-            >
-              <div className="w-12 h-12 bg-[#0066FF]/5 text-[#0066FF] rounded-full flex items-center justify-center shrink-0 border border-[#0066FF]/10 group-hover:bg-[#0066FF] group-hover:text-white transition-all">
-                <Phone className="w-5 h-5" />
-              </div>
-              <div className="flex-1">
-                <span className="text-[10px] uppercase font-mono text-zinc-400 tracking-wider block">Direct Contact Hotline</span>
-                <span className="text-sm sm:text-base font-semibold text-[#0A0A0A] group-hover:text-[#0066FF] transition-colors flex items-center gap-1.5">
-                  <span>+1 (800) 555-0199</span>
-                  <ArrowRight className="w-3.5 h-3.5 opacity-60 group-hover:translate-x-0.5 transition-transform text-[#0066FF]" />
-                </span>
-                <span className="text-[10px] text-zinc-500 font-sans block mt-0.5">Toll-free direct solutions triage line</span>
-              </div>
-            </a>
-
-            {/* Direct Email Block */}
-            <a 
-              href="mailto:contact.fwdpod@gmail.com"
-              className="p-5 border border-zinc-200/85 bg-zinc-50/40 hover:border-[#0066FF] hover:bg-zinc-50 hover:shadow-sm rounded-2xl transition-all duration-200 flex items-center gap-4 group text-left block"
-            >
-              <div className="w-12 h-12 bg-[#0066FF]/5 text-[#0066FF] rounded-full flex items-center justify-center shrink-0 border border-[#0066FF]/10 group-hover:bg-[#0066FF] group-hover:text-white transition-all">
-                <Mail className="w-5 h-5" />
-              </div>
-              <div className="flex-1">
-                <span className="text-[10px] uppercase font-mono text-zinc-400 tracking-wider block">Instant Email Response</span>
-                <span className="text-sm sm:text-base font-semibold text-[#0A0A0A] group-hover:text-[#0066FF] transition-colors flex items-center gap-1.5 font-mono">
-                  <span>contact.fwdpod@gmail.com</span>
-                  <ArrowRight className="w-3.5 h-3.5 opacity-60 group-hover:translate-x-0.5 transition-transform text-[#0066FF]" />
-                </span>
-                <span className="text-[10px] text-zinc-500 font-sans block mt-0.5">Encrypted operations dispatcher queue</span>
-              </div>
-            </a>
-          </div>
+          {/* TODO(copy): direct contact channels. The fictional 555 hotline and the Gmail
+              address were removed as unapproved. contact@fwdpod.com was not added in their
+              place: commit c5614de moved the site off that address, so it is not confirmed
+              as a monitored mailbox. */}
 
           {/* Secure Assurance Label */}
           <div className="p-4 border border-zinc-100 rounded-2xl bg-zinc-50/20 text-[11px] text-zinc-500 leading-relaxed font-sans space-y-1">
