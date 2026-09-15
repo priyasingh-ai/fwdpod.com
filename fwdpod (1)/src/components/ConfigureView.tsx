@@ -21,19 +21,6 @@ const CONFIGURE_JSON_LD = {
           { '@type': 'ListItem', 'position': 2, 'name': 'Configure Pod', 'item': 'https://www.fwdpod.com/configure' }
         ]
       }
-    },
-    {
-      '@type': 'HowTo',
-      'name': 'How to Configure an AI Engineering Pod with Fwdpod',
-      'description': 'A 5-step intake process to receive a custom AI engineering pod proposal within 48 hours.',
-      'totalTime': 'PT2M',
-      'step': [
-        { '@type': 'HowToStep', 'position': 1, 'name': 'Select Pod Type', 'text': 'Choose the AI engineering pod archetype that best matches your primary technical requirements.' },
-        { '@type': 'HowToStep', 'position': 2, 'name': 'Describe Operational Context', 'text': 'Provide your industry and current organisational AI maturity level so the pod can be staffed appropriately.' },
-        { '@type': 'HowToStep', 'position': 3, 'name': 'Define Delivery Outcome', 'text': 'Describe the specific AI system, integrations, and business logic the pod must deliver.' },
-        { '@type': 'HowToStep', 'position': 4, 'name': 'Set Constraints', 'text': 'Specify timeline, budget, and compliance requirements such as HIPAA, SOC2, or GDPR.' },
-        { '@type': 'HowToStep', 'position': 5, 'name': 'Submit Professional Profile', 'text': 'Provide your contact details. A Technical Principal will respond with a full proposal within 48 hours.' }
-      ]
     }
   ]
 };
