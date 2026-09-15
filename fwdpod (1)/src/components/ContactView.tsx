@@ -27,9 +27,6 @@ const CONTACT_JSON_LD = {
     {
       '@type': 'ContactPoint',
       'contactType': 'customer support',
-      'email': 'contact.fwdpod@gmail.com',
-      'telephone': '+1-800-555-0199',
-      'contactOption': 'TollFree',
       'areaServed': 'Worldwide',
       'availableLanguage': ['English'],
       'hoursAvailable': {

@@ -30,7 +30,7 @@ const LIVE_PODS_JSON_LD = {
       'itemListElement': LIVE_PODS.map((pod, idx) => ({
         '@type': 'ListItem',
         'position': idx + 1,
-        'name': `${pod.archetype} — ${pod.client}`,
+        'name': pod.archetype,
         'description': pod.buildDescription
       }))
     }
