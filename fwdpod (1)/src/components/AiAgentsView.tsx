@@ -75,10 +75,6 @@ const JSON_LD = {
       serviceType: 'AI Agent Development',
       areaServed: 'Worldwide',
     },
-    {
-      '@type': 'FAQPage',
-      mainEntity: FAQS.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
-    },
   ],
 };
 
