@@ -144,7 +144,9 @@ export default function BlogsView() {
 
   // User-created posts stored in localStorage (not the static catalog)
   const [customBlogs, setCustomBlogs] = useState<BlogPost[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    () => (categorySlug && getCategoryFromSlug(categorySlug)?.name) || 'All',
+  );
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Create Blog modal state

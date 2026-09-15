@@ -32,7 +32,7 @@ export interface SEOProps {
   title: string;
   /** 145–160 character meta description with primary keyword. */
   description: string;
-  /** Path relative to SITE_BASE_URL. Defaults to '/'. */
+  /** Path relative to SITE_BASE_URL. Defaults to '/'. Not emitted for noindex pages. */
   canonical?: string;
   /** og:type — 'website' for pages, 'article' for blog posts. */
   ogType?: 'website' | 'article';
@@ -70,12 +70,12 @@ export default function SEO({
       <title>{title}</title>
       <meta name="description"  content={description} />
       <meta name="robots"       content={robotsMeta} />
-      <link rel="canonical"     href={fullUrl} />
+      {!noindex && <link rel="canonical" href={fullUrl} />}
 
       {/* ── Open Graph ───────────────────────────────────────────────────── */}
       <meta property="og:title"       content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:url"         content={fullUrl} />
+      {!noindex && <meta property="og:url" content={fullUrl} />}
       <meta property="og:type"        content={ogType} />
       <meta property="og:image"       content={ogImage} />
       <meta property="og:image:width"  content="1200" />
@@ -104,9 +104,10 @@ export default function SEO({
       )}
 
       {/* ── JSON-LD Structured Data ──────────────────────────────────────── */}
+      {/* '<' is escaped so page text can never close the script tag in server HTML */}
       {jsonLd && (
         <script type="application/ld+json">
-          {JSON.stringify(jsonLd)}
+          {JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
         </script>
       )}
     </Helmet>

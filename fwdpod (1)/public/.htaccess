@@ -1,6 +1,21 @@
 RewriteEngine On
 RewriteBase /
-RewriteRule ^index\.html$ - [L]
+
+# ── Prerendered pages ─────────────────────────────────────────────────────────
+# scripts/prerender.mjs writes one HTML file per route into /_pages
+# (/ -> _pages/index.html, /blog/foo -> _pages/blog/foo.html). Keeping them in a
+# subfolder means no clean URL ever collides with a real directory.
+
+# Direct requests for /_pages/... are not public URLs
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^_pages/ _pages/404.html [L]
+RewriteRule ^_pages/ - [L]
+
+RewriteRule ^$ _pages/index.html [L]
+
+RewriteCond %{DOCUMENT_ROOT}/_pages/$0.html -f
+RewriteRule ^.+$ _pages/$0.html [L]
+
+# Anything else that is not a real file gets the not-found page
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^.*$ /index.html [L]
+RewriteRule ^ _pages/404.html [L]
