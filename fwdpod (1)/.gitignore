@@ -7,3 +7,7 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Deploy archives, and the stale duplicate of this project (never build or deploy from it)
+*.zip
+/fwdpod (1)/
