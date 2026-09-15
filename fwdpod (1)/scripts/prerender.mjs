@@ -3,7 +3,8 @@
  *
  * Runs after `vite build` (client) and `vite build --ssr` (server bundle).
  * Renders every route from src/ssr/routes.ts to dist/_pages/<path>.html using
- * dist/index.html as the template, plus dist/_pages/404.html. The .htaccess
+ * dist/index.html as the template, plus dist/_pages/404.html, and generates
+ * dist/sitemap.xml from the same route list so it cannot drift. The .htaccess
  * rules map clean URLs onto those files.
  */
 import fs from 'node:fs';
@@ -25,7 +26,7 @@ if (!template.includes(HEAD_PLACEHOLDER) || !template.includes(EMPTY_ROOT)) {
 }
 
 const serverEntry = pathToFileURL(path.join(root, 'dist-ssr', 'entry-server.js')).href;
-const { render, getPrerenderRoutes } = await import(serverEntry);
+const { render, getPrerenderRoutes, SITE_BASE_URL } = await import(serverEntry);
 
 function outputFileFor(routePath) {
   return routePath === '/' ? 'index.html' : `${routePath.slice(1)}.html`;
@@ -41,6 +42,33 @@ function writePage(file, { head, appHtml }) {
   fs.writeFileSync(dest, html);
 }
 
+// Every sitemap URL must be indexable and declare itself as canonical
+function assertIndexable(routePath, head) {
+  const canonical = `<link rel="canonical" href="${SITE_BASE_URL}${routePath}"/>`;
+  if (!head.includes(canonical)) {
+    throw new Error(`Route ${routePath} is not self-canonical (expected ${canonical})`);
+  }
+  if (head.includes('noindex')) throw new Error(`Route ${routePath} is marked noindex`);
+}
+
+function xmlEscape(value) {
+  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function buildSitemap(routes) {
+  const urls = routes.map(route => {
+    const lastmod = route.lastmod ? `\n    <lastmod>${route.lastmod}</lastmod>` : '';
+    return `  <url>\n    <loc>${xmlEscape(SITE_BASE_URL + route.path)}</loc>${lastmod}\n  </url>`;
+  });
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...urls,
+    '</urlset>',
+    '',
+  ].join('\n');
+}
+
 fs.rmSync(pagesDir, { recursive: true, force: true });
 
 const routes = getPrerenderRoutes();
@@ -51,6 +79,7 @@ for (const route of routes) {
 
   const result = render(route.path);
   if (result.notFound) throw new Error(`Route ${route.path} rendered the not-found page`);
+  assertIndexable(route.path, result.head);
   writePage(outputFileFor(route.path), result);
 }
 
@@ -58,7 +87,9 @@ const notFound = render(NOT_FOUND_PROBE);
 if (!notFound.notFound) throw new Error('Not-found probe did not render the not-found page');
 writePage('404.html', notFound);
 
+fs.writeFileSync(path.join(distDir, 'sitemap.xml'), buildSitemap(routes));
+
 // The empty SPA shell must never be served now that every route has real HTML
 fs.rmSync(templatePath);
 
-console.log(`Prerendered ${routes.length} routes + 404 page into dist/_pages`);
+console.log(`Prerendered ${routes.length} routes + 404 page into dist/_pages; wrote sitemap.xml`);

@@ -361,7 +361,7 @@ export default function BlogsView() {
         <SEO
           title="AI Engineering Insights &amp; LLM Development Blog | Fwdpod"
           description="Deep-dives into LLM agent architectures, RAG systems, voice AI pipelines, enterprise compliance AI, and the economics of productised AI engineering teams."
-          canonical="/blog"
+          canonical={categorySlug ? `/blog/category/${categorySlug}` : '/blog'}
           jsonLd={buildBlogListSchema(allBlogs)}
         />
       )}

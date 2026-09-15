@@ -6,6 +6,7 @@ import App from './App.tsx';
 import { RenderStatusContext, type RenderStatus } from './ssr/renderStatus';
 
 export { getPrerenderRoutes } from './ssr/routes';
+export { SITE_BASE_URL } from './components/SEO';
 
 export interface RenderResult {
   /** Hoisted <title>, <meta> and <link> tags for <head>. */
