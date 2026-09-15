@@ -54,16 +54,16 @@ const JSON_LD = {
   '@graph': [
     {
       '@type': 'WebPage',
-      '@id': 'https://fwdpod.com/services/rag-development#webpage',
-      url: 'https://fwdpod.com/services/rag-development',
+      '@id': 'https://www.fwdpod.com/services/rag-development#webpage',
+      url: 'https://www.fwdpod.com/services/rag-development',
       name: 'RAG Development Services | Enterprise RAG Systems & Retrieval Augmented Generation',
       description: 'Build enterprise RAG systems and retrieval augmented generation solutions with Fwdpod. RAG chatbot development, vector database consulting, and production-grade knowledge base architectures.',
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://fwdpod.com/' },
-          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://fwdpod.com/services/rag-development' },
-          { '@type': 'ListItem', position: 3, name: 'RAG Development Services', item: 'https://fwdpod.com/services/rag-development' },
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.fwdpod.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://www.fwdpod.com/services/rag-development' },
+          { '@type': 'ListItem', position: 3, name: 'RAG Development Services', item: 'https://www.fwdpod.com/services/rag-development' },
         ],
       },
     },
@@ -71,7 +71,7 @@ const JSON_LD = {
       '@type': 'Service',
       name: 'RAG Development Services',
       description: 'Enterprise RAG Systems and Retrieval Augmented Generation Solutions — vector database consulting, RAG chatbot development, and production-grade knowledge base architectures for enterprises.',
-      provider: { '@type': 'Organization', name: 'Fwdpod', url: 'https://fwdpod.com' },
+      provider: { '@id': 'https://www.fwdpod.com/#organization' },
       serviceType: 'Retrieval-Augmented Generation Development',
       areaServed: 'Worldwide',
     },

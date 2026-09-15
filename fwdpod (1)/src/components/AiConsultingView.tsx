@@ -54,16 +54,16 @@ const JSON_LD = {
   '@graph': [
     {
       '@type': 'WebPage',
-      '@id': 'https://fwdpod.com/services/ai-consulting#webpage',
-      url: 'https://fwdpod.com/services/ai-consulting',
+      '@id': 'https://www.fwdpod.com/services/ai-consulting#webpage',
+      url: 'https://www.fwdpod.com/services/ai-consulting',
       name: 'AI Consulting Services | Fractional AI Team & AI Strategy Consultant',
       description: 'Fwdpod provides Fractional AI Team services and AI Strategy Consulting — Fractional Chief AI Officer, Virtual Chief AI Officer, and AI Capability Center design. Book a consultation.',
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://fwdpod.com/' },
-          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://fwdpod.com/services/ai-consulting' },
-          { '@type': 'ListItem', position: 3, name: 'AI Consulting Services', item: 'https://fwdpod.com/services/ai-consulting' },
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.fwdpod.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://www.fwdpod.com/services/ai-consulting' },
+          { '@type': 'ListItem', position: 3, name: 'AI Consulting Services', item: 'https://www.fwdpod.com/services/ai-consulting' },
         ],
       },
     },
@@ -71,7 +71,7 @@ const JSON_LD = {
       '@type': 'Service',
       name: 'AI Consulting Services',
       description: 'Fractional AI Team and AI Strategy Consulting: Fractional Chief AI Officer advisory, Virtual Chief AI Officer services, AI Capability Center design, and AI Leadership as a Service.',
-      provider: { '@type': 'Organization', name: 'Fwdpod', url: 'https://fwdpod.com' },
+      provider: { '@id': 'https://www.fwdpod.com/#organization' },
       serviceType: 'AI Strategy Consulting',
       areaServed: 'Worldwide',
     },

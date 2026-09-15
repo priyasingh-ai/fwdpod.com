@@ -56,16 +56,16 @@ const JSON_LD = {
   '@graph': [
     {
       '@type': 'WebPage',
-      '@id': 'https://fwdpod.com/services/llm-development#webpage',
-      url: 'https://fwdpod.com/services/llm-development',
+      '@id': 'https://www.fwdpod.com/services/llm-development#webpage',
+      url: 'https://www.fwdpod.com/services/llm-development',
       name: 'LLM Development Services | Enterprise LLM Development & Custom AI Applications',
       description: 'Enterprise LLM development services for startups and enterprises. Build custom LLM applications — AI copilots, enterprise chatbots, knowledge assistants — with a Dedicated GenAI Team.',
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://fwdpod.com/' },
-          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://fwdpod.com/services/llm-development' },
-          { '@type': 'ListItem', position: 3, name: 'LLM Development Services', item: 'https://fwdpod.com/services/llm-development' },
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.fwdpod.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://www.fwdpod.com/services/llm-development' },
+          { '@type': 'ListItem', position: 3, name: 'LLM Development Services', item: 'https://www.fwdpod.com/services/llm-development' },
         ],
       },
     },
@@ -73,7 +73,7 @@ const JSON_LD = {
       '@type': 'Service',
       name: 'LLM Development Services',
       description: 'Enterprise LLM Development Services and Custom LLM Application Development — AI copilots, enterprise chatbots, knowledge assistants, and internal search systems built by a Dedicated GenAI Team.',
-      provider: { '@type': 'Organization', name: 'Fwdpod', url: 'https://fwdpod.com' },
+      provider: { '@id': 'https://www.fwdpod.com/#organization' },
       serviceType: 'Large Language Model Development',
       areaServed: 'Worldwide',
     },

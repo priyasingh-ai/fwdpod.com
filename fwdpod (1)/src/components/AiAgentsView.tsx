@@ -54,16 +54,16 @@ const JSON_LD = {
   '@graph': [
     {
       '@type': 'WebPage',
-      '@id': 'https://fwdpod.com/services/ai-agents#webpage',
-      url: 'https://fwdpod.com/services/ai-agents',
+      '@id': 'https://www.fwdpod.com/services/ai-agents#webpage',
+      url: 'https://www.fwdpod.com/services/ai-agents',
       name: 'AI Agent Development Services | Agentic AI Development & Multi-Agent Systems',
       description: 'Build autonomous AI agents and multi-agent AI systems with Fwdpod\'s agentic AI development team. Custom AI agent development — CrewAI experts, LangGraph developers, MCP integration specialists.',
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://fwdpod.com/' },
-          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://fwdpod.com/services/ai-agents' },
-          { '@type': 'ListItem', position: 3, name: 'AI Agent Development Services', item: 'https://fwdpod.com/services/ai-agents' },
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.fwdpod.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://www.fwdpod.com/services/ai-agents' },
+          { '@type': 'ListItem', position: 3, name: 'AI Agent Development Services', item: 'https://www.fwdpod.com/services/ai-agents' },
         ],
       },
     },
@@ -71,7 +71,7 @@ const JSON_LD = {
       '@type': 'Service',
       name: 'AI Agent Development Services',
       description: 'Agentic AI Development: custom AI agent development services, multi-agent AI systems, and autonomous AI agents for enterprises — CrewAI experts, LangGraph developers, and MCP integration specialists.',
-      provider: { '@type': 'Organization', name: 'Fwdpod', url: 'https://fwdpod.com' },
+      provider: { '@id': 'https://www.fwdpod.com/#organization' },
       serviceType: 'AI Agent Development',
       areaServed: 'Worldwide',
     },

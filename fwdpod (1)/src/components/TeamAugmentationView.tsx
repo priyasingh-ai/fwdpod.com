@@ -55,16 +55,16 @@ const JSON_LD = {
   '@graph': [
     {
       '@type': 'WebPage',
-      '@id': 'https://fwdpod.com/services/team-augmentation#webpage',
-      url: 'https://fwdpod.com/services/team-augmentation',
+      '@id': 'https://www.fwdpod.com/services/team-augmentation#webpage',
+      url: 'https://www.fwdpod.com/services/team-augmentation',
       name: 'AI Team Augmentation Services | Embedded AI Engineers & AI Experts for Hire',
       description: 'Hire embedded AI engineers and dedicated AI architects on demand with Fwdpod. AI Team Extension Services — access AI Experts for Hire faster than traditional recruiting.',
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://fwdpod.com/' },
-          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://fwdpod.com/services/team-augmentation' },
-          { '@type': 'ListItem', position: 3, name: 'AI Team Augmentation Services', item: 'https://fwdpod.com/services/team-augmentation' },
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.fwdpod.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://www.fwdpod.com/services/team-augmentation' },
+          { '@type': 'ListItem', position: 3, name: 'AI Team Augmentation Services', item: 'https://www.fwdpod.com/services/team-augmentation' },
         ],
       },
     },
@@ -72,7 +72,7 @@ const JSON_LD = {
       '@type': 'Service',
       name: 'AI Team Augmentation Services',
       description: 'AI Team Extension Services: Embedded AI Engineers, Dedicated AI Architects, and AI Engineers on Demand — pre-assembled pods integrated into your team in days, not months.',
-      provider: { '@type': 'Organization', name: 'Fwdpod', url: 'https://fwdpod.com' },
+      provider: { '@id': 'https://www.fwdpod.com/#organization' },
       serviceType: 'AI Team Augmentation',
       areaServed: 'Worldwide',
     },

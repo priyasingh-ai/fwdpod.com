@@ -59,16 +59,16 @@ const JSON_LD = {
   '@graph': [
     {
       '@type': 'WebPage',
-      '@id': 'https://fwdpod.com/services/ai-development#webpage',
-      url: 'https://fwdpod.com/services/ai-development',
+      '@id': 'https://www.fwdpod.com/services/ai-development#webpage',
+      url: 'https://www.fwdpod.com/services/ai-development',
       name: 'AI Development Services | AI Engineering Pods & Dedicated AI Teams',
       description: 'Build AI products faster with Dedicated AI Teams, AI Engineering Pods, and AI Talent as a Service. Hire AI Engineers on Demand — production-ready Managed AI Engineering for startups and enterprises.',
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://fwdpod.com/' },
-          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://fwdpod.com/services/ai-development' },
-          { '@type': 'ListItem', position: 3, name: 'AI Development Services', item: 'https://fwdpod.com/services/ai-development' },
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.fwdpod.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://www.fwdpod.com/services/ai-development' },
+          { '@type': 'ListItem', position: 3, name: 'AI Development Services', item: 'https://www.fwdpod.com/services/ai-development' },
         ],
       },
     },
@@ -76,7 +76,7 @@ const JSON_LD = {
       '@type': 'Service',
       name: 'AI Development Services',
       description: 'AI Talent as a Service: Dedicated AI Engineering Pods, Managed AI Engineering Teams, and AI Engineers on Demand for startups and enterprises building production AI systems.',
-      provider: { '@type': 'Organization', name: 'Fwdpod', url: 'https://fwdpod.com' },
+      provider: { '@id': 'https://www.fwdpod.com/#organization' },
       serviceType: 'AI Software Development',
       areaServed: 'Worldwide',
     },
