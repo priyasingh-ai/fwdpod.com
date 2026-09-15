@@ -1,0 +1,23 @@
+# Fwdpod
+
+> Fwdpod builds dedicated AI engineering pods for startups and enterprises, covering LLM development, RAG systems, AI agents, and product delivery.
+
+## Pods
+
+- [Pod Catalogue](https://www.fwdpod.com/catalogue): Browse Fwdpod's five pre-assembled AI engineering pods: Voice AI, Agentic Operations, RAG & Knowledge, Compliance AI, and Custom pods. Fixed scope, transparent pricing from $40K.
+- [Configure Your Pod](https://www.fwdpod.com/configure): Answer 5 questions and receive a custom AI engineering pod proposal within 48 hours. Specify your industry, timeline, budget, and compliance requirements.
+- [Live Telemetry](https://www.fwdpod.com/live-pods): TODO(copy): factual one-line description of the live pods page
+
+## Services
+
+- [AI Development](https://www.fwdpod.com/services/ai-development): Build AI products faster with Dedicated AI Teams, AI Engineering Pods, and AI Talent as a Service. Hire AI Engineers on Demand — production-ready Managed AI Engineering for startups and enterprises.
+- [LLM Development](https://www.fwdpod.com/services/llm-development): Enterprise LLM development services for startups and enterprises. Build custom LLM applications — AI copilots, enterprise chatbots, knowledge assistants — with a Dedicated GenAI Team. Production-ready.
+- [RAG Development](https://www.fwdpod.com/services/rag-development): Build enterprise RAG systems and retrieval augmented generation solutions with Fwdpod. RAG chatbot development, vector database consulting, and production-grade knowledge base architectures.
+- [AI Agents](https://www.fwdpod.com/services/ai-agents): Build autonomous AI agents and multi-agent AI systems with Fwdpod's agentic AI development team. Custom AI agent development — CrewAI experts, LangGraph developers, MCP integration specialists.
+- [Team Augmentation](https://www.fwdpod.com/services/team-augmentation): Hire embedded AI engineers and dedicated AI architects on demand with Fwdpod. AI Team Extension Services — access AI Experts for Hire faster than traditional recruiting.
+- [AI Consulting](https://www.fwdpod.com/services/ai-consulting): Fwdpod provides Fractional AI Team services and AI Strategy Consulting — Fractional Chief AI Officer, Virtual Chief AI Officer, and AI Capability Center design. Book a consultation.
+
+## Resources
+
+- [Insights](https://www.fwdpod.com/blog): Deep-dives into LLM agent architectures, RAG systems, voice AI pipelines, enterprise compliance AI, and the economics of productised AI engineering teams.
+- [Contact Us](https://www.fwdpod.com/contact): Reach Fwdpod's operations team to discuss your AI engineering requirements. 2-hour response SLA. Available 24/7 globally. Deploy a dedicated AI pod in under one week.
