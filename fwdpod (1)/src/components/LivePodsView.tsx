@@ -106,9 +106,6 @@ export default function LivePodsView() {
         <p className="text-sm text-zinc-600 max-w-xl leading-relaxed">
           An illustrative registry of running and recently completed senior engineering pods.
         </p>
-        <p className="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-wider text-amber-700 bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-full">
-          Illustrative example — sample data, not live client telemetry
-        </p>
       </section>
 
       {/* TODO(copy): stats strip removed. "Pods running", "senior specialists" and
@@ -296,8 +293,11 @@ export default function LivePodsView() {
         )}
       </section>
 
-      {/* TODO(copy): anonymisation / audit notice removed. It named a client and asserted
-          publicity releases and weekly metric verification that nothing in the repo backs. */}
+      {/* Kept deliberately: the records on this page are examples, so the page says so
+          once, quietly, at the foot rather than as a badge under the headline. */}
+      <p className="text-[11px] text-zinc-400 font-sans">
+        Examples shown for illustration.
+      </p>
     </motion.div>
   );
 }
