@@ -8,6 +8,8 @@ const STATIC_PATHS = [
   '/',
   '/catalogue',
   '/configure',
+  '/live-pods',
+  '/blog',
   '/contact',
   '/services/ai-development',
   '/services/llm-development',
@@ -17,24 +19,14 @@ const STATIC_PATHS = [
   '/services/ai-consulting',
 ];
 
-/**
- * Prerendered so the URLs work and stay linkable, but marked noindex and kept out
- * of the sitemap: /live-pods shows illustrative sample data and /blog has no
- * articles yet.
- */
-const NOINDEX_PATHS = ['/live-pods', '/blog'];
-
 export interface PrerenderRoute {
   path: string;
   /** ISO 8601 date the content last changed, when known. */
   lastmod?: string;
-  /** Rendered, but excluded from the sitemap and expected to be noindex. */
-  noindex?: boolean;
 }
 
 export function getPrerenderRoutes(): PrerenderRoute[] {
   return [
     ...STATIC_PATHS.map(path => ({ path })),
-    ...NOINDEX_PATHS.map(path => ({ path, noindex: true })),
   ];
 }
