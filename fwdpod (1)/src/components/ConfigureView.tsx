@@ -139,7 +139,6 @@ export default function ConfigureView({ initialPodId, onClearPodSelection }: Con
       <SEO
         title="Configure Your Dedicated AI Engineering Team | Fwdpod"
         description="Answer 5 questions and receive a custom AI engineering pod proposal within 48 hours. Specify your industry, timeline, budget, and compliance requirements."
-        canonical="/configure"
         jsonLd={CONFIGURE_JSON_LD}
       />
 

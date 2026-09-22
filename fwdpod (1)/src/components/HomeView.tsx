@@ -259,7 +259,6 @@ export default function HomeView({
       <SEO
         title="AI Engineering Pods for Startups &amp; Enterprises | Fwdpod"
         description="Fwdpod builds dedicated AI engineering pods for startups and enterprises, covering LLM development, RAG systems, AI agents, and product delivery."
-        canonical="/"
         jsonLd={HOME_JSON_LD}
       />
 

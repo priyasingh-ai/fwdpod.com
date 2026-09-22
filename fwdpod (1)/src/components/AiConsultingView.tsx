@@ -92,7 +92,6 @@ export default function AiConsultingView() {
       <SEO
         title="AI Consulting Services | Fractional AI Team & AI Strategy Consultant"
         description="Fwdpod provides Fractional AI Team services and AI Strategy Consulting — Fractional Chief AI Officer, Virtual Chief AI Officer, and AI Capability Center design. Book a consultation."
-        canonical="/services/ai-consulting"
         jsonLd={JSON_LD}
       />
 

@@ -94,7 +94,6 @@ export default function LlmDevelopmentView() {
       <SEO
         title="LLM Development Services | Enterprise LLM Development & Custom AI Applications"
         description="Enterprise LLM development services for startups and enterprises. Build custom LLM applications — AI copilots, enterprise chatbots, knowledge assistants — with a Dedicated GenAI Team. Production-ready."
-        canonical="/services/llm-development"
         jsonLd={JSON_LD}
       />
 

@@ -92,7 +92,6 @@ export default function RagDevelopmentView() {
       <SEO
         title="RAG Development Services | Enterprise RAG Systems & Retrieval Augmented Generation"
         description="Build enterprise RAG systems and retrieval augmented generation solutions with Fwdpod. RAG chatbot development, vector database consulting, and production-grade knowledge base architectures."
-        canonical="/services/rag-development"
         jsonLd={JSON_LD}
       />
 

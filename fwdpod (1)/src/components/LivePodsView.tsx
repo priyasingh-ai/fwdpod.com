@@ -93,7 +93,6 @@ export default function LivePodsView() {
       <SEO
         title="Live AI Engineering Pod Telemetry &amp; Active Deployments | Fwdpod"
         description="Real-time operational registry of active Fwdpod AI engineering pod deployments across financial services, healthcare, logistics, and more. Verified outcome metrics."
-        canonical="/live-pods"
         jsonLd={LIVE_PODS_JSON_LD}
       />
       {/* Page Header */}

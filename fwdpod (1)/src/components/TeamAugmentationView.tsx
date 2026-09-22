@@ -93,7 +93,6 @@ export default function TeamAugmentationView() {
       <SEO
         title="AI Team Augmentation Services | Embedded AI Engineers & AI Experts for Hire"
         description="Hire embedded AI engineers and dedicated AI architects on demand with Fwdpod. AI Team Extension Services — access AI Experts for Hire faster than traditional recruiting."
-        canonical="/services/team-augmentation"
         jsonLd={JSON_LD}
       />
 

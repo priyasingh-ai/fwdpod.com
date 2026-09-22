@@ -363,7 +363,6 @@ export default function BlogsView() {
         <SEO
           title={`${activeBlogDetail.title} | Fwdpod Insights`}
           description={activeBlogDetail.excerpt}
-          canonical={activeBlogDetail.slug ? `/blog/${activeBlogDetail.slug}` : '/blog'}
           ogType="article"
           articlePublishedTime={activeBlogDetail.isoDate}
           jsonLd={buildArticleSchema(activeBlogDetail)}
@@ -372,7 +371,6 @@ export default function BlogsView() {
         <SEO
           title={routeCategory ? `${routeCategory.name} | Fwdpod Insights` : BLOG_TITLE}
           description={routeCategory ? routeCategory.description : BLOG_DESCRIPTION}
-          canonical={routeCategory ? `/blog/category/${routeCategory.slug}` : '/blog'}
           jsonLd={buildBlogListSchema(filteredBlogs, routeCategory)}
         />
       )}

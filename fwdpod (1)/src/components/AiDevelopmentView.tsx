@@ -98,7 +98,6 @@ export default function AiDevelopmentView() {
       <SEO
         title="AI Development Services | AI Engineering Pods & Dedicated AI Teams"
         description="Build AI products faster with Dedicated AI Teams, AI Engineering Pods, and AI Talent as a Service. Hire AI Engineers on Demand — production-ready Managed AI Engineering for startups and enterprises."
-        canonical="/services/ai-development"
         jsonLd={JSON_LD}
       />
 

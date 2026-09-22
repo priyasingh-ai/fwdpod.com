@@ -92,7 +92,6 @@ export default function AiAgentsView() {
       <SEO
         title="AI Agent Development Services | Agentic AI Development & Multi-Agent Systems"
         description="Build autonomous AI agents and multi-agent AI systems with Fwdpod's agentic AI development team. Custom AI agent development — CrewAI experts, LangGraph developers, MCP integration specialists."
-        canonical="/services/ai-agents"
         jsonLd={JSON_LD}
       />
 

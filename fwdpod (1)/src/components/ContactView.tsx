@@ -96,7 +96,6 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
       <SEO
         title="Contact Fwdpod — Hire a Dedicated AI Engineering Team"
         description="Reach Fwdpod's operations team to discuss your AI engineering requirements. 2-hour response SLA. Available 24/7 globally. Deploy a dedicated AI pod in under one week."
-        canonical="/contact"
         jsonLd={CONTACT_JSON_LD}
       />
       {/* Page Header Area */}

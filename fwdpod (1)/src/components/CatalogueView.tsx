@@ -87,7 +87,6 @@ export default function CatalogueView({ selectedPodId, onPreselectPod }: Catalog
       <SEO
         title="AI Engineering Pod Catalogue — Voice AI, RAG, Agentic Ops, Compliance | Fwdpod"
         description="Browse Fwdpod's five pre-assembled AI engineering pods: Voice AI, Agentic Operations, RAG & Knowledge, Compliance AI, and Custom pods. Fixed scope."
-        canonical="/catalogue"
         jsonLd={CATALOGUE_JSON_LD}
       />
 

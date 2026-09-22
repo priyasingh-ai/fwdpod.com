@@ -17,6 +17,7 @@
  */
 
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -32,7 +33,10 @@ export interface SEOProps {
   title: string;
   /** 145–160 character meta description with primary keyword. */
   description: string;
-  /** Path relative to SITE_BASE_URL. Defaults to '/'. Not emitted for noindex pages. */
+  /**
+   * Overrides the canonical path. Defaults to the current route, so a page
+   * cannot inherit another page's URL. Not emitted for noindex pages.
+   */
   canonical?: string;
   /** og:type — 'website' for pages, 'article' for blog posts. */
   ogType?: 'website' | 'article';
@@ -53,7 +57,7 @@ export interface SEOProps {
 export default function SEO({
   title,
   description,
-  canonical = '/',
+  canonical,
   ogType = 'website',
   ogImage = DEFAULT_OG_IMAGE,
   articlePublishedTime,
@@ -61,7 +65,12 @@ export default function SEO({
   jsonLd,
   noindex = false,
 }: SEOProps) {
-  const fullUrl   = `${SITE_BASE_URL}${canonical}`;
+  // Canonical = this page's own URL: the current route unless overridden.
+  // Query strings and fragments are excluded, and a trailing slash is dropped
+  // to match the one-hop redirect in .htaccess.
+  const { pathname } = useLocation();
+  const path = canonical ?? pathname;
+  const fullUrl = `${SITE_BASE_URL}${path.length > 1 ? path.replace(/\/+$/, '') : '/'}`;
   const robotsMeta = noindex ? 'noindex,nofollow' : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
 
   return (
