@@ -17,7 +17,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'What industries does Fwdpod serve with AI engineering pods?',
-    a: 'Fwdpod serves startups, SaaS companies, and enterprises across financial services, healthcare, logistics, telecommunications, retail, legal tech, and manufacturing. Every AI engineering pod is customised to meet the regulatory and technical requirements of your specific sector.'
+    a: 'Fwdpod serves enterprises and SaaS companies across financial services, healthcare, logistics, telecommunications, retail, legal tech, and manufacturing. Every AI engineering pod is customised to meet the regulatory and technical requirements of your specific sector.'
   },
   {
     q: 'How do AI Engineering Pods differ from traditional consulting?',
@@ -81,7 +81,7 @@ const HOME_JSON_LD = {
       '@id': 'https://www.fwdpod.com/#website',
       'url': 'https://www.fwdpod.com/',
       'name': 'Fwdpod',
-      'description': 'Dedicated AI Engineering Pods for Startups and Enterprises',
+      'description': 'Dedicated AI Engineering Pods for Enterprises',
       'publisher': { '@id': 'https://www.fwdpod.com/#organization' },
       'inLanguage': 'en-US',
       'copyrightYear': '2026'
@@ -90,8 +90,8 @@ const HOME_JSON_LD = {
       '@type': 'WebPage',
       '@id': 'https://www.fwdpod.com/#home',
       'url': 'https://www.fwdpod.com/',
-      'name': 'AI Engineering Pods for Startups & Enterprises | Fwdpod',
-      'description': 'Fwdpod builds dedicated AI engineering pods for startups and enterprises, covering LLM development, RAG systems, AI agents, and product delivery.',
+      'name': 'AI Engineering Pods for Enterprises | Fwdpod',
+      'description': 'Fwdpod builds dedicated AI engineering pods for enterprise teams, covering LLM development, RAG systems, AI agents, and production delivery.',
       'isPartOf': { '@id': 'https://www.fwdpod.com/#website' },
       'about': { '@id': 'https://www.fwdpod.com/#organization' },
       'breadcrumb': {
@@ -257,8 +257,8 @@ export default function HomeView({
       className="space-y-14 bg-white"
     >
       <SEO
-        title="AI Engineering Pods for Startups &amp; Enterprises | Fwdpod"
-        description="Fwdpod builds dedicated AI engineering pods for startups and enterprises, covering LLM development, RAG systems, AI agents, and product delivery."
+        title="AI Engineering Pods for Enterprises | Fwdpod"
+        description="Fwdpod builds dedicated AI engineering pods for enterprise teams, covering LLM development, RAG systems, AI agents, and production delivery."
         jsonLd={HOME_JSON_LD}
       />
 

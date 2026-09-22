@@ -1,6 +1,6 @@
 # Fwdpod
 
-> Fwdpod builds dedicated AI engineering pods for startups and enterprises, covering LLM development, RAG systems, AI agents, and product delivery.
+> Fwdpod builds dedicated AI engineering pods for enterprise teams, covering LLM development, RAG systems, AI agents, and production delivery.
 
 ## Pods
 
