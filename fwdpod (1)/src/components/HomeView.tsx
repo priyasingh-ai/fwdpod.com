@@ -288,15 +288,6 @@ export default function HomeView({
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
-              <button
-                onClick={() => {
-                  const el = document.getElementById('how-it-runs');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="border border-zinc-300 text-[#0A0A0A] hover:bg-zinc-50 font-medium text-sm py-3.5 px-6 transition-all duration-150 cursor-pointer rounded-full"
-              >
-                Why it works
-              </button>
             </div>
           </div>
 
