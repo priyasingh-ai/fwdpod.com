@@ -12,7 +12,7 @@ const LIVE_PODS_JSON_LD = {
       '@id': 'https://www.fwdpod.com/#live-pods',
       'url': 'https://www.fwdpod.com/live-pods',
       'name': 'Live AI Engineering Pod Telemetry & Active Deployments | Fwdpod',
-      'description': 'Real-time operational registry of active Fwdpod AI engineering pod deployments across financial services, healthcare, logistics, and more. Verified outcome metrics.',
+      'description': 'Illustrative examples of Fwdpod AI engineering pod deployments across financial services, healthcare, logistics, and more.',
       'isPartOf': { '@id': 'https://www.fwdpod.com/#website' },
       'breadcrumb': {
         '@type': 'BreadcrumbList',
@@ -24,8 +24,8 @@ const LIVE_PODS_JSON_LD = {
     },
     {
       '@type': 'ItemList',
-      'name': 'Active Fwdpod AI Engineering Deployments',
-      'description': 'Live and recently completed AI engineering pod engagements across multiple industries',
+      'name': 'Illustrative Fwdpod AI Engineering Deployments',
+      'description': 'Illustrative AI engineering pod engagements across multiple industries',
       'numberOfItems': LIVE_PODS.length,
       'itemListElement': LIVE_PODS.map((pod, idx) => ({
         '@type': 'ListItem',
@@ -55,7 +55,7 @@ export default function LivePodsView() {
   const [selectedStatus, setSelectedStatus] = useState<string>('All');
   const [selectedIndustry, setSelectedIndustry] = useState<string>('All');
 
-  // Real-time trace states
+  // Trace feed state: sample strings cycled on a timer
   const [traces, setTraces] = useState<string[]>(TRACE_SAMPLES.slice(0, 3));
 
   useEffect(() => {
@@ -92,19 +92,23 @@ export default function LivePodsView() {
     >
       <SEO
         title="Live AI Engineering Pod Telemetry &amp; Active Deployments | Fwdpod"
-        description="Real-time operational registry of active Fwdpod AI engineering pod deployments across financial services, healthcare, logistics, and more. Verified outcome metrics."
+        description="Illustrative examples of Fwdpod AI engineering pod deployments across financial services, healthcare, logistics, and more."
+        noindex
         jsonLd={LIVE_PODS_JSON_LD}
       />
       {/* Page Header */}
       <section className="text-center md:text-left space-y-4">
         <span className="text-xs font-mono text-[#0066FF] uppercase tracking-widest font-medium block">
-          Operational state // live audited workspace
+          Operational state // illustrative workspace
         </span>
         <h1 className="text-4xl md:text-5xl font-display font-medium text-[#0A0A0A] tracking-tight">
           Live pods. Right now.
         </h1>
         <p className="text-sm text-zinc-600 max-w-xl leading-relaxed">
-          A real-time operational registry of all running and recently completed senior engineering pods. Standardized, audited, and completely transparent outputs.
+          An illustrative registry of running and recently completed senior engineering pods.
+        </p>
+        <p className="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-wider text-amber-700 bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-full">
+          Illustrative example — sample data, not live client telemetry
         </p>
       </section>
 
@@ -112,7 +116,7 @@ export default function LivePodsView() {
           "sectors served" were computed from the hand-written LIVE_PODS sample list, not
           from operational data. */}
 
-      {/* Real-time Telemetry Tracer Feed Console */}
+      {/* Sample trace feed console */}
       <section className="border border-zinc-100 p-6 bg-zinc-50/50 text-[#0A0A0A] font-mono space-y-3.5 shadow-sm select-none rounded-3xl hover:border-[#0066FF] hover:border-1.5 hover:bg-zinc-50/50 hover:shadow-md transform hover:-translate-y-2 transition-all duration-300 ease-out">
         <div className="flex items-center justify-between border-b border-zinc-200 pb-2.5">
           <div className="flex items-center gap-2.5 text-[10px] font-mono text-[#0066FF] uppercase tracking-wider">
@@ -120,9 +124,9 @@ export default function LivePodsView() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#0066FF]"></span>
             </span>
-            <span className="font-semibold">Live Audit Stream // Trace Feed</span>
+            <span className="font-semibold">Sample trace feed</span>
           </div>
-          <span className="text-[8px] text-zinc-400 font-mono uppercase font-bold tracking-wider">Telemetry Node active</span>
+          <span className="text-[8px] text-zinc-400 font-mono uppercase font-bold tracking-wider">Illustrative data</span>
         </div>
         
         <div className="space-y-2 max-h-[140px] overflow-hidden text-[11px]">

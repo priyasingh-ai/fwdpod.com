@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { Check, Send, Server } from 'lucide-react';
+import { Check, Mail, Send, Server } from 'lucide-react';
 import SEO from './SEO';
 import { trackContactFormSubmit } from '../utils/analytics';
 
@@ -13,7 +13,7 @@ const CONTACT_JSON_LD = {
       '@id': 'https://www.fwdpod.com/#contact',
       'url': 'https://www.fwdpod.com/contact',
       'name': 'Contact Fwdpod — Hire a Dedicated AI Engineering Team',
-      'description': 'Reach Fwdpod\'s operations team to discuss your AI engineering requirements. 2-hour response SLA. Available 24/7 globally. Deploy a dedicated AI pod in under one week.',
+      'description': 'Reach Fwdpod\'s operations team to discuss your AI engineering requirements. Deploy a dedicated AI pod in under one week.',
       'isPartOf': { '@id': 'https://www.fwdpod.com/#website' },
       'about': { '@id': 'https://www.fwdpod.com/#organization' },
       'breadcrumb': {
@@ -95,7 +95,7 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
     >
       <SEO
         title="Contact Fwdpod — Hire a Dedicated AI Engineering Team"
-        description="Reach Fwdpod's operations team to discuss your AI engineering requirements. 2-hour response SLA. Available 24/7 globally. Deploy a dedicated AI pod in under one week."
+        description="Reach Fwdpod's operations team to discuss your AI engineering requirements. Deploy a dedicated AI pod in under one week."
         jsonLd={CONTACT_JSON_LD}
       />
       {/* Page Header Area */}
@@ -280,10 +280,6 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
                     <span className="text-black font-bold">FWD-{(Math.floor(Math.random() * 89999) + 10000)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#555555]">RESPONSE SLA:</span>
-                    <span className="text-green-600 font-bold">UNDER 2 HOURS</span>
-                  </div>
-                  <div className="flex justify-between">
                     <span className="text-[#555555]">FORWARD ROUTING:</span>
                     <span className="text-black">FOUNDER_STREAMS</span>
                   </div>
@@ -323,30 +319,41 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
               </span>
             </div>
             <div className="space-y-1">
-              <h3 className="text-xl font-display font-medium text-white leading-tight">
-                2-Hour Solution SLA
-              </h3>
-              <p className="text-xs text-zinc-400">
-                All customized specifications are triaged within two hours, with pre-assembled core pods fully mapped to architecture blueprints in under 48 hours.
-              </p>
+              {/* TODO(copy): "2-Hour Solution SLA" heading and its triage claim removed;
+                  neither the two-hour nor the 48-hour figure is verified. */}
             </div>
             
-            <div className="grid grid-cols-2 gap-3 pt-2 text-center text-xs font-mono">
+            <div className="grid grid-cols-1 gap-3 pt-2 text-center text-xs font-mono">
               <div className="p-3 bg-zinc-900 border border-zinc-800 rounded-2xl">
                 <span className="text-[10px] block text-zinc-500 uppercase">Coverage</span>
                 <span className="font-semibold text-white">24/7/365 Global</span>
               </div>
-              <div className="p-3 bg-zinc-900 border border-zinc-800 rounded-2xl">
-                <span className="text-[10px] block text-zinc-500 uppercase">Avg Response</span>
-                <span className="font-semibold text-emerald-400">47 Minutes</span>
-              </div>
             </div>
           </div>
 
-          {/* TODO(copy): direct contact channels. The fictional 555 hotline and the Gmail
-              address were removed as unapproved. contact@fwdpod.com was not added in their
-              place: commit c5614de moved the site off that address, so it is not confirmed
-              as a monitored mailbox. */}
+          {/* Direct contact. The fictional 555 hotline and the Gmail address stay removed.
+              TODO(decision): confirm contact@fwdpod.com is monitored; commit c5614de had
+              moved the site off it. A phone number can be added once one is verified. */}
+          <div className="space-y-4">
+            <h4 className="text-xs font-mono uppercase tracking-wider text-[#555555] font-bold">
+              Direct Access Paths
+            </h4>
+
+            <a
+              href="mailto:contact@fwdpod.com"
+              className="p-5 border border-zinc-200/85 bg-zinc-50/40 hover:border-[#0066FF] hover:bg-zinc-50 hover:shadow-sm rounded-2xl transition-all duration-200 flex items-center gap-4 group text-left block"
+            >
+              <div className="w-12 h-12 bg-[#0066FF]/5 text-[#0066FF] rounded-full flex items-center justify-center shrink-0 border border-[#0066FF]/10 group-hover:bg-[#0066FF] group-hover:text-white transition-all">
+                <Mail className="w-5 h-5" />
+              </div>
+              <div className="flex-1">
+                <span className="text-[10px] uppercase font-mono text-zinc-400 tracking-wider block">Email</span>
+                <span className="text-sm sm:text-base font-semibold text-[#0A0A0A] group-hover:text-[#0066FF] transition-colors font-mono">
+                  contact@fwdpod.com
+                </span>
+              </div>
+            </a>
+          </div>
 
           {/* Secure Assurance Label */}
           <div className="p-4 border border-zinc-100 rounded-2xl bg-zinc-50/20 text-[11px] text-zinc-500 leading-relaxed font-sans space-y-1">

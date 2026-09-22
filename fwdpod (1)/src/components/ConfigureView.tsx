@@ -340,7 +340,7 @@ export default function ConfigureView({ initialPodId, onClearPodSelection }: Con
                 <textarea
                   value={outcome}
                   onChange={(e) => setOutcome(e.target.value)}
-                  placeholder="e.g., Deploy a custom dual-agent system that reconciles healthcare billing payouts by parsing our raw PDFs on GCP, comparing against our private MySQL schemas, and alerting on anomalies directly into our team Slack channel. Needs SOC2 compliance and a custom web console dashboard."
+                  placeholder="e.g., Deploy a custom dual-agent system that reconciles healthcare billing payouts by parsing our raw PDFs on GCP, comparing against our private MySQL schemas, and alerting on anomalies directly into our team Slack channel. Needs a custom web console dashboard."
                   className="w-full min-h-[160px] border border-[#0A0A0A] p-4 text-xs font-sans text-[#0A0A0A] placeholder-[#555555]/50 focus:outline-none focus:border-[#0066FF] rounded-2xl"
                 />
                 
@@ -399,7 +399,8 @@ export default function ConfigureView({ initialPodId, onClearPodSelection }: Con
               <div className="space-y-3 pt-4 border-t border-[#0A0A0A]/10">
                 <label className="text-xs font-medium text-[#0A0A0A] block">Regulatory & Compliance Standard Scopes:</label>
                 <div className="flex flex-wrap gap-2">
-                  {['HIPAA', 'SOC2', 'DPDP', 'GDPR', 'ISO 27001', 'None'].map((chip) => {
+                  {/* TODO(decision): SOC2 removed from the options a prospect can select. */}
+                  {['HIPAA', 'DPDP', 'GDPR', 'ISO 27001', 'None'].map((chip) => {
                     const isSelected = compliance.includes(chip);
                     return (
                       <button

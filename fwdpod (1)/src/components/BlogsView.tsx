@@ -300,6 +300,7 @@ export default function BlogsView() {
         <SEO
           title={BLOG_TITLE}
           description={BLOG_DESCRIPTION}
+          noindex
           jsonLd={buildBlogListSchema(filteredBlogs)}
         />
       )}

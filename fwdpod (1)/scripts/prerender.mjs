@@ -79,7 +79,13 @@ for (const route of routes) {
 
   const result = render(route.path);
   if (result.notFound) throw new Error(`Route ${route.path} rendered the not-found page`);
-  assertIndexable(route.path, result.head);
+  if (route.noindex) {
+    if (!result.head.includes('noindex')) {
+      throw new Error(`Route ${route.path} is listed as noindex but does not render it`);
+    }
+  } else {
+    assertIndexable(route.path, result.head);
+  }
   writePage(outputFileFor(route.path), result);
 }
 
@@ -87,9 +93,11 @@ const notFound = render(NOT_FOUND_PROBE);
 if (!notFound.notFound) throw new Error('Not-found probe did not render the not-found page');
 writePage('404.html', notFound);
 
-fs.writeFileSync(path.join(distDir, 'sitemap.xml'), buildSitemap(routes));
+// Only indexable routes belong in the sitemap
+const sitemapRoutes = routes.filter(route => !route.noindex);
+fs.writeFileSync(path.join(distDir, 'sitemap.xml'), buildSitemap(sitemapRoutes));
 
 // The empty SPA shell must never be served now that every route has real HTML
 fs.rmSync(templatePath);
 
-console.log(`Prerendered ${routes.length} routes + 404 page into dist/_pages; wrote sitemap.xml`);
+console.log(`Prerendered ${routes.length} routes + 404 page into dist/_pages; sitemap.xml lists ${sitemapRoutes.length}`);

@@ -697,12 +697,8 @@ export default function HomeView({
             <span className="text-[#0066FF] text-xs font-semibold uppercase tracking-widest block">
               Operational telemetry
             </span>
-            <div className="flex items-baseline gap-2">
-              <span className="text-5xl font-mono font-medium tracking-tight text-[#0A0A0A]">
-                18
-              </span>
-              <span className="text-lg font-medium text-[#555555]">pods running now</span>
-            </div>
+            {/* TODO(copy): "18 pods running now" removed. The number was hardcoded and
+                is not backed by operational data. */}
           </div>
           <Link
             to="/live-pods"
