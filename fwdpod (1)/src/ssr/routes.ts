@@ -1,5 +1,3 @@
-import { BLOG_CATEGORIES, STATIC_BLOG_POSTS } from '../data/blogCatalog';
-
 /**
  * Every indexable path, prerendered to static HTML at build time.
  *
@@ -29,8 +27,7 @@ export interface PrerenderRoute {
 
 export function getPrerenderRoutes(): PrerenderRoute[] {
   return [
+    // The Insights section has no articles, so /blog is the only blog URL.
     ...STATIC_PATHS.map(path => ({ path })),
-    ...BLOG_CATEGORIES.map(cat => ({ path: `/blog/category/${cat.slug}` })),
-    ...STATIC_BLOG_POSTS.map(post => ({ path: `/blog/${post.slug}`, lastmod: post.isoDate })),
   ];
 }

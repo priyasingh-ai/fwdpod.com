@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   trackSearchPerformed,
   trackBlogPostView,
-  trackBlogCategoryFilter,
 } from '../utils/analytics';
 import {
   BookOpen,
@@ -15,14 +13,7 @@ import {
   X,
 } from 'lucide-react';
 import SEO, { SITE_BASE_URL, SITE_NAME } from './SEO';
-import NotFoundView from './NotFoundView';
-import {
-  BLOG_CATEGORIES,
-  STATIC_BLOG_POSTS,
-  getCategorySlug,
-  getCategoryFromSlug,
-  type BlogCategory,
-} from '../data/blogCatalog';
+import { BLOG_CATEGORIES, STATIC_BLOG_POSTS } from '../data/blogCatalog';
 
 // ─── Schema builders ──────────────────────────────────────────────────────────
 
@@ -41,28 +32,23 @@ const BLOG_TITLE = 'AI Engineering Insights & LLM Development Blog | Fwdpod';
 const BLOG_DESCRIPTION =
   'Deep-dives into LLM agent architectures, RAG systems, voice AI pipelines, enterprise compliance AI, and the economics of productised AI engineering teams.';
 
-function buildBlogListSchema(posts: BlogPost[], category?: BlogCategory) {
-  const pageUrl = category
-    ? `${SITE_BASE_URL}/blog/category/${category.slug}`
-    : `${SITE_BASE_URL}/blog`;
+function buildBlogListSchema(posts: BlogPost[]) {
+  const pageUrl = `${SITE_BASE_URL}/blog`;
   return {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'WebPage',
-        '@id': category ? `${pageUrl}#webpage` : `${SITE_BASE_URL}/#blog`,
+        '@id': `${SITE_BASE_URL}/#blog`,
         url: pageUrl,
-        name: category ? `${category.name} | Fwdpod Insights` : BLOG_TITLE,
-        description: category ? category.description : BLOG_DESCRIPTION,
+        name: BLOG_TITLE,
+        description: BLOG_DESCRIPTION,
         isPartOf: { '@id': `${SITE_BASE_URL}/#website` },
         breadcrumb: {
           '@type': 'BreadcrumbList',
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_BASE_URL}/` },
             { '@type': 'ListItem', position: 2, name: 'Insights', item: `${SITE_BASE_URL}/blog` },
-            ...(category
-              ? [{ '@type': 'ListItem', position: 3, name: category.name, item: pageUrl }]
-              : []),
           ],
         },
       },
@@ -166,7 +152,8 @@ const STATIC_DISPLAY_POSTS: BlogPost[] = STATIC_BLOG_POSTS.map(p => ({
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-// Static posts link to their own URL; user-created posts open in place
+// Only user-created (localStorage) posts remain and they have no public URL,
+// so a card opens its post in place.
 function PostLink({
   post,
   onOpen,
@@ -178,13 +165,6 @@ function PostLink({
   className: string;
   children: React.ReactNode;
 }) {
-  if (post.slug) {
-    return (
-      <Link to={`/blog/${post.slug}`} className={className}>
-        {children}
-      </Link>
-    );
-  }
   return (
     <button onClick={() => onOpen(post.id)} className={className}>
       {children}
@@ -193,14 +173,8 @@ function PostLink({
 }
 
 export default function BlogsView() {
-  const { categorySlug, slug } = useParams<{ categorySlug?: string; slug?: string }>();
-  const navigate = useNavigate();
-
   // User-created posts stored in localStorage (not the static catalog)
   const [customBlogs, setCustomBlogs] = useState<BlogPost[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    () => (categorySlug && getCategoryFromSlug(categorySlug)?.name) || 'All',
-  );
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Create Blog modal state
@@ -222,15 +196,6 @@ export default function BlogsView() {
     [customBlogs],
   );
 
-  // Category post counts (derived from allBlogs)
-  const categoryCounts = useMemo(() => {
-    const counts: Record<string, number> = {};
-    for (const cat of BLOG_CATEGORIES) {
-      counts[cat.name] = allBlogs.filter(b => b.category === cat.name).length;
-    }
-    return counts;
-  }, [allBlogs]);
-
   // Load user-created posts from localStorage; strip legacy demo seeds
   useEffect(() => {
     const cached = localStorage.getItem('FWDPOD_BLOGS');
@@ -251,35 +216,19 @@ export default function BlogsView() {
     }
   }, []);
 
-  // Sync category from URL param
-  useEffect(() => {
-    if (categorySlug) {
-      const cat = getCategoryFromSlug(categorySlug);
-      setSelectedCategory(cat ? cat.name : 'All');
-    } else {
-      setSelectedCategory('All');
-    }
-  }, [categorySlug]);
-
   // Derived filtered list — must be declared before the search useEffect that reads .length
   const filteredBlogs = allBlogs.filter(blog => {
-    const matchesCategory = selectedCategory === 'All' || blog.category === selectedCategory;
     const q = searchQuery.toLowerCase();
-    const matchesSearch =
+    return (
       !q ||
       blog.title.toLowerCase().includes(q) ||
       blog.excerpt.toLowerCase().includes(q) ||
       blog.content.toLowerCase().includes(q) ||
-      blog.author.toLowerCase().includes(q);
-    return matchesCategory && matchesSearch;
+      blog.author.toLowerCase().includes(q)
+    );
   });
 
-  // Static posts are addressed by URL (/blog/:slug); user-created posts only
-  // exist in this browser's localStorage, so they still open in place
-  const routePost = slug ? STATIC_DISPLAY_POSTS.find(p => p.slug === slug) : undefined;
-  const routeCategory = categorySlug ? getCategoryFromSlug(categorySlug) : undefined;
-  const activeBlogDetail =
-    routePost ?? (activeBlogId ? allBlogs.find(b => b.id === activeBlogId) : undefined);
+  const activeBlogDetail = activeBlogId ? allBlogs.find(b => b.id === activeBlogId) : undefined;
 
   // Track blog post detail view when a post is opened
   useEffect(() => {
@@ -294,21 +243,6 @@ export default function BlogsView() {
     }, 800);
     return () => clearTimeout(timer);
   }, [searchQuery, filteredBlogs.length]);
-
-  const categoryPath = (cat: string) =>
-    cat === 'All' ? '/blog' : `/blog/category/${getCategorySlug(cat)}`;
-
-  // Category pills are links; this runs before the link navigates
-  const handleCategoryClick = (cat: string) => {
-    setSelectedCategory(cat);
-    setActiveBlogId(null);
-    trackBlogCategoryFilter(cat);
-  };
-
-  const handleCategorySelect = (cat: string) => {
-    handleCategoryClick(cat);
-    navigate(categoryPath(cat), { replace: true });
-  };
 
   const saveCustomBlogs = (updated: BlogPost[]) => {
     setCustomBlogs(updated);
@@ -346,11 +280,6 @@ export default function BlogsView() {
     setIsModalOpen(false);
   };
 
-  // Unknown article or category slugs are real 404s, not an unfiltered listing
-  if ((slug && !routePost) || (categorySlug && !routeCategory)) {
-    return <NotFoundView />;
-  }
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -369,9 +298,9 @@ export default function BlogsView() {
         />
       ) : (
         <SEO
-          title={routeCategory ? `${routeCategory.name} | Fwdpod Insights` : BLOG_TITLE}
-          description={routeCategory ? routeCategory.description : BLOG_DESCRIPTION}
-          jsonLd={buildBlogListSchema(filteredBlogs, routeCategory)}
+          title={BLOG_TITLE}
+          description={BLOG_DESCRIPTION}
+          jsonLd={buildBlogListSchema(filteredBlogs)}
         />
       )}
 
@@ -394,6 +323,8 @@ export default function BlogsView() {
                 <h1 className="text-4xl md:text-5xl font-display font-medium text-[#0A0A0A] tracking-tight">
                   Fwdpod Insights
                 </h1>
+                {/* TODO(copy): this intro, and BLOG_TITLE / BLOG_DESCRIPTION above,
+                    still describe articles. The section no longer has any. */}
                 <p className="text-sm text-[#555555] max-w-xl leading-relaxed">
                   Deep-dives into cognitive engineering architectures, enterprise multi-agent loops, compliance isolation, and the modern economics of modular code delivery.
                 </p>
@@ -412,46 +343,7 @@ export default function BlogsView() {
 
             {/* Filter and Search Bar */}
             <section className="bg-zinc-50 border border-[#0A0A0A]/10 p-4 rounded-3xl flex flex-col gap-4">
-              {/* Category filter pills */}
-              <div className="flex flex-wrap gap-2">
-                <Link
-                  to={categoryPath('All')}
-                  replace
-                  onClick={() => handleCategoryClick('All')}
-                  className={`text-xs px-4 py-2 transition-all duration-200 rounded-full font-medium whitespace-nowrap ${
-                    selectedCategory === 'All'
-                      ? 'bg-[#0066FF] text-white shadow-sm'
-                      : 'bg-white text-[#555555] border border-[#0A0A0A]/10 hover:border-[#0A0A0A]/30'
-                  }`}
-                >
-                  All{' '}
-                  <span className={`ml-1 font-mono ${selectedCategory === 'All' ? 'text-white/70' : 'text-zinc-400'}`}>
-                    ({allBlogs.length})
-                  </span>
-                </Link>
-                {BLOG_CATEGORIES.map(cat => (
-                  <Link
-                    key={cat.slug}
-                    to={categoryPath(cat.name)}
-                    replace
-                    onClick={() => handleCategoryClick(cat.name)}
-                    className={`text-xs px-4 py-2 transition-all duration-200 rounded-full font-medium whitespace-nowrap ${
-                      selectedCategory === cat.name
-                        ? 'bg-[#0066FF] text-white shadow-sm'
-                        : 'bg-white text-[#555555] border border-[#0A0A0A]/10 hover:border-[#0A0A0A]/30'
-                    }`}
-                  >
-                    {cat.name}{' '}
-                    <span
-                      className={`ml-1 font-mono ${
-                        selectedCategory === cat.name ? 'text-white/70' : 'text-zinc-400'
-                      }`}
-                    >
-                      ({categoryCounts[cat.name] ?? 0})
-                    </span>
-                  </Link>
-                ))}
-              </div>
+              {/* TODO(copy): category filter removed along with the articles. */}
 
               {/* Search */}
               <div className="relative w-full md:w-80">
@@ -523,10 +415,7 @@ export default function BlogsView() {
                   <BookOpen className="w-8 h-8 mx-auto text-zinc-300" />
                   <p>No knowledge hub blog posts matched your query constraints.</p>
                   <button
-                    onClick={() => {
-                      handleCategorySelect('All');
-                      setSearchQuery('');
-                    }}
+                    onClick={() => setSearchQuery('')}
                     className="text-[#0066FF] hover:underline font-mono"
                   >
                     Reset parameters
@@ -544,23 +433,13 @@ export default function BlogsView() {
             exit={{ opacity: 0, x: 10 }}
             className="max-w-3xl mx-auto space-y-8 bg-white"
           >
-            {routePost ? (
-              <Link
-                to="/blog"
-                className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-black font-semibold transition-colors pb-2 border-b border-zinc-100"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Back to all insights</span>
-              </Link>
-            ) : (
-              <button
-                onClick={() => setActiveBlogId(null)}
-                className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-black font-semibold transition-colors pb-2 border-b border-zinc-100"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Back to all insights</span>
-              </button>
-            )}
+            <button
+              onClick={() => setActiveBlogId(null)}
+              className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-black font-semibold transition-colors pb-2 border-b border-zinc-100"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back to all insights</span>
+            </button>
 
             {activeBlogDetail ? (
               <article className="space-y-8">

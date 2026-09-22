@@ -18,5 +18,4 @@
 
 ## Resources
 
-- [Insights](https://www.fwdpod.com/blog): Deep-dives into LLM agent architectures, RAG systems, voice AI pipelines, enterprise compliance AI, and the economics of productised AI engineering teams.
 - [Contact Us](https://www.fwdpod.com/contact): Reach Fwdpod's operations team to discuss your AI engineering requirements. 2-hour response SLA. Available 24/7 globally. Deploy a dedicated AI pod in under one week.
