@@ -56,16 +56,16 @@ const JSON_LD = {
   '@graph': [
     {
       '@type': 'WebPage',
-      '@id': 'https://fwdpod.com/services/llm-development#webpage',
-      url: 'https://fwdpod.com/services/llm-development',
-      name: 'LLM Development Services | Enterprise LLM Development & Custom AI Applications',
-      description: 'Enterprise LLM development services for startups and enterprises. Build custom LLM applications — AI copilots, enterprise chatbots, knowledge assistants — with a Dedicated GenAI Team.',
+      '@id': 'https://www.fwdpod.com/services/llm-development#webpage',
+      url: 'https://www.fwdpod.com/services/llm-development',
+      name: 'LLM Development Services | Custom Models & Apps | fwdpod',
+      description: 'Build, fine-tune and deploy LLM applications with an embedded pod — evals, guardrails, cost control and production monitoring from day one.',
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://fwdpod.com/' },
-          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://fwdpod.com/services/llm-development' },
-          { '@type': 'ListItem', position: 3, name: 'LLM Development Services', item: 'https://fwdpod.com/services/llm-development' },
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.fwdpod.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://www.fwdpod.com/services/llm-development' },
+          { '@type': 'ListItem', position: 3, name: 'LLM Development Services', item: 'https://www.fwdpod.com/services/llm-development' },
         ],
       },
     },
@@ -73,13 +73,9 @@ const JSON_LD = {
       '@type': 'Service',
       name: 'LLM Development Services',
       description: 'Enterprise LLM Development Services and Custom LLM Application Development — AI copilots, enterprise chatbots, knowledge assistants, and internal search systems built by a Dedicated GenAI Team.',
-      provider: { '@type': 'Organization', name: 'Fwdpod', url: 'https://fwdpod.com' },
+      provider: { '@id': 'https://www.fwdpod.com/#organization' },
       serviceType: 'Large Language Model Development',
       areaServed: 'Worldwide',
-    },
-    {
-      '@type': 'FAQPage',
-      mainEntity: FAQS.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
     },
   ],
 };
@@ -96,9 +92,8 @@ export default function LlmDevelopmentView() {
       className="max-w-6xl mx-auto py-6 font-sans space-y-14"
     >
       <SEO
-        title="LLM Development Services | Enterprise LLM Development & Custom AI Applications"
-        description="Enterprise LLM development services for startups and enterprises. Build custom LLM applications — AI copilots, enterprise chatbots, knowledge assistants — with a Dedicated GenAI Team. Production-ready."
-        canonical="/services/llm-development"
+        title="LLM Development Services | Custom Models & Apps | fwdpod"
+        description="Build, fine-tune and deploy LLM applications with an embedded pod — evals, guardrails, cost control and production monitoring from day one."
         jsonLd={JSON_LD}
       />
 

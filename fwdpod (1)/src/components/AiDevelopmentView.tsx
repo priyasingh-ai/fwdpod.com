@@ -43,7 +43,8 @@ const FAQS = [
   { q: 'What separates AI development from traditional software development?', a: 'AI systems introduce non-deterministic components — models, embeddings, prompts — that require probabilistic evaluation, fine-tuning pipelines, and runtime monitoring beyond standard code testing. Fwdpod\'s Enterprise AI Talent Solutions specialize in this intersection.' },
   { q: 'What is AI Pod as a Service?', a: 'AI Pod as a Service is a delivery model where organizations access a fully assembled AI Engineering Pod — covering AI/ML engineering, backend development, and MLOps — on a scoped, outcome-based contract. Instead of hiring individual engineers, you commission a pre-formed AI Delivery Pod or AI Project Pod configured for your exact use case. Fwdpod offers AI Pod as a Service as Custom AI Pods for single-initiative builds, AI Product Delivery Pods for multi-workstream programs, and AI Pod for Enterprise AI Projects requiring compliance architecture and deep system integration. Every engagement includes full IP ownership and a structured handover to your internal team.' },
   { q: 'What is a Dedicated GenAI Team for Startups?', a: 'A Dedicated GenAI Team for Startups is a pre-assembled group of AI engineers — including LLM engineers, backend AI developers, and MLOps specialists — organized as a cohesive pod for early-stage and growth companies. AI Engineering Pods for Startups through Fwdpod are sized for speed: smaller teams (3–4 engineers), fixed-scope engagements, and operational within one week of sign-off. This model gives startups access to senior AI engineering capacity without the 6–9 month hiring cycle that would otherwise delay AI product development.' },
-  { q: 'How much does AI development cost?', a: 'Engagement costs vary by scope, team composition, and timeline. Fwdpod pods range from $45K for focused feature builds to $120K+ for full-stack AI product launches. Book a consultation for a scoped estimate.' },
+  // TODO(copy): price band removed from this answer. Pricing is not approved for publication.
+  { q: 'How much does AI development cost?', a: 'Engagement costs vary by scope, team composition, and timeline. Book a consultation for a scoped estimate.' },
 ];
 
 const RELATED = [
@@ -59,16 +60,16 @@ const JSON_LD = {
   '@graph': [
     {
       '@type': 'WebPage',
-      '@id': 'https://fwdpod.com/services/ai-development#webpage',
-      url: 'https://fwdpod.com/services/ai-development',
-      name: 'AI Development Services | AI Engineering Pods & Dedicated AI Teams',
-      description: 'Build AI products faster with Dedicated AI Teams, AI Engineering Pods, and AI Talent as a Service. Hire AI Engineers on Demand — production-ready Managed AI Engineering for startups and enterprises.',
+      '@id': 'https://www.fwdpod.com/services/ai-development#webpage',
+      url: 'https://www.fwdpod.com/services/ai-development',
+      name: 'AI Development Services for Enterprise Teams | fwdpod',
+      description: 'Embedded AI engineering pods that ship production AI systems — discovery to deployment. Senior engineers working inside your stack, not a handoff.',
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://fwdpod.com/' },
-          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://fwdpod.com/services/ai-development' },
-          { '@type': 'ListItem', position: 3, name: 'AI Development Services', item: 'https://fwdpod.com/services/ai-development' },
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.fwdpod.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://www.fwdpod.com/services/ai-development' },
+          { '@type': 'ListItem', position: 3, name: 'AI Development Services', item: 'https://www.fwdpod.com/services/ai-development' },
         ],
       },
     },
@@ -76,13 +77,9 @@ const JSON_LD = {
       '@type': 'Service',
       name: 'AI Development Services',
       description: 'AI Talent as a Service: Dedicated AI Engineering Pods, Managed AI Engineering Teams, and AI Engineers on Demand for startups and enterprises building production AI systems.',
-      provider: { '@type': 'Organization', name: 'Fwdpod', url: 'https://fwdpod.com' },
+      provider: { '@id': 'https://www.fwdpod.com/#organization' },
       serviceType: 'AI Software Development',
       areaServed: 'Worldwide',
-    },
-    {
-      '@type': 'FAQPage',
-      mainEntity: FAQS.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
     },
   ],
 };
@@ -99,9 +96,8 @@ export default function AiDevelopmentView() {
       className="max-w-6xl mx-auto py-6 font-sans space-y-14"
     >
       <SEO
-        title="AI Development Services | AI Engineering Pods & Dedicated AI Teams"
-        description="Build AI products faster with Dedicated AI Teams, AI Engineering Pods, and AI Talent as a Service. Hire AI Engineers on Demand — production-ready Managed AI Engineering for startups and enterprises."
-        canonical="/services/ai-development"
+        title="AI Development Services for Enterprise Teams | fwdpod"
+        description="Embedded AI engineering pods that ship production AI systems — discovery to deployment. Senior engineers working inside your stack, not a handoff."
         jsonLd={JSON_LD}
       />
 

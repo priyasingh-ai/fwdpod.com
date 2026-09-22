@@ -12,7 +12,7 @@ const LIVE_PODS_JSON_LD = {
       '@id': 'https://www.fwdpod.com/#live-pods',
       'url': 'https://www.fwdpod.com/live-pods',
       'name': 'Live AI Engineering Pod Telemetry & Active Deployments | Fwdpod',
-      'description': 'Real-time operational registry of active Fwdpod AI engineering pod deployments across financial services, healthcare, logistics, and more. Verified outcome metrics.',
+      'description': 'Illustrative examples of Fwdpod AI engineering pod deployments across financial services, healthcare, logistics, and more.',
       'isPartOf': { '@id': 'https://www.fwdpod.com/#website' },
       'breadcrumb': {
         '@type': 'BreadcrumbList',
@@ -24,28 +24,29 @@ const LIVE_PODS_JSON_LD = {
     },
     {
       '@type': 'ItemList',
-      'name': 'Active Fwdpod AI Engineering Deployments',
-      'description': 'Live and recently completed AI engineering pod engagements across multiple industries',
+      'name': 'Illustrative Fwdpod AI Engineering Deployments',
+      'description': 'Illustrative AI engineering pod engagements across multiple industries',
       'numberOfItems': LIVE_PODS.length,
       'itemListElement': LIVE_PODS.map((pod, idx) => ({
         '@type': 'ListItem',
         'position': idx + 1,
-        'name': `${pod.archetype} — ${pod.client}`,
+        'name': pod.archetype,
         'description': pod.buildDescription
       }))
     }
   ]
 };
 
+// Client names are not approved for publication. A trace keeps its line only when the
+// client has a sector on record in LIVE_PODS, which is used in place of the name.
+// Operational figures in the traces (latency, node and block counts, invoice IDs, leak
+// counts) are removed: nothing in the repo backs them.
+// TODO(copy): four traces were removed for two clients with no recorded sector.
 const TRACE_SAMPLES = [
-  "Voice AI Pod (LifeCare Digital) // Audited latency is at 112ms (Target: <150ms budget).",
-  "RAG Pod (Standard Trust India) // Dynamic text chunks indexed. 4,120 active nodes parsed into vectors.",
-  "Agentic Ops Pod (Aero Logistics APAC) // Human automation authorization cleared for invoice INV-1049.",
-  "Compliance AI Pod (Standard Trust India) // Anonymization scrub verification successfully finished. 0 leaks.",
-  "Voice AI Pod (Standard Trust India) // Conversational phone trunk Twilio gateway health check returned 200 OK.",
-  "Agentic Ops Pod (Aero Logistics APAC) // Multi-agent routing loop auto-recovered from failed API stage.",
-  "RAG Pod (Apollo Health Hubs) // Clinical policy PDF text ingestion synchronized and trace history updated.",
-  "Compliance AI Pod (LifeCare Digital) // Audited 18 LLM output blocks against HIPAA strict filtering rules."
+  "RAG Pod (Banking client) // Dynamic text chunks indexed.",
+  "Compliance AI Pod (Banking client) // Anonymization scrub verification successfully finished.",
+  "Voice AI Pod (Banking client) // Conversational phone trunk Twilio gateway health check returned 200 OK.",
+  "RAG Pod (Healthcare Services client) // Clinical policy PDF text ingestion synchronized and trace history updated."
 ];
 
 export default function LivePodsView() {
@@ -54,12 +55,8 @@ export default function LivePodsView() {
   const [selectedStatus, setSelectedStatus] = useState<string>('All');
   const [selectedIndustry, setSelectedIndustry] = useState<string>('All');
 
-  // Real-time trace states
-  const [traces, setTraces] = useState<string[]>([
-    "Voice AI Pod (LifeCare Digital) // Audited latency is at 112ms (Target: <150ms budget).",
-    "RAG Pod (Standard Trust India) // Dynamic text chunks indexed. 4,120 active nodes indexed.",
-    "Agentic Ops Pod (Aero Logistics APAC) // Human automation authorization cleared for invoice INV-1049."
-  ]);
+  // Trace feed state: sample strings cycled on a timer
+  const [traces, setTraces] = useState<string[]>(TRACE_SAMPLES.slice(0, 3));
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -86,11 +83,6 @@ export default function LivePodsView() {
     return matchArchetype && matchStatus && matchIndustry;
   });
 
-  // Derived dashboard metrics
-  const runningPodsCount = LIVE_PODS.filter(p => p.status === 'running').length;
-  const deployedEngineersCount = LIVE_PODS.reduce((sum, pod) => sum + pod.teamSize, 0);
-  const distinctIndustries = new Set(LIVE_PODS.map(p => p.industry)).size;
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -100,66 +92,27 @@ export default function LivePodsView() {
     >
       <SEO
         title="Live AI Engineering Pod Telemetry &amp; Active Deployments | Fwdpod"
-        description="Real-time operational registry of active Fwdpod AI engineering pod deployments across financial services, healthcare, logistics, and more. Verified outcome metrics."
-        canonical="/live-pods"
+        description="Illustrative examples of Fwdpod AI engineering pod deployments across financial services, healthcare, logistics, and more."
         jsonLd={LIVE_PODS_JSON_LD}
       />
       {/* Page Header */}
       <section className="text-center md:text-left space-y-4">
         <span className="text-xs font-mono text-[#0066FF] uppercase tracking-widest font-medium block">
-          Operational state // live audited workspace
+          Operational state // illustrative workspace
         </span>
         <h1 className="text-4xl md:text-5xl font-display font-medium text-[#0A0A0A] tracking-tight">
           Live pods. Right now.
         </h1>
         <p className="text-sm text-zinc-600 max-w-xl leading-relaxed">
-          A real-time operational registry of all running and recently completed senior engineering pods. Standardized, audited, and completely transparent outputs.
+          An illustrative registry of running and recently completed senior engineering pods.
         </p>
       </section>
 
-      {/* Top Stats Strip */}
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div className="p-6 bg-white rounded-3xl border border-zinc-100 shadow-sm space-y-2 hover:border-[#0066FF] hover:border-1.5 hover:bg-zinc-50/50 hover:shadow-md transform hover:-translate-y-2 transition-all duration-300 ease-out">
-          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block font-semibold">
-            Active pipelines
-          </span>
-          <div className="flex items-baseline gap-2">
-            <span className="text-4xl font-mono font-bold text-[#0066FF]">
-              {runningPodsCount}
-            </span>
-            <span className="text-xs text-zinc-400 uppercase font-mono tracking-wider font-semibold">pods running</span>
-          </div>
-          <p className="text-[11px] text-zinc-505 text-zinc-500 leading-relaxed font-sans">Weekly deliverables, tracked via telemetry dashboards.</p>
-        </div>
+      {/* TODO(copy): stats strip removed. "Pods running", "senior specialists" and
+          "sectors served" were computed from the hand-written LIVE_PODS sample list, not
+          from operational data. */}
 
-        <div className="p-6 bg-white rounded-3xl border border-zinc-100 shadow-sm space-y-2 hover:border-[#0066FF] hover:border-1.5 hover:bg-zinc-50/50 hover:shadow-md transform hover:-translate-y-2 transition-all duration-300 ease-out">
-          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block font-semibold">
-            Deployed manpower
-          </span>
-          <div className="flex items-baseline gap-2">
-            <span className="text-4xl font-mono font-bold text-[#0A0A0A]">
-              {deployedEngineersCount}
-            </span>
-            <span className="text-xs text-zinc-400 uppercase font-mono tracking-wider font-semibold">senior specialists</span>
-          </div>
-          <p className="text-[11px] text-zinc-505 text-zinc-500 leading-relaxed font-sans">Integrated developers under unified contract ownerships.</p>
-        </div>
-
-        <div className="p-6 bg-white rounded-3xl border border-zinc-100 shadow-sm space-y-2 hover:border-[#0066FF] hover:border-1.5 hover:bg-zinc-50/50 hover:shadow-md transform hover:-translate-y-2 transition-all duration-300 ease-out">
-          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block font-semibold">
-            Enterprise verticals
-          </span>
-          <div className="flex items-baseline gap-2">
-            <span className="text-4xl font-mono font-bold text-[#0A0A0A]">
-              {distinctIndustries}
-            </span>
-            <span className="text-xs text-zinc-400 uppercase font-mono tracking-wider font-semibold">sectors served</span>
-          </div>
-          <p className="text-[11px] text-zinc-505 text-zinc-500 leading-relaxed font-sans">Active compliance guardrails deployed inside healthcare, BFSI, telecom.</p>
-        </div>
-      </section>
-
-      {/* Real-time Telemetry Tracer Feed Console */}
+      {/* Sample trace feed console */}
       <section className="border border-zinc-100 p-6 bg-zinc-50/50 text-[#0A0A0A] font-mono space-y-3.5 shadow-sm select-none rounded-3xl hover:border-[#0066FF] hover:border-1.5 hover:bg-zinc-50/50 hover:shadow-md transform hover:-translate-y-2 transition-all duration-300 ease-out">
         <div className="flex items-center justify-between border-b border-zinc-200 pb-2.5">
           <div className="flex items-center gap-2.5 text-[10px] font-mono text-[#0066FF] uppercase tracking-wider">
@@ -167,9 +120,9 @@ export default function LivePodsView() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#0066FF]"></span>
             </span>
-            <span className="font-semibold">Live Audit Stream // Trace Feed</span>
+            <span className="font-semibold">Sample trace feed</span>
           </div>
-          <span className="text-[8px] text-zinc-400 font-mono uppercase font-bold tracking-wider">Telemetry Node active</span>
+          <span className="text-[8px] text-zinc-400 font-mono uppercase font-bold tracking-wider">Illustrative data</span>
         </div>
         
         <div className="space-y-2 max-h-[140px] overflow-hidden text-[11px]">
@@ -276,7 +229,7 @@ export default function LivePodsView() {
                       {pod.industry}
                     </span>
                     <h4 className="text-sm font-semibold text-[#0A0A0A] font-sans">
-                      {pod.client}
+                      {pod.industry} client
                     </h4>
                   </div>
 
@@ -316,27 +269,8 @@ export default function LivePodsView() {
                 </div>
               </div>
 
-              {/* Dynamic Metric Outcome box - beautifully rounded */}
-              {pod.outcomeMetric && (
-                <div className="my-4 p-3.5 bg-zinc-50 border-l-[3px] border-[#0066FF] rounded-r-2xl text-[11px] font-mono space-y-1">
-                  <div className="text-[8px] uppercase tracking-wide text-zinc-400 font-bold">Verified measured impact:</div>
-                  <div className="font-semibold text-[#0066FF] uppercase">{pod.outcomeMetric}</div>
-                </div>
-              )}
-
-              {/* Bottom Metadata details */}
-              <div className="pt-4 mt-4 border-t border-zinc-100 grid grid-cols-2 gap-2 text-[10px] font-mono text-zinc-500">
-                <div>
-                  <span className="block text-[8px] uppercase tracking-wider text-zinc-400">Timeline span</span>
-                  <span className="text-[#0A0A0A] font-semibold font-sans">
-                    {isRunning ? `${pod.weeksLive} weeks live` : `${pod.weeksLive} weeks total`}
-                  </span>
-                </div>
-                <div>
-                  <span className="block text-[8px] uppercase tracking-wider text-zinc-400">Deployment size</span>
-                  <span className="text-[#0A0A0A] font-semibold font-sans">{pod.teamSize} specialists</span>
-                </div>
-              </div>
+              {/* TODO(copy): "Verified measured impact", timeline and team-size figures removed:
+                  they came from the sample LIVE_PODS list and are not verified. */}
             </div>
           );
         })}
@@ -359,13 +293,11 @@ export default function LivePodsView() {
         )}
       </section>
 
-      {/* Bottom transparency notice */}
-      <section className="bg-zinc-50/50 p-8 text-xs text-zinc-500 space-y-2.5 leading-relaxed rounded-3xl border border-zinc-100 hover:border-[#0066FF] hover:border-1.5 hover:bg-zinc-50/50 hover:shadow-md transform hover:-translate-y-2 transition-all duration-300 ease-out">
-        <h4 className="font-semibold text-zinc-950 font-sans text-sm">Corporate anonymization and security standards audits notice</h4>
-        <p>
-          In accordance with private master service agreements (MSAs) and system compliance filters, clients signed under active compliance structures (specifically HIPAA, SOC2, and DPDP rules) are anonymized. Named logos (e.g. Apollo Health Hubs) are featured exclusively under explicit client-signed publicity releases. All stated measured outcome metrics are verified using isolated telemetry check cron triggers weekly.
-        </p>
-      </section>
+      {/* Kept deliberately: the records on this page are examples, so the page says so
+          once, quietly, at the foot rather than as a badge under the headline. */}
+      <p className="text-[11px] text-zinc-400 font-sans">
+        Examples shown for illustration.
+      </p>
     </motion.div>
   );
 }

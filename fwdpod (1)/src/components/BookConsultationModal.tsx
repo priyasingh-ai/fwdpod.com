@@ -251,11 +251,8 @@ export default function BookConsultationModal({ isOpen, onClose, onNavigate }: B
                   </button>
                 </div>
 
-                {/* Secure Badge */}
-                <div className="flex items-center justify-center gap-1.5 text-[10px] text-zinc-400 font-mono">
-                  <ShieldCheck className="w-3.5 h-3.5 text-zinc-400" />
-                  GDPR & SOC2 ENCRYPTED SANDBOX CHANNELS ONLY
-                </div>
+                {/* TODO(copy): security badge removed. It asserted GDPR and SOC2
+                    encrypted sandbox channels, which nothing in the repo backs. */}
               </form>
             ) : (
               // Active loading simulation / success state

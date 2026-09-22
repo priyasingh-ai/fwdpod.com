@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Mail, Phone, Clock, ArrowRight, Check, Send, Sparkles, Server } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Check, Mail, Send, Server } from 'lucide-react';
 import SEO from './SEO';
 import { trackContactFormSubmit } from '../utils/analytics';
 
@@ -12,7 +13,7 @@ const CONTACT_JSON_LD = {
       '@id': 'https://www.fwdpod.com/#contact',
       'url': 'https://www.fwdpod.com/contact',
       'name': 'Contact Fwdpod — Hire a Dedicated AI Engineering Team',
-      'description': 'Reach Fwdpod\'s operations team to discuss your AI engineering requirements. 2-hour response SLA. Available 24/7 globally. Deploy a dedicated AI pod in under one week.',
+      'description': 'Reach Fwdpod\'s operations team to discuss your AI engineering requirements. Deploy a dedicated AI pod in under one week.',
       'isPartOf': { '@id': 'https://www.fwdpod.com/#website' },
       'about': { '@id': 'https://www.fwdpod.com/#organization' },
       'breadcrumb': {
@@ -26,9 +27,6 @@ const CONTACT_JSON_LD = {
     {
       '@type': 'ContactPoint',
       'contactType': 'customer support',
-      'email': 'contact.fwdpod@gmail.com',
-      'telephone': '+1-800-555-0199',
-      'contactOption': 'TollFree',
       'areaServed': 'Worldwide',
       'availableLanguage': ['English'],
       'hoursAvailable': {
@@ -97,8 +95,7 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
     >
       <SEO
         title="Contact Fwdpod — Hire a Dedicated AI Engineering Team"
-        description="Reach Fwdpod's operations team to discuss your AI engineering requirements. 2-hour response SLA. Available 24/7 globally. Deploy a dedicated AI pod in under one week."
-        canonical="/contact"
+        description="Reach Fwdpod's operations team to discuss your AI engineering requirements. Deploy a dedicated AI pod in under one week."
         jsonLd={CONTACT_JSON_LD}
       />
       {/* Page Header Area */}
@@ -121,12 +118,12 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
               Ready to instantiate a pre-formed AI engineering pod or customize standard execution SLAs? Reach our operations team directly or build a custom layout.
             </p>
           </div>
-          <button
-            onClick={() => onNavigate('home')}
-            className="text-xs font-mono text-zinc-500 hover:text-[#0A0A0A] underline cursor-pointer shrink-0"
+          <Link
+            to="/"
+            className="text-xs font-mono text-zinc-500 hover:text-[#0A0A0A] underline cursor-pointer shrink-0 text-center"
           >
             ← Return to Home
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -283,10 +280,6 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
                     <span className="text-black font-bold">FWD-{(Math.floor(Math.random() * 89999) + 10000)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#555555]">RESPONSE SLA:</span>
-                    <span className="text-green-600 font-bold">UNDER 2 HOURS</span>
-                  </div>
-                  <div className="flex justify-between">
                     <span className="text-[#555555]">FORWARD ROUTING:</span>
                     <span className="text-black">FOUNDER_STREAMS</span>
                   </div>
@@ -299,12 +292,12 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
                   >
                     Send Another Transmission
                   </button>
-                  <button
-                    onClick={() => onNavigate('home')}
-                    className="bg-[#0066FF] hover:bg-[#0055DD] text-white text-xs font-semibold py-3 px-6 rounded-full transition-all cursor-pointer"
+                  <Link
+                    to="/"
+                    className="bg-[#0066FF] hover:bg-[#0055DD] text-white text-xs font-semibold py-3 px-6 rounded-full transition-all cursor-pointer text-center"
                   >
                     Go Back Home
-                  </button>
+                  </Link>
                 </div>
               </motion.div>
             )}
@@ -346,32 +339,15 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
             </div>
           </div>
 
-          {/* Interactive Direct Touchpoints */}
+          {/* Direct contact. contact.fwdpod@gmail.com is the confirmed working mailbox.
+              The fictional 555 hotline stays removed; a phone number can be added here
+              once a real one is verified. */}
           <div className="space-y-4">
             <h4 className="text-xs font-mono uppercase tracking-wider text-[#555555] font-bold">
               Direct Access Paths
             </h4>
 
-            {/* Direct Phone Block */}
-            <a 
-              href="tel:+18005550199"
-              className="p-5 border border-zinc-200/85 bg-zinc-50/40 hover:border-[#0066FF] hover:bg-zinc-50 hover:shadow-sm rounded-2xl transition-all duration-200 flex items-center gap-4 group text-left block"
-            >
-              <div className="w-12 h-12 bg-[#0066FF]/5 text-[#0066FF] rounded-full flex items-center justify-center shrink-0 border border-[#0066FF]/10 group-hover:bg-[#0066FF] group-hover:text-white transition-all">
-                <Phone className="w-5 h-5" />
-              </div>
-              <div className="flex-1">
-                <span className="text-[10px] uppercase font-mono text-zinc-400 tracking-wider block">Direct Contact Hotline</span>
-                <span className="text-sm sm:text-base font-semibold text-[#0A0A0A] group-hover:text-[#0066FF] transition-colors flex items-center gap-1.5">
-                  <span>+1 (800) 555-0199</span>
-                  <ArrowRight className="w-3.5 h-3.5 opacity-60 group-hover:translate-x-0.5 transition-transform text-[#0066FF]" />
-                </span>
-                <span className="text-[10px] text-zinc-500 font-sans block mt-0.5">Toll-free direct solutions triage line</span>
-              </div>
-            </a>
-
-            {/* Direct Email Block */}
-            <a 
+            <a
               href="mailto:contact.fwdpod@gmail.com"
               className="p-5 border border-zinc-200/85 bg-zinc-50/40 hover:border-[#0066FF] hover:bg-zinc-50 hover:shadow-sm rounded-2xl transition-all duration-200 flex items-center gap-4 group text-left block"
             >
@@ -379,12 +355,10 @@ export default function ContactView({ onNavigate, triggerNotification }: Contact
                 <Mail className="w-5 h-5" />
               </div>
               <div className="flex-1">
-                <span className="text-[10px] uppercase font-mono text-zinc-400 tracking-wider block">Instant Email Response</span>
-                <span className="text-sm sm:text-base font-semibold text-[#0A0A0A] group-hover:text-[#0066FF] transition-colors flex items-center gap-1.5 font-mono">
-                  <span>contact.fwdpod@gmail.com</span>
-                  <ArrowRight className="w-3.5 h-3.5 opacity-60 group-hover:translate-x-0.5 transition-transform text-[#0066FF]" />
+                <span className="text-[10px] uppercase font-mono text-zinc-400 tracking-wider block">Email</span>
+                <span className="text-sm sm:text-base font-semibold text-[#0A0A0A] group-hover:text-[#0066FF] transition-colors font-mono">
+                  contact.fwdpod@gmail.com
                 </span>
-                <span className="text-[10px] text-zinc-500 font-sans block mt-0.5">Encrypted operations dispatcher queue</span>
               </div>
             </a>
           </div>

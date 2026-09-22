@@ -17,6 +17,7 @@
  */
 
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -32,7 +33,10 @@ export interface SEOProps {
   title: string;
   /** 145–160 character meta description with primary keyword. */
   description: string;
-  /** Path relative to SITE_BASE_URL. Defaults to '/'. */
+  /**
+   * Overrides the canonical path. Defaults to the current route, so a page
+   * cannot inherit another page's URL. Not emitted for noindex pages.
+   */
   canonical?: string;
   /** og:type — 'website' for pages, 'article' for blog posts. */
   ogType?: 'website' | 'article';
@@ -53,7 +57,7 @@ export interface SEOProps {
 export default function SEO({
   title,
   description,
-  canonical = '/',
+  canonical,
   ogType = 'website',
   ogImage = DEFAULT_OG_IMAGE,
   articlePublishedTime,
@@ -61,7 +65,12 @@ export default function SEO({
   jsonLd,
   noindex = false,
 }: SEOProps) {
-  const fullUrl   = `${SITE_BASE_URL}${canonical}`;
+  // Canonical = this page's own URL: the current route unless overridden.
+  // Query strings and fragments are excluded, and a trailing slash is dropped
+  // to match the one-hop redirect in .htaccess.
+  const { pathname } = useLocation();
+  const path = canonical ?? pathname;
+  const fullUrl = `${SITE_BASE_URL}${path.length > 1 ? path.replace(/\/+$/, '') : '/'}`;
   const robotsMeta = noindex ? 'noindex,nofollow' : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
 
   return (
@@ -70,12 +79,12 @@ export default function SEO({
       <title>{title}</title>
       <meta name="description"  content={description} />
       <meta name="robots"       content={robotsMeta} />
-      <link rel="canonical"     href={fullUrl} />
+      {!noindex && <link rel="canonical" href={fullUrl} />}
 
       {/* ── Open Graph ───────────────────────────────────────────────────── */}
       <meta property="og:title"       content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:url"         content={fullUrl} />
+      {!noindex && <meta property="og:url" content={fullUrl} />}
       <meta property="og:type"        content={ogType} />
       <meta property="og:image"       content={ogImage} />
       <meta property="og:image:width"  content="1200" />
@@ -104,9 +113,10 @@ export default function SEO({
       )}
 
       {/* ── JSON-LD Structured Data ──────────────────────────────────────── */}
+      {/* '<' is escaped so page text can never close the script tag in server HTML */}
       {jsonLd && (
         <script type="application/ld+json">
-          {JSON.stringify(jsonLd)}
+          {JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
         </script>
       )}
     </Helmet>

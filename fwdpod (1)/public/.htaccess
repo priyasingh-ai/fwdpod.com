@@ -1,6 +1,37 @@
 RewriteEngine On
 RewriteBase /
-RewriteRule ^index\.html$ - [L]
+
+# Unmatched URLs get the prerendered not-found page with a real 404 status
+ErrorDocument 404 /_pages/404.html
+
+# ── Canonical URL: a single 301 to https://www.fwdpod.com ────────────────────
+# One hop covers http://, the apex host and trailing slashes together, and the
+# query string is carried over. /.well-known (AutoSSL validation) is exempt.
+# %{HTTPS} assumes Apache terminates TLS itself, as on this cPanel host; behind
+# a proxy or CDN, test X-Forwarded-Proto instead or this rule will loop.
+RewriteCond %{REQUEST_URI} !^/[.]well-known/
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} !^www[.]fwdpod[.]com$ [NC,OR]
+RewriteCond %{REQUEST_URI} ^/.+/$
+RewriteCond %{REQUEST_URI} ^(/|/.*?[^/])/*$
+RewriteRule ^ https://www.fwdpod.com%1 [R=301,L]
+
+# ── Prerendered pages ─────────────────────────────────────────────────────────
+# scripts/prerender.mjs writes one HTML file per route into /_pages
+# (/ -> _pages/index.html, /blog/foo -> _pages/blog/foo.html). Keeping them in a
+# subfolder means no clean URL ever collides with a real directory.
+
+# Direct requests for /_pages/... are not public URLs
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^_pages/ - [R=404,L]
+RewriteRule ^_pages/ - [L]
+
+RewriteRule ^$ _pages/index.html [L]
+
+RewriteCond %{DOCUMENT_ROOT}/_pages/$0.html -f
+RewriteRule ^.+$ _pages/$0.html [L]
+
+# Anything else that is not a real file is a 404
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^.*$ /index.html [L]
+RewriteRule ^ - [R=404,L]

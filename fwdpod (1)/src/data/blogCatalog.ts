@@ -96,6 +96,8 @@ export interface StaticBlogPost {
   excerpt: string;
   content: string;
   date: string;
+  /** Publication date (YYYY-MM-DD) from frontmatter, for schema and sitemaps. */
+  isoDate?: string;
   readTime: string;
   author: string;
 }
@@ -146,6 +148,7 @@ export const STATIC_BLOG_POSTS: StaticBlogPost[] = Object.entries(rawFiles)
       excerpt: meta.meta_description ?? '',
       content: body,
       date: meta.date ? formatDate(meta.date) : 'Jun 12, 2026',
+      isoDate: meta.date && !Number.isNaN(Date.parse(meta.date)) ? meta.date : undefined,
       readTime: estimateReadTime(body),
       author: 'Fwdpod',
     } as StaticBlogPost;

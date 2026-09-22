@@ -21,19 +21,6 @@ const CONFIGURE_JSON_LD = {
           { '@type': 'ListItem', 'position': 2, 'name': 'Configure Pod', 'item': 'https://www.fwdpod.com/configure' }
         ]
       }
-    },
-    {
-      '@type': 'HowTo',
-      'name': 'How to Configure an AI Engineering Pod with Fwdpod',
-      'description': 'A 5-step intake process to receive a custom AI engineering pod proposal within 48 hours.',
-      'totalTime': 'PT2M',
-      'step': [
-        { '@type': 'HowToStep', 'position': 1, 'name': 'Select Pod Type', 'text': 'Choose the AI engineering pod archetype that best matches your primary technical requirements.' },
-        { '@type': 'HowToStep', 'position': 2, 'name': 'Describe Operational Context', 'text': 'Provide your industry and current organisational AI maturity level so the pod can be staffed appropriately.' },
-        { '@type': 'HowToStep', 'position': 3, 'name': 'Define Delivery Outcome', 'text': 'Describe the specific AI system, integrations, and business logic the pod must deliver.' },
-        { '@type': 'HowToStep', 'position': 4, 'name': 'Set Constraints', 'text': 'Specify timeline, budget, and compliance requirements such as HIPAA, SOC2, or GDPR.' },
-        { '@type': 'HowToStep', 'position': 5, 'name': 'Submit Professional Profile', 'text': 'Provide your contact details. A Technical Principal will respond with a full proposal within 48 hours.' }
-      ]
     }
   ]
 };
@@ -152,7 +139,6 @@ export default function ConfigureView({ initialPodId, onClearPodSelection }: Con
       <SEO
         title="Configure Your Dedicated AI Engineering Team | Fwdpod"
         description="Answer 5 questions and receive a custom AI engineering pod proposal within 48 hours. Specify your industry, timeline, budget, and compliance requirements."
-        canonical="/configure"
         jsonLd={CONFIGURE_JSON_LD}
       />
 
@@ -354,7 +340,7 @@ export default function ConfigureView({ initialPodId, onClearPodSelection }: Con
                 <textarea
                   value={outcome}
                   onChange={(e) => setOutcome(e.target.value)}
-                  placeholder="e.g., Deploy a custom dual-agent system that reconciles healthcare billing payouts by parsing our raw PDFs on GCP, comparing against our private MySQL schemas, and alerting on anomalies directly into our team Slack channel. Needs SOC2 compliance and a custom web console dashboard."
+                  placeholder="e.g., Deploy a custom dual-agent system that reconciles healthcare billing payouts by parsing our raw PDFs on GCP, comparing against our private MySQL schemas, and alerting on anomalies directly into our team Slack channel. Needs a custom web console dashboard."
                   className="w-full min-h-[160px] border border-[#0A0A0A] p-4 text-xs font-sans text-[#0A0A0A] placeholder-[#555555]/50 focus:outline-none focus:border-[#0066FF] rounded-2xl"
                 />
                 
@@ -413,7 +399,8 @@ export default function ConfigureView({ initialPodId, onClearPodSelection }: Con
               <div className="space-y-3 pt-4 border-t border-[#0A0A0A]/10">
                 <label className="text-xs font-medium text-[#0A0A0A] block">Regulatory & Compliance Standard Scopes:</label>
                 <div className="flex flex-wrap gap-2">
-                  {['HIPAA', 'SOC2', 'DPDP', 'GDPR', 'ISO 27001', 'None'].map((chip) => {
+                  {/* TODO(decision): SOC2 removed from the options a prospect can select. */}
+                  {['HIPAA', 'DPDP', 'GDPR', 'ISO 27001', 'None'].map((chip) => {
                     const isSelected = compliance.includes(chip);
                     return (
                       <button

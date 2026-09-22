@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { POD_DETAILS, FLOW_STEPS, LivePodItem } from '../data';
 import { ArrowRight, ChevronRight, CornerRightDown, HelpCircle, RefreshCw, ChevronLeft, ShieldCheck, Sparkles, CheckCircle } from 'lucide-react';
@@ -16,7 +17,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'What industries does Fwdpod serve with AI engineering pods?',
-    a: 'Fwdpod serves startups, SaaS companies, and enterprises across financial services, healthcare, logistics, telecommunications, retail, legal tech, and manufacturing. Every AI engineering pod is customised to meet the regulatory and technical requirements of your specific sector.'
+    a: 'Fwdpod serves enterprises and SaaS companies across financial services, healthcare, logistics, telecommunications, retail, legal tech, and manufacturing. Every AI engineering pod is customised to meet the regulatory and technical requirements of your specific sector.'
   },
   {
     q: 'How do AI Engineering Pods differ from traditional consulting?',
@@ -37,37 +38,66 @@ const HOME_JSON_LD = {
   '@context': 'https://schema.org',
   '@graph': [
     {
+      '@type': 'Organization',
+      '@id': 'https://www.fwdpod.com/#organization',
+      'name': 'Fwdpod',
+      'alternateName': 'Fwdpod.com',
+      'url': 'https://www.fwdpod.com/',
+      // TODO(assets): favicon.svg stands in for a logo; replace with a real logo image
+      'logo': {
+        '@type': 'ImageObject',
+        '@id': 'https://www.fwdpod.com/#logo',
+        'url': 'https://www.fwdpod.com/favicon.svg',
+        'contentUrl': 'https://www.fwdpod.com/favicon.svg',
+        'caption': 'Fwdpod logo'
+      },
+      // TODO(profiles): Clutch, G2, Crunchbase and LinkedIn profile URLs
+      'sameAs': [],
+      'description': 'Fwdpod delivers dedicated AI engineering pods — pre-assembled, cross-functional teams of 4–6 senior specialists for LLM development, RAG systems, multi-agent AI, voice AI, compliance AI, and custom enterprise AI product engineering.',
+      'slogan': 'Pre-formed cognitive infrastructure units',
+      'knowsAbout': [
+        'AI Engineering',
+        'LLM Development',
+        'RAG Systems',
+        'AI Agents',
+        'Voice AI',
+        'Compliance AI',
+        'Team Augmentation',
+        'AI Product Engineering',
+        'Machine Learning'
+      ],
+      'contactPoint': [
+        {
+          '@type': 'ContactPoint',
+          'email': 'contact.fwdpod@gmail.com',
+          'contactType': 'customer support',
+          'areaServed': 'Worldwide',
+          'availableLanguage': ['English']
+        }
+      ]
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://www.fwdpod.com/#website',
+      'url': 'https://www.fwdpod.com/',
+      'name': 'Fwdpod',
+      'description': 'Dedicated AI Engineering Pods for Enterprises',
+      'publisher': { '@id': 'https://www.fwdpod.com/#organization' },
+      'inLanguage': 'en-US',
+      'copyrightYear': '2026'
+    },
+    {
       '@type': 'WebPage',
       '@id': 'https://www.fwdpod.com/#home',
       'url': 'https://www.fwdpod.com/',
-      'name': 'AI Engineering Pods for Startups & Enterprises | Fwdpod',
-      'description': 'Fwdpod builds dedicated AI engineering pods for startups and enterprises, covering LLM development, RAG systems, AI agents, and product delivery.',
+      'name': 'AI Engineering Pods for Enterprises | Fwdpod',
+      'description': 'Fwdpod builds dedicated AI engineering pods for enterprise teams, covering LLM development, RAG systems, AI agents, and production delivery.',
       'isPartOf': { '@id': 'https://www.fwdpod.com/#website' },
       'about': { '@id': 'https://www.fwdpod.com/#organization' },
       'breadcrumb': {
         '@type': 'BreadcrumbList',
         'itemListElement': [
           { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://www.fwdpod.com/' }
-        ]
-      }
-    },
-    {
-      '@type': 'Service',
-      'name': 'AI Engineering Pods',
-      'alternateName': ['Dedicated AI Teams', 'AI Team Augmentation', 'AI Product Engineering'],
-      'provider': { '@id': 'https://www.fwdpod.com/#organization' },
-      'serviceType': 'AI Engineering Services',
-      'areaServed': 'Worldwide',
-      'description': 'Pre-assembled, cross-functional AI engineering pods of 4–6 senior specialists for LLM development, RAG systems, multi-agent AI, voice AI, and compliance AI. Fixed scope. Outcome-based contracts.',
-      'hasOfferCatalog': {
-        '@type': 'OfferCatalog',
-        'name': 'AI Engineering Pod Catalogue',
-        'itemListElement': [
-          { '@type': 'Offer', 'itemOffered': { '@type': 'Service', 'name': 'Voice AI Pod', 'description': 'Low-latency conversational AI agents with streaming pipelines' } },
-          { '@type': 'Offer', 'itemOffered': { '@type': 'Service', 'name': 'Agentic Operations Pod', 'description': 'Self-repairing automation systems and multi-agent workflow orchestration' } },
-          { '@type': 'Offer', 'itemOffered': { '@type': 'Service', 'name': 'RAG and Knowledge Pod', 'description': 'High-throughput semantic search indices with automated validation harnesses' } },
-          { '@type': 'Offer', 'itemOffered': { '@type': 'Service', 'name': 'Compliance AI Pod', 'description': 'PII scrubbing, prompt safety harnesses, and air-gapped model guardrails' } },
-          { '@type': 'Offer', 'itemOffered': { '@type': 'Service', 'name': 'Custom AI Pod', 'description': 'Tailor-made autonomous units for unique legacy system integrations' } }
         ]
       }
     },
@@ -227,9 +257,8 @@ export default function HomeView({
       className="space-y-14 bg-white"
     >
       <SEO
-        title="AI Engineering Pods for Startups &amp; Enterprises | Fwdpod"
-        description="Fwdpod builds dedicated AI engineering pods for startups and enterprises, covering LLM development, RAG systems, AI agents, and product delivery."
-        canonical="/"
+        title="AI Engineering Pods for Enterprises | Fwdpod"
+        description="Fwdpod builds dedicated AI engineering pods for enterprise teams, covering LLM development, RAG systems, AI agents, and production delivery."
         jsonLd={HOME_JSON_LD}
       />
 
@@ -251,23 +280,14 @@ export default function HomeView({
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <button
-                onClick={() => onNavigate('configure')}
+              <Link
+                to="/configure"
                 className="bg-[#0066FF] text-[#FFFFFF] hover:bg-[#0055DD] py-3.5 px-8 font-semibold text-sm transition-all duration-150 inline-flex items-center justify-center gap-2 cursor-pointer rounded-full hover:shadow-md transform hover:-translate-y-0.5 active:translate-y-0"
               >
                 <span>Configure Your Pod</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
 
-              <button
-                onClick={() => {
-                  const el = document.getElementById('how-it-runs');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="border border-zinc-300 text-[#0A0A0A] hover:bg-zinc-50 font-medium text-sm py-3.5 px-6 transition-all duration-150 cursor-pointer rounded-full"
-              >
-                Why it works
-              </button>
             </div>
           </div>
 
@@ -538,13 +558,13 @@ export default function HomeView({
               Pre-formed AI Engineering Pod Catalogue
             </h2>
           </div>
-          <button
-            onClick={() => onNavigate('catalogue')}
+          <Link
+            to="/catalogue"
             className="text-xs font-medium text-[#0066FF] hover:underline flex items-center gap-1 self-start md:self-auto transition-colors"
           >
             <span>View comparison parameters</span>
             <ChevronRight className="w-3.5 h-3.5" />
-          </button>
+          </Link>
         </div>
 
         {/* Carousel Relative Viewport */}
@@ -609,9 +629,7 @@ export default function HomeView({
                   </p>
 
                   <div className="flex gap-2 pt-2">
-                    <span className="bg-[#0A0A0A]/5 text-[#0A0A0A] text-[10px] px-2.5 py-1 font-medium font-mono rounded-md">
-                      {pod.price}
-                    </span>
+                    {/* TODO(copy): price band. Pricing is not approved for publication. */}
                     <span className="bg-[#0066FF]/5 text-[#0066FF] text-[10px] px-2.5 py-1 font-semibold rounded-md">
                       {pod.teamSize} Person team
                     </span>
@@ -619,21 +637,19 @@ export default function HomeView({
                 </div>
 
                 <div className="pt-6 grid grid-cols-2 gap-4 mt-6 border-t border-[#0A0A0A]/10">
-                  <button
-                    onClick={() => {
-                      onSelectPod(pod.id);
-                      onNavigate('catalogue');
-                    }}
+                  <Link
+                    to="/catalogue"
+                    onClick={() => onSelectPod(pod.id)}
                     className="border border-[#0A0A0A]/10 hover:border-[#0A0A0A] text-[#0A0A0A] text-xs font-semibold py-2.5 px-4 text-center transition-all hover:bg-[#0A0A0A]/5 rounded-full"
                   >
                     Explore spec
-                  </button>
-                  <button
-                    onClick={() => onNavigate('configure')}
+                  </Link>
+                  <Link
+                    to="/configure"
                     className="bg-[#0066FF] text-white hover:bg-[#0055DD] text-xs font-semibold py-2.5 px-4 text-center transition-all rounded-full"
                   >
                     Configure pod
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -672,20 +688,16 @@ export default function HomeView({
             <span className="text-[#0066FF] text-xs font-semibold uppercase tracking-widest block">
               Operational telemetry
             </span>
-            <div className="flex items-baseline gap-2">
-              <span className="text-5xl font-mono font-medium tracking-tight text-[#0A0A0A]">
-                18
-              </span>
-              <span className="text-lg font-medium text-[#555555]">pods running now</span>
-            </div>
+            {/* TODO(copy): "18 pods running now" removed. The number was hardcoded and
+                is not backed by operational data. */}
           </div>
-          <button
-            onClick={() => onNavigate('live-pods')}
+          <Link
+            to="/live-pods"
             className="text-xs font-medium text-[#0066FF] hover:underline flex items-center gap-1"
           >
             <span>Open live dashboard</span>
             <ChevronRight className="w-3.5 h-3.5" />
-          </button>
+          </Link>
         </div>
 
         {/* 3 sample card columns */}
@@ -733,13 +745,13 @@ export default function HomeView({
               Fwdpod completely flips the IT staffing paradigm. By pre-packaging elite engineering units equipped with combined development, automated deployment scripts, active telemetry loops, and continuous DevOps configurations, we remove any structural organizational friction. One team, one contract, one accountable owner.
             </p>
             <div className="pt-2">
-              <button 
-                onClick={() => onNavigate('catalogue')}
+              <Link
+                to="/catalogue"
                 className="text-xs font-medium text-[#0066FF] hover:underline flex items-center gap-1"
               >
                 <span>Read the complete operational manifest</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -777,12 +789,12 @@ export default function HomeView({
           Five questions. Two-minute scoping. A complete structured proposal from a Technical Principal within 48 hours.
         </p>
         <div className="pt-2">
-          <button
-            onClick={() => onNavigate('configure')}
-            className="bg-[#0066FF] text-[#FFFFFF] hover:bg-[#0055DD] font-semibold text-sm py-4 px-10 transition-colors rounded-full shadow-sm hover:shadow"
+          <Link
+            to="/configure"
+            className="inline-block bg-[#0066FF] text-[#FFFFFF] hover:bg-[#0055DD] font-semibold text-sm py-4 px-10 transition-colors rounded-full shadow-sm hover:shadow"
           >
             Configure your pod
-          </button>
+          </Link>
         </div>
       </section>
     </motion.div>

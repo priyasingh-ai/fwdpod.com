@@ -4,43 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- ── Primary meta (overridden per-page by react-helmet-async) ─────── -->
-    <title>AI Engineering Pods for Startups &amp; Enterprises | Fwdpod</title>
-    <meta name="description" content="Fwdpod builds dedicated AI engineering pods for startups and enterprises, covering LLM development, RAG systems, AI agents, and product delivery." />
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <!-- ── Per-route title, description, robots, canonical, Open Graph and
+         Twitter tags are rendered by <SEO> and injected at build time ──── -->
+    <!--app-head-->
     <meta name="author" content="Fwdpod" />
     <meta name="theme-color" content="#0066FF" />
     <meta name="color-scheme" content="light" />
-    <meta name="keywords" content="AI engineering pods, dedicated AI teams, LLM development, RAG development, AI agents, AI product engineering, team augmentation, enterprise AI, AI consulting" />
-
-    <!-- ── Canonical ────────────────────────────────────────────────────── -->
-    <link rel="canonical" href="https://www.fwdpod.com/" />
 
     <!-- ── Favicon & PWA ────────────────────────────────────────────────── -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
-
-    <!-- ── Open Graph ───────────────────────────────────────────────────── -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.fwdpod.com/" />
-    <meta property="og:title" content="AI Engineering Pods for Startups &amp; Enterprises | Fwdpod" />
-    <meta property="og:description" content="Fwdpod builds dedicated AI engineering pods for startups and enterprises, covering LLM development, RAG systems, AI agents, and product delivery." />
-    <meta property="og:image" content="https://www.fwdpod.com/og-image.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Fwdpod — AI Engineering Pods" />
-    <meta property="og:site_name" content="Fwdpod" />
-    <meta property="og:locale" content="en_US" />
-
-    <!-- ── Twitter / X Card ─────────────────────────────────────────────── -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@fwdpod" />
-    <meta name="twitter:creator" content="@fwdpod" />
-    <meta name="twitter:title" content="AI Engineering Pods for Startups &amp; Enterprises | Fwdpod" />
-    <meta name="twitter:description" content="Fwdpod builds dedicated AI engineering pods for startups and enterprises, covering LLM development, RAG systems, AI agents, and product delivery." />
-    <meta name="twitter:image" content="https://www.fwdpod.com/og-image.png" />
 
     <!-- ── Fonts ─────────────────────────────────────────────────────────── -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,121 +35,6 @@
       });
     </script>
 
-    <!-- ── Global structured data: Organisation + WebSite ───────────────── -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Organization",
-          "@id": "https://www.fwdpod.com/#organization",
-          "name": "Fwdpod",
-          "alternateName": "Fwdpod.com",
-          "url": "https://www.fwdpod.com/",
-          "logo": {
-            "@type": "ImageObject",
-            "@id": "https://www.fwdpod.com/#logo",
-            "url": "https://www.fwdpod.com/favicon.svg",
-            "contentUrl": "https://www.fwdpod.com/favicon.svg",
-            "caption": "Fwdpod logo"
-          },
-          "description": "Fwdpod delivers dedicated AI engineering pods — pre-assembled, cross-functional teams of 4–6 senior specialists for LLM development, RAG systems, multi-agent AI, voice AI, compliance AI, and custom enterprise AI product engineering.",
-          "foundingDate": "2025",
-          "slogan": "Pre-formed cognitive infrastructure units",
-          "knowsAbout": [
-            "AI Engineering",
-            "LLM Development",
-            "RAG Systems",
-            "AI Agents",
-            "Voice AI",
-            "Compliance AI",
-            "Team Augmentation",
-            "AI Product Engineering",
-            "Machine Learning"
-          ],
-          "contactPoint": [
-            {
-              "@type": "ContactPoint",
-              "email": "contact@fwdpod.com",
-              "telephone": "+1-800-555-0199",
-              "contactType": "customer support",
-              "contactOption": "TollFree",
-              "areaServed": "Worldwide",
-              "availableLanguage": ["English"],
-              "hoursAvailable": {
-                "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-                "opens": "00:00",
-                "closes": "23:59"
-              }
-            }
-          ],
-          "offers": {
-            "@type": "AggregateOffer",
-            "priceCurrency": "USD",
-            "lowPrice": "40000",
-            "highPrice": "110000",
-            "offerCount": "5",
-            "offers": [
-              {
-                "@type": "Offer",
-                "name": "Voice AI Pod",
-                "price": "45000",
-                "priceCurrency": "USD",
-                "description": "Low-latency conversational AI agents with streaming pipelines"
-              },
-              {
-                "@type": "Offer",
-                "name": "Agentic Operations Pod",
-                "price": "60000",
-                "priceCurrency": "USD",
-                "description": "Self-repairing automation systems and workflow orchestration controllers"
-              },
-              {
-                "@type": "Offer",
-                "name": "RAG and Knowledge Pod",
-                "price": "40000",
-                "priceCurrency": "USD",
-                "description": "High-throughput semantic indices with automated validation harnesses"
-              },
-              {
-                "@type": "Offer",
-                "name": "Compliance AI Pod",
-                "price": "75000",
-                "priceCurrency": "USD",
-                "description": "Rigorous validation logs, privacy filters, and model safety harnesses"
-              },
-              {
-                "@type": "Offer",
-                "name": "Custom AI Pod",
-                "description": "Tailor-made autonomous units addressing unique legacy system shapes"
-              }
-            ]
-          }
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://www.fwdpod.com/#website",
-          "url": "https://www.fwdpod.com/",
-          "name": "Fwdpod",
-          "description": "Dedicated AI Engineering Pods for Startups and Enterprises",
-          "publisher": {
-            "@id": "https://www.fwdpod.com/#organization"
-          },
-          "inLanguage": "en-US",
-          "copyrightYear": "2026",
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-              "@type": "EntryPoint",
-              "urlTemplate": "https://www.fwdpod.com/?q={search_term_string}"
-            },
-            "query-input": "required name=search_term_string"
-          }
-        }
-      ]
-    }
-    </script>
   </head>
   <body>
     <div id="root"></div>

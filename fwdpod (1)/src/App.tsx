@@ -34,6 +34,7 @@ import RagDevelopmentView from './components/RagDevelopmentView';
 import AiAgentsView from './components/AiAgentsView';
 import TeamAugmentationView from './components/TeamAugmentationView';
 import AiConsultingView from './components/AiConsultingView';
+import NotFoundView from './components/NotFoundView';
 
 // ── Route map — maps legacy page-name strings to URL paths ────────────────────
 const ROUTE_MAP: Record<string, string> = {
@@ -53,35 +54,6 @@ const mobileNavClass = ({ isActive }: { isActive: boolean }) =>
   `w-full text-left px-4 py-2.5 text-xs transition-all hover:bg-zinc-50 flex items-center justify-between font-medium ${
     isActive ? 'text-[#0066FF] font-semibold bg-zinc-50' : 'text-zinc-700'
   }`;
-
-// ── 404 page ──────────────────────────────────────────────────────────────────
-function NotFound() {
-  return (
-    <div className="flex flex-col items-center justify-center py-32 space-y-6 text-center">
-      <span className="text-[#0066FF] text-xs font-mono uppercase tracking-widest">404 — Not Found</span>
-      <h1 className="text-3xl font-display font-medium text-[#0A0A0A] tracking-tight">
-        Page not found
-      </h1>
-      <p className="text-sm text-[#555555] max-w-sm leading-relaxed">
-        This route doesn't exist. Head back home or explore the pod catalogue.
-      </p>
-      <div className="flex gap-3">
-        <Link
-          to="/"
-          className="bg-[#0066FF] text-white text-xs font-semibold px-5 py-2.5 rounded-full hover:bg-[#0055DD] transition-colors"
-        >
-          Go Home
-        </Link>
-        <Link
-          to="/catalogue"
-          className="border border-[#0A0A0A] text-[#0A0A0A] text-xs font-semibold px-5 py-2.5 rounded-full hover:bg-[#0A0A0A]/5 transition-colors"
-        >
-          View Pod Catalogue
-        </Link>
-      </div>
-    </div>
-  );
-}
 
 // ── App ───────────────────────────────────────────────────────────────────────
 export default function App() {
@@ -281,6 +253,7 @@ export default function App() {
 
       {/* ── Page routes ────────────────────────────────────────────────────── */}
       <main className="flex-grow max-w-7xl w-full mx-auto px-4 md:px-8 pt-2 md:pt-4 pb-12">
+        {/* Indexable paths are also listed in src/ssr/routes.ts for prerendering — keep both in sync */}
         <Routes>
           <Route
             path="/"
@@ -300,7 +273,7 @@ export default function App() {
             element={
               <CatalogueView
                 selectedPodId={selectedPodId}
-                onNavigate={navigateToPage}
+                onPreselectPod={setSelectedPodId}
               />
             }
           />
@@ -315,7 +288,6 @@ export default function App() {
           />
           <Route path="/live-pods" element={<LivePodsView />} />
           <Route path="/blog" element={<BlogsView />} />
-          <Route path="/blog/category/:categorySlug" element={<BlogsView />} />
           <Route
             path="/contact"
             element={
@@ -331,7 +303,7 @@ export default function App() {
           <Route path="/services/ai-agents" element={<AiAgentsView />} />
           <Route path="/services/team-augmentation" element={<TeamAugmentationView />} />
           <Route path="/services/ai-consulting" element={<AiConsultingView />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<NotFoundView />} />
         </Routes>
       </main>
 
@@ -381,10 +353,7 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-2 gap-4 border-t border-b border-[#0A0A0A]/10 py-4 text-xs font-mono">
-                <div>
-                  <span className="text-[#555555] block text-[9px] uppercase">Indicative Budget</span>
-                  <span className="font-semibold text-[#0066FF] text-sm">{selectedSKU.price}</span>
-                </div>
+                {/* TODO(copy): indicative budget. Pricing is not approved for publication. */}
                 <div>
                   <span className="text-[#555555] block text-[9px] uppercase">Execution Cycle</span>
                   <span className="font-semibold text-sm">{selectedSKU.weeks}</span>

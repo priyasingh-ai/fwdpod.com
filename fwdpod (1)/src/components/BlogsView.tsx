@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useParams, useNavigate } from 'react-router-dom';
 import {
   trackSearchPerformed,
   trackBlogPostView,
-  trackBlogCategoryFilter,
 } from '../utils/analytics';
 import {
   BookOpen,
@@ -14,27 +12,37 @@ import {
   ArrowLeft,
   X,
 } from 'lucide-react';
-import SEO, { SITE_BASE_URL } from './SEO';
-import {
-  BLOG_CATEGORIES,
-  STATIC_BLOG_POSTS,
-  getCategorySlug,
-  getCategoryFromSlug,
-} from '../data/blogCatalog';
+import SEO, { SITE_BASE_URL, SITE_NAME } from './SEO';
+import { BLOG_CATEGORIES, STATIC_BLOG_POSTS } from '../data/blogCatalog';
 
 // ─── Schema builders ──────────────────────────────────────────────────────────
 
+function postUrl(post: BlogPost): string {
+  // Only static posts have a public URL; user-created posts live in localStorage
+  return post.slug ? `${SITE_BASE_URL}/blog/${post.slug}` : `${SITE_BASE_URL}/blog`;
+}
+
+function postAuthor(post: BlogPost) {
+  return post.author === SITE_NAME
+    ? { '@id': `${SITE_BASE_URL}/#organization` }
+    : { '@type': 'Person', name: post.author };
+}
+
+const BLOG_TITLE = 'AI Engineering Insights & LLM Development Blog | Fwdpod';
+const BLOG_DESCRIPTION =
+  'Deep-dives into LLM agent architectures, RAG systems, voice AI pipelines, enterprise compliance AI, and the economics of productised AI engineering teams.';
+
 function buildBlogListSchema(posts: BlogPost[]) {
+  const pageUrl = `${SITE_BASE_URL}/blog`;
   return {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'WebPage',
         '@id': `${SITE_BASE_URL}/#blog`,
-        url: `${SITE_BASE_URL}/blog`,
-        name: 'AI Engineering Insights & LLM Development Blog | Fwdpod',
-        description:
-          'Deep-dives into LLM agent architectures, RAG systems, voice AI pipelines, enterprise compliance AI, and the economics of productised AI engineering teams.',
+        url: pageUrl,
+        name: BLOG_TITLE,
+        description: BLOG_DESCRIPTION,
         isPartOf: { '@id': `${SITE_BASE_URL}/#website` },
         breadcrumb: {
           '@type': 'BreadcrumbList',
@@ -55,9 +63,9 @@ function buildBlogListSchema(posts: BlogPost[]) {
           '@type': 'BlogPosting',
           headline: post.title,
           description: post.excerpt,
-          author: { '@type': 'Person', name: post.author },
-          datePublished: post.createdAt,
-          url: `${SITE_BASE_URL}/blog`,
+          author: postAuthor(post),
+          datePublished: post.isoDate,
+          url: postUrl(post),
           keywords: post.category,
         })),
       },
@@ -66,13 +74,14 @@ function buildBlogListSchema(posts: BlogPost[]) {
 }
 
 function buildArticleSchema(post: BlogPost) {
+  const url = postUrl(post);
   return {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'WebPage',
-        '@id': `${SITE_BASE_URL}/#article-${post.id}`,
-        url: `${SITE_BASE_URL}/blog`,
+        '@id': `${url}#webpage`,
+        url,
         name: `${post.title} | Fwdpod Insights`,
         description: post.excerpt,
         isPartOf: { '@id': `${SITE_BASE_URL}/#website` },
@@ -81,21 +90,21 @@ function buildArticleSchema(post: BlogPost) {
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_BASE_URL}/` },
             { '@type': 'ListItem', position: 2, name: 'Insights', item: `${SITE_BASE_URL}/blog` },
-            { '@type': 'ListItem', position: 3, name: post.title, item: `${SITE_BASE_URL}/blog` },
+            { '@type': 'ListItem', position: 3, name: post.title, item: url },
           ],
         },
       },
       {
         '@type': 'BlogPosting',
-        '@id': `${SITE_BASE_URL}/#post-${post.id}`,
+        '@id': `${url}#article`,
         headline: post.title,
         description: post.excerpt,
         articleBody: post.content,
         articleSection: post.category,
-        author: { '@type': 'Person', name: post.author },
+        author: postAuthor(post),
         publisher: { '@id': `${SITE_BASE_URL}/#organization` },
-        datePublished: post.createdAt,
-        url: `${SITE_BASE_URL}/blog`,
+        datePublished: post.isoDate,
+        url,
         inLanguage: 'en-US',
         keywords: `AI engineering, ${post.category.toLowerCase()}, LLM development, Fwdpod`,
       },
@@ -114,6 +123,9 @@ interface BlogPost {
   author: string;
   readTime: string;
   createdAt: string;
+  /** Set for static catalog posts, which are served at /blog/:slug. */
+  slug?: string;
+  isoDate?: string;
 }
 
 // IDs of the original seeded demo posts — filtered out of localStorage on load
@@ -134,17 +146,35 @@ const STATIC_DISPLAY_POSTS: BlogPost[] = STATIC_BLOG_POSTS.map(p => ({
   author: p.author,
   readTime: p.readTime,
   createdAt: p.date,
+  slug: p.slug,
+  isoDate: p.isoDate,
 }));
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function BlogsView() {
-  const { categorySlug } = useParams<{ categorySlug?: string }>();
-  const navigate = useNavigate();
+// Only user-created (localStorage) posts remain and they have no public URL,
+// so a card opens its post in place.
+function PostLink({
+  post,
+  onOpen,
+  className,
+  children,
+}: {
+  post: BlogPost;
+  onOpen: (id: string) => void;
+  className: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <button onClick={() => onOpen(post.id)} className={className}>
+      {children}
+    </button>
+  );
+}
 
+export default function BlogsView() {
   // User-created posts stored in localStorage (not the static catalog)
   const [customBlogs, setCustomBlogs] = useState<BlogPost[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Create Blog modal state
@@ -166,15 +196,6 @@ export default function BlogsView() {
     [customBlogs],
   );
 
-  // Category post counts (derived from allBlogs)
-  const categoryCounts = useMemo(() => {
-    const counts: Record<string, number> = {};
-    for (const cat of BLOG_CATEGORIES) {
-      counts[cat.name] = allBlogs.filter(b => b.category === cat.name).length;
-    }
-    return counts;
-  }, [allBlogs]);
-
   // Load user-created posts from localStorage; strip legacy demo seeds
   useEffect(() => {
     const cached = localStorage.getItem('FWDPOD_BLOGS');
@@ -195,35 +216,24 @@ export default function BlogsView() {
     }
   }, []);
 
-  // Sync category from URL param
-  useEffect(() => {
-    if (categorySlug) {
-      const cat = getCategoryFromSlug(categorySlug);
-      setSelectedCategory(cat ? cat.name : 'All');
-    } else {
-      setSelectedCategory('All');
-    }
-  }, [categorySlug]);
-
   // Derived filtered list — must be declared before the search useEffect that reads .length
   const filteredBlogs = allBlogs.filter(blog => {
-    const matchesCategory = selectedCategory === 'All' || blog.category === selectedCategory;
     const q = searchQuery.toLowerCase();
-    const matchesSearch =
+    return (
       !q ||
       blog.title.toLowerCase().includes(q) ||
       blog.excerpt.toLowerCase().includes(q) ||
       blog.content.toLowerCase().includes(q) ||
-      blog.author.toLowerCase().includes(q);
-    return matchesCategory && matchesSearch;
+      blog.author.toLowerCase().includes(q)
+    );
   });
+
+  const activeBlogDetail = activeBlogId ? allBlogs.find(b => b.id === activeBlogId) : undefined;
 
   // Track blog post detail view when a post is opened
   useEffect(() => {
-    if (!activeBlogId) return;
-    const post = allBlogs.find(b => b.id === activeBlogId);
-    if (post) trackBlogPostView(post.title, post.category);
-  }, [activeBlogId]);
+    if (activeBlogDetail) trackBlogPostView(activeBlogDetail.title, activeBlogDetail.category);
+  }, [activeBlogDetail?.id]);
 
   // Track search queries with 800ms debounce (min 2 chars)
   useEffect(() => {
@@ -233,17 +243,6 @@ export default function BlogsView() {
     }, 800);
     return () => clearTimeout(timer);
   }, [searchQuery, filteredBlogs.length]);
-
-  const handleCategorySelect = (cat: string) => {
-    setSelectedCategory(cat);
-    setActiveBlogId(null);
-    trackBlogCategoryFilter(cat);
-    if (cat === 'All') {
-      navigate('/blog', { replace: true });
-    } else {
-      navigate(`/blog/category/${getCategorySlug(cat)}`, { replace: true });
-    }
-  };
 
   const saveCustomBlogs = (updated: BlogPost[]) => {
     setCustomBlogs(updated);
@@ -281,8 +280,6 @@ export default function BlogsView() {
     setIsModalOpen(false);
   };
 
-  const activeBlogDetail = allBlogs.find(b => b.id === activeBlogId);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -291,26 +288,24 @@ export default function BlogsView() {
       className="space-y-12 text-[#0A0A0A]"
     >
       {/* Dynamic SEO */}
-      {activeBlogId && activeBlogDetail ? (
+      {activeBlogDetail ? (
         <SEO
           title={`${activeBlogDetail.title} | Fwdpod Insights`}
           description={activeBlogDetail.excerpt}
-          canonical="/blog"
           ogType="article"
-          articlePublishedTime={activeBlogDetail.createdAt}
+          articlePublishedTime={activeBlogDetail.isoDate}
           jsonLd={buildArticleSchema(activeBlogDetail)}
         />
       ) : (
         <SEO
-          title="AI Engineering Insights &amp; LLM Development Blog | Fwdpod"
-          description="Deep-dives into LLM agent architectures, RAG systems, voice AI pipelines, enterprise compliance AI, and the economics of productised AI engineering teams."
-          canonical="/blog"
-          jsonLd={buildBlogListSchema(allBlogs)}
+          title={BLOG_TITLE}
+          description={BLOG_DESCRIPTION}
+          jsonLd={buildBlogListSchema(filteredBlogs)}
         />
       )}
 
       <AnimatePresence mode="wait">
-        {!activeBlogId ? (
+        {!activeBlogDetail ? (
           /* ==================== LISTING VIEW ==================== */
           <motion.div
             key="list"
@@ -328,6 +323,8 @@ export default function BlogsView() {
                 <h1 className="text-4xl md:text-5xl font-display font-medium text-[#0A0A0A] tracking-tight">
                   Fwdpod Insights
                 </h1>
+                {/* TODO(copy): this intro, and BLOG_TITLE / BLOG_DESCRIPTION above,
+                    still describe articles. The section no longer has any. */}
                 <p className="text-sm text-[#555555] max-w-xl leading-relaxed">
                   Deep-dives into cognitive engineering architectures, enterprise multi-agent loops, compliance isolation, and the modern economics of modular code delivery.
                 </p>
@@ -346,42 +343,7 @@ export default function BlogsView() {
 
             {/* Filter and Search Bar */}
             <section className="bg-zinc-50 border border-[#0A0A0A]/10 p-4 rounded-3xl flex flex-col gap-4">
-              {/* Category filter pills */}
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => handleCategorySelect('All')}
-                  className={`text-xs px-4 py-2 transition-all duration-200 rounded-full font-medium whitespace-nowrap ${
-                    selectedCategory === 'All'
-                      ? 'bg-[#0066FF] text-white shadow-sm'
-                      : 'bg-white text-[#555555] border border-[#0A0A0A]/10 hover:border-[#0A0A0A]/30'
-                  }`}
-                >
-                  All{' '}
-                  <span className={`ml-1 font-mono ${selectedCategory === 'All' ? 'text-white/70' : 'text-zinc-400'}`}>
-                    ({allBlogs.length})
-                  </span>
-                </button>
-                {BLOG_CATEGORIES.map(cat => (
-                  <button
-                    key={cat.slug}
-                    onClick={() => handleCategorySelect(cat.name)}
-                    className={`text-xs px-4 py-2 transition-all duration-200 rounded-full font-medium whitespace-nowrap ${
-                      selectedCategory === cat.name
-                        ? 'bg-[#0066FF] text-white shadow-sm'
-                        : 'bg-white text-[#555555] border border-[#0A0A0A]/10 hover:border-[#0A0A0A]/30'
-                    }`}
-                  >
-                    {cat.name}{' '}
-                    <span
-                      className={`ml-1 font-mono ${
-                        selectedCategory === cat.name ? 'text-white/70' : 'text-zinc-400'
-                      }`}
-                    >
-                      ({categoryCounts[cat.name] ?? 0})
-                    </span>
-                  </button>
-                ))}
-              </div>
+              {/* TODO(copy): category filter removed along with the articles. */}
 
               {/* Search */}
               <div className="relative w-full md:w-80">
@@ -411,11 +373,10 @@ export default function BlogsView() {
                       <span className="text-[10px] text-zinc-400 font-mono">{blog.readTime}</span>
                     </div>
 
-                    <h3
-                      className="text-xl font-display font-medium text-[#0A0A0A] leading-tight hover:text-[#0066FF] transition-colors cursor-pointer"
-                      onClick={() => setActiveBlogId(blog.id)}
-                    >
-                      {blog.title}
+                    <h3 className="text-xl font-display font-medium text-[#0A0A0A] leading-tight hover:text-[#0066FF] transition-colors cursor-pointer">
+                      <PostLink post={blog} onOpen={setActiveBlogId} className="block w-full text-left">
+                        {blog.title}
+                      </PostLink>
                     </h3>
 
                     <p className="text-xs text-[#555555] leading-relaxed line-clamp-3 font-sans">
@@ -436,13 +397,14 @@ export default function BlogsView() {
                       </div>
                     </div>
 
-                    <button
-                      onClick={() => setActiveBlogId(blog.id)}
+                    <PostLink
+                      post={blog}
+                      onOpen={setActiveBlogId}
                       className="text-xs text-[#0a0a0a] hover:text-[#0066FF] font-medium flex items-center gap-1 transition-colors"
                     >
                       <span>Read speculate</span>
                       <span className="font-mono text-lg leading-none">→</span>
-                    </button>
+                    </PostLink>
                   </div>
                 </div>
               ))}
@@ -453,10 +415,7 @@ export default function BlogsView() {
                   <BookOpen className="w-8 h-8 mx-auto text-zinc-300" />
                   <p>No knowledge hub blog posts matched your query constraints.</p>
                   <button
-                    onClick={() => {
-                      handleCategorySelect('All');
-                      setSearchQuery('');
-                    }}
+                    onClick={() => setSearchQuery('')}
                     className="text-[#0066FF] hover:underline font-mono"
                   >
                     Reset parameters
@@ -537,13 +496,14 @@ export default function BlogsView() {
                       );
                     }
                     if (trimmed.startsWith('#')) {
+                      // The post title is already this page's <h1>
                       return (
-                        <h1
+                        <h2
                           key={index}
                           className="text-2xl md:text-3xl font-sans font-bold text-zinc-900 tracking-tight pt-5"
                         >
                           {trimmed.slice(1).trim()}
-                        </h1>
+                        </h2>
                       );
                     }
                     if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
