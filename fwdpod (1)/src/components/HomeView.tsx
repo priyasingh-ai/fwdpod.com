@@ -69,7 +69,7 @@ const HOME_JSON_LD = {
       'contactPoint': [
         {
           '@type': 'ContactPoint',
-          'email': 'contact@fwdpod.com',
+          'email': 'contact.fwdpod@gmail.com',
           'contactType': 'customer support',
           'areaServed': 'Worldwide',
           'availableLanguage': ['English']
