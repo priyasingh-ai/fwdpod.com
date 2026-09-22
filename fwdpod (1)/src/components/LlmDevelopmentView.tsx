@@ -58,8 +58,8 @@ const JSON_LD = {
       '@type': 'WebPage',
       '@id': 'https://www.fwdpod.com/services/llm-development#webpage',
       url: 'https://www.fwdpod.com/services/llm-development',
-      name: 'LLM Development Services | Enterprise LLM Development & Custom AI Applications',
-      description: 'Enterprise LLM development services for startups and enterprises. Build custom LLM applications — AI copilots, enterprise chatbots, knowledge assistants — with a Dedicated GenAI Team.',
+      name: 'LLM Development Services | Custom Models & Apps | fwdpod',
+      description: 'Build, fine-tune and deploy LLM applications with an embedded pod — evals, guardrails, cost control and production monitoring from day one.',
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -92,8 +92,8 @@ export default function LlmDevelopmentView() {
       className="max-w-6xl mx-auto py-6 font-sans space-y-14"
     >
       <SEO
-        title="LLM Development Services | Enterprise LLM Development & Custom AI Applications"
-        description="Enterprise LLM development services for startups and enterprises. Build custom LLM applications — AI copilots, enterprise chatbots, knowledge assistants — with a Dedicated GenAI Team. Production-ready."
+        title="LLM Development Services | Custom Models & Apps | fwdpod"
+        description="Build, fine-tune and deploy LLM applications with an embedded pod — evals, guardrails, cost control and production monitoring from day one."
         jsonLd={JSON_LD}
       />
 

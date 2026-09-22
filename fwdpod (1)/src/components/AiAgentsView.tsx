@@ -56,8 +56,8 @@ const JSON_LD = {
       '@type': 'WebPage',
       '@id': 'https://www.fwdpod.com/services/ai-agents#webpage',
       url: 'https://www.fwdpod.com/services/ai-agents',
-      name: 'AI Agent Development Services | Agentic AI Development & Multi-Agent Systems',
-      description: 'Build autonomous AI agents and multi-agent AI systems with Fwdpod\'s agentic AI development team. Custom AI agent development — CrewAI experts, LangGraph developers, MCP integration specialists.',
+      name: 'AI Agent Development Services for Enterprises | fwdpod',
+      description: 'Design and ship AI agents that act inside your systems — tool use, orchestration, guardrails and human-in-the-loop, built by a forward deployed pod.',
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -90,8 +90,8 @@ export default function AiAgentsView() {
       className="max-w-6xl mx-auto py-6 font-sans space-y-14"
     >
       <SEO
-        title="AI Agent Development Services | Agentic AI Development & Multi-Agent Systems"
-        description="Build autonomous AI agents and multi-agent AI systems with Fwdpod's agentic AI development team. Custom AI agent development — CrewAI experts, LangGraph developers, MCP integration specialists."
+        title="AI Agent Development Services for Enterprises | fwdpod"
+        description="Design and ship AI agents that act inside your systems — tool use, orchestration, guardrails and human-in-the-loop, built by a forward deployed pod."
         jsonLd={JSON_LD}
       />
 

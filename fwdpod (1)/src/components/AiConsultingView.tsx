@@ -56,8 +56,8 @@ const JSON_LD = {
       '@type': 'WebPage',
       '@id': 'https://www.fwdpod.com/services/ai-consulting#webpage',
       url: 'https://www.fwdpod.com/services/ai-consulting',
-      name: 'AI Consulting Services | Fractional AI Team & AI Strategy Consultant',
-      description: 'Fwdpod provides Fractional AI Team services and AI Strategy Consulting — Fractional Chief AI Officer, Virtual Chief AI Officer, and AI Capability Center design. Book a consultation.',
+      name: 'AI Consulting Services for Enterprise Leaders | fwdpod',
+      description: 'AI strategy that ends in shipped software — use-case selection, architecture, build-vs-buy and a delivery roadmap from the engineers who build it.',
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -90,8 +90,8 @@ export default function AiConsultingView() {
       className="max-w-6xl mx-auto py-6 font-sans space-y-14"
     >
       <SEO
-        title="AI Consulting Services | Fractional AI Team & AI Strategy Consultant"
-        description="Fwdpod provides Fractional AI Team services and AI Strategy Consulting — Fractional Chief AI Officer, Virtual Chief AI Officer, and AI Capability Center design. Book a consultation."
+        title="AI Consulting Services for Enterprise Leaders | fwdpod"
+        description="AI strategy that ends in shipped software — use-case selection, architecture, build-vs-buy and a delivery roadmap from the engineers who build it."
         jsonLd={JSON_LD}
       />
 

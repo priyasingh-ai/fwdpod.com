@@ -57,8 +57,8 @@ const JSON_LD = {
       '@type': 'WebPage',
       '@id': 'https://www.fwdpod.com/services/team-augmentation#webpage',
       url: 'https://www.fwdpod.com/services/team-augmentation',
-      name: 'AI Team Augmentation Services | Embedded AI Engineers & AI Experts for Hire',
-      description: 'Hire embedded AI engineers and dedicated AI architects on demand with Fwdpod. AI Team Extension Services — access AI Experts for Hire faster than traditional recruiting.',
+      name: 'AI Team Augmentation | Embedded Engineering Pods | fwdpod',
+      description: 'Add senior AI and full-stack engineers to your team in weeks. Embedded pods that work in your stack, sprints and tooling — no ramp-up tax.',
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -91,8 +91,8 @@ export default function TeamAugmentationView() {
       className="max-w-6xl mx-auto py-6 font-sans space-y-14"
     >
       <SEO
-        title="AI Team Augmentation Services | Embedded AI Engineers & AI Experts for Hire"
-        description="Hire embedded AI engineers and dedicated AI architects on demand with Fwdpod. AI Team Extension Services — access AI Experts for Hire faster than traditional recruiting."
+        title="AI Team Augmentation | Embedded Engineering Pods | fwdpod"
+        description="Add senior AI and full-stack engineers to your team in weeks. Embedded pods that work in your stack, sprints and tooling — no ramp-up tax."
         jsonLd={JSON_LD}
       />
 

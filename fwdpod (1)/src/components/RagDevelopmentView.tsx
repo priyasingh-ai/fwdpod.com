@@ -56,8 +56,8 @@ const JSON_LD = {
       '@type': 'WebPage',
       '@id': 'https://www.fwdpod.com/services/rag-development#webpage',
       url: 'https://www.fwdpod.com/services/rag-development',
-      name: 'RAG Development Services | Enterprise RAG Systems & Retrieval Augmented Generation',
-      description: 'Build enterprise RAG systems and retrieval augmented generation solutions with Fwdpod. RAG chatbot development, vector database consulting, and production-grade knowledge base architectures.',
+      name: 'RAG Development Services for Enterprise Data | fwdpod',
+      description: 'RAG systems built on your own data — retrieval pipelines, vector search, evals and grounded answers your teams can trust, delivered by an embedded pod.',
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -90,8 +90,8 @@ export default function RagDevelopmentView() {
       className="max-w-6xl mx-auto py-6 font-sans space-y-14"
     >
       <SEO
-        title="RAG Development Services | Enterprise RAG Systems & Retrieval Augmented Generation"
-        description="Build enterprise RAG systems and retrieval augmented generation solutions with Fwdpod. RAG chatbot development, vector database consulting, and production-grade knowledge base architectures."
+        title="RAG Development Services for Enterprise Data | fwdpod"
+        description="RAG systems built on your own data — retrieval pipelines, vector search, evals and grounded answers your teams can trust, delivered by an embedded pod."
         jsonLd={JSON_LD}
       />
 

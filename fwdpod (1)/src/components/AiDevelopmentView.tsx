@@ -62,8 +62,8 @@ const JSON_LD = {
       '@type': 'WebPage',
       '@id': 'https://www.fwdpod.com/services/ai-development#webpage',
       url: 'https://www.fwdpod.com/services/ai-development',
-      name: 'AI Development Services | AI Engineering Pods & Dedicated AI Teams',
-      description: 'Build AI products faster with Dedicated AI Teams, AI Engineering Pods, and AI Talent as a Service. Hire AI Engineers on Demand — production-ready Managed AI Engineering for startups and enterprises.',
+      name: 'AI Development Services for Enterprise Teams | fwdpod',
+      description: 'Embedded AI engineering pods that ship production AI systems — discovery to deployment. Senior engineers working inside your stack, not a handoff.',
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -96,8 +96,8 @@ export default function AiDevelopmentView() {
       className="max-w-6xl mx-auto py-6 font-sans space-y-14"
     >
       <SEO
-        title="AI Development Services | AI Engineering Pods & Dedicated AI Teams"
-        description="Build AI products faster with Dedicated AI Teams, AI Engineering Pods, and AI Talent as a Service. Hire AI Engineers on Demand — production-ready Managed AI Engineering for startups and enterprises."
+        title="AI Development Services for Enterprise Teams | fwdpod"
+        description="Embedded AI engineering pods that ship production AI systems — discovery to deployment. Senior engineers working inside your stack, not a handoff."
         jsonLd={JSON_LD}
       />
 
