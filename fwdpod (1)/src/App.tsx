@@ -34,6 +34,7 @@ import RagDevelopmentView from './components/RagDevelopmentView';
 import AiAgentsView from './components/AiAgentsView';
 import TeamAugmentationView from './components/TeamAugmentationView';
 import AiConsultingView from './components/AiConsultingView';
+import BlogPostView from './components/BlogPostView';
 import NotFoundView from './components/NotFoundView';
 
 // ── Route map — maps legacy page-name strings to URL paths ────────────────────
@@ -288,6 +289,7 @@ export default function App() {
           />
           <Route path="/live-pods" element={<LivePodsView />} />
           <Route path="/blog" element={<BlogsView />} />
+          <Route path="/blog/:slug" element={<BlogPostView />} />
           <Route
             path="/contact"
             element={

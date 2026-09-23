@@ -1,3 +1,5 @@
+import { STATIC_BLOG_POSTS } from '../data/blogCatalog';
+
 /**
  * Every indexable path, prerendered to static HTML at build time.
  *
@@ -28,5 +30,8 @@ export interface PrerenderRoute {
 export function getPrerenderRoutes(): PrerenderRoute[] {
   return [
     ...STATIC_PATHS.map(path => ({ path })),
+    // Every published article in content/blog/ gets its own page and sitemap entry.
+    // Placeholder cards are not included: they have no article behind them.
+    ...STATIC_BLOG_POSTS.map(post => ({ path: `/blog/${post.slug}`, lastmod: post.isoDate })),
   ];
 }
