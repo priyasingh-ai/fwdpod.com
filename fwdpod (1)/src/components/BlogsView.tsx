@@ -8,8 +8,8 @@ import { BLOG_DESCRIPTION, BLOG_TITLE, buildBlogListSchema } from './blog/blogSc
 import {
   getAllPosts,
   getFeaturedPost,
+  getCategoriesWithCounts,
   getListingPosts,
-  getPopulatedCategories,
 } from '../data/blogCatalog';
 
 /**
@@ -46,7 +46,7 @@ export default function BlogsView() {
         </p>
       </section>
 
-      <CategoryFilterBar categories={getPopulatedCategories(posts)} totalCount={posts.length} />
+      <CategoryFilterBar categories={getCategoriesWithCounts(posts)} totalCount={posts.length} />
 
       {featured && <FeaturedBlog post={featured} />}
 

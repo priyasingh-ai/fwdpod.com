@@ -42,8 +42,16 @@ function writePage(file, { head, appHtml }) {
   fs.writeFileSync(dest, html);
 }
 
-// Every sitemap URL must be indexable and declare itself as canonical
-function assertIndexable(routePath, head) {
+// Every sitemap URL must be indexable and declare itself as canonical. A route
+// marked indexable: false is checked the other way round — it has to be
+// noindex, so a page meant to stay out of the index cannot quietly enter it.
+function assertIndexable(routePath, head, indexable = true) {
+  if (!indexable) {
+    if (!head.includes('noindex')) {
+      throw new Error(`Route ${routePath} is listed as non-indexable but is not marked noindex`);
+    }
+    return;
+  }
   const canonical = `<link rel="canonical" href="${SITE_BASE_URL}${routePath}"/>`;
   if (!head.includes(canonical)) {
     throw new Error(`Route ${routePath} is not self-canonical (expected ${canonical})`);
@@ -68,7 +76,8 @@ function xmlEscape(value) {
 }
 
 function buildSitemap(routes) {
-  const urls = routes.map(route => {
+  // Non-indexable routes are rendered but never advertised.
+  const urls = routes.filter(route => route.indexable !== false).map(route => {
     const lastmod = route.lastmod ? `\n    <lastmod>${route.lastmod}</lastmod>` : '';
     return `  <url>\n    <loc>${xmlEscape(SITE_BASE_URL + route.path)}</loc>${lastmod}\n  </url>`;
   });
@@ -91,7 +100,7 @@ for (const route of routes) {
 
   const result = render(route.path);
   if (result.notFound) throw new Error(`Route ${route.path} rendered the not-found page`);
-  assertIndexable(route.path, result.head);
+  assertIndexable(route.path, result.head, route.indexable !== false);
   assertNoExternalLinks(route.path, result.appHtml);
   writePage(outputFileFor(route.path), result);
 }
@@ -105,4 +114,9 @@ fs.writeFileSync(path.join(distDir, 'sitemap.xml'), buildSitemap(routes));
 // The empty SPA shell must never be served now that every route has real HTML
 fs.rmSync(templatePath);
 
-console.log(`Prerendered ${routes.length} routes + 404 page into dist/_pages; sitemap.xml lists ${routes.length}`);
+const indexed = routes.filter(route => route.indexable !== false).length;
+console.log(
+  `Prerendered ${routes.length} routes + 404 page into dist/_pages; ` +
+    `sitemap.xml lists ${indexed}` +
+    (routes.length - indexed ? ` (${routes.length - indexed} noindex route(s) excluded)` : '')
+);

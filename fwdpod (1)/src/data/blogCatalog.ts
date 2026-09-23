@@ -247,11 +247,8 @@ export interface CategoryWithCount extends BlogCategoryDef {
   lastmod?: string;
 }
 
-/**
- * Categories that actually have posts, in taxonomy order. An empty category is
- * left out of the filter bar and the sitemap rather than shipping a thin page.
- */
-export function getPopulatedCategories(posts: BlogPost[] = getAllPosts()): CategoryWithCount[] {
+/** All five categories in taxonomy order, each with its post count. */
+export function getCategoriesWithCounts(posts: BlogPost[] = getAllPosts()): CategoryWithCount[] {
   return BLOG_CATEGORIES.map(category => {
     const inCategory = posts.filter(post => post.categorySlug === category.slug);
     return {
@@ -259,7 +256,16 @@ export function getPopulatedCategories(posts: BlogPost[] = getAllPosts()): Categ
       count: inCategory.length,
       lastmod: inCategory.map(post => post.isoDate).filter(Boolean).sort().pop() ?? undefined,
     };
-  }).filter(category => category.count > 0);
+  });
+}
+
+/**
+ * Categories that actually have posts. The filter bar shows all five so the
+ * section reads as a complete set, but only these reach the sitemap: an empty
+ * category page is real and browsable, and noindex until it earns a post.
+ */
+export function getPopulatedCategories(posts: BlogPost[] = getAllPosts()): CategoryWithCount[] {
+  return getCategoriesWithCounts(posts).filter(category => category.count > 0);
 }
 
 export function getPostBySlug(slug: string): BlogPost | undefined {

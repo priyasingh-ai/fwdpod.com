@@ -8,7 +8,7 @@ import { buildCategorySchema } from './blog/blogSchema';
 import { CATEGORY_PAGE_SIZE, categoryPath, getCategory } from '../data/blogCategories';
 import {
   getAllPosts,
-  getPopulatedCategories,
+  getCategoriesWithCounts,
   getPostsByCategory,
   INSIGHTS_PATH,
 } from '../data/blogCatalog';
@@ -30,8 +30,11 @@ export default function CategoryView() {
   const page = pageParam ? Number(pageParam) : 1;
 
   const outOfRange = !Number.isInteger(page) || page < 1 || page > pageCount;
-  // An empty category has no page to show, so it 404s rather than going thin.
-  if (!category || inCategory.length === 0 || outOfRange) return <NotFoundView />;
+  // An unknown slug is a 404. A known category with nothing in it yet is a
+  // real page — its chip is on the bar — but noindex, so an empty listing
+  // never enters the index.
+  if (!category || outOfRange) return <NotFoundView />;
+  const isEmpty = inCategory.length === 0;
 
   const visible = inCategory.slice((page - 1) * CATEGORY_PAGE_SIZE, page * CATEGORY_PAGE_SIZE);
   const pageSuffix = page > 1 ? ` — Page ${page}` : '';
@@ -46,7 +49,8 @@ export default function CategoryView() {
       <SEO
         title={`${category.seoTitle}${pageSuffix}`}
         description={category.metaDescription}
-        jsonLd={buildCategorySchema(category, visible, page)}
+        noindex={isEmpty}
+        jsonLd={isEmpty ? undefined : buildCategorySchema(category, visible, page)}
       />
 
       <nav aria-label="Breadcrumb" className="text-[10px] font-mono text-zinc-400">
@@ -80,7 +84,7 @@ export default function CategoryView() {
       </header>
 
       <CategoryFilterBar
-        categories={getPopulatedCategories(posts)}
+        categories={getCategoriesWithCounts(posts)}
         activeSlug={category.slug}
         totalCount={posts.length}
       />
@@ -99,13 +103,28 @@ export default function CategoryView() {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-          {visible.map(post => (
-            <div key={post.id} className="h-full">
-              <BlogCard post={post} />
-            </div>
-          ))}
-        </div>
+        {isEmpty ? (
+          <div className="border border-dashed border-zinc-200 rounded-3xl bg-zinc-50/50 p-12 md:p-16 text-center space-y-4">
+            <p className="text-sm text-[#555555]">
+              No articles in this category yet.
+            </p>
+            <Link
+              to={INSIGHTS_PATH}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0066FF] hover:underline"
+            >
+              Read everything in Insights
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+            {visible.map(post => (
+              <div key={post.id} className="h-full">
+                <BlogCard post={post} />
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {pageCount > 1 && (
