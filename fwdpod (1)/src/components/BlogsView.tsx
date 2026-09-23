@@ -3,8 +3,14 @@ import { Link } from 'react-router-dom';
 import SEO from './SEO';
 import FeaturedBlog from './blog/FeaturedBlog';
 import BlogGrid from './blog/BlogGrid';
+import CategoryFilterBar from './blog/CategoryFilterBar';
 import { BLOG_DESCRIPTION, BLOG_TITLE, buildBlogListSchema } from './blog/blogSchema';
-import { getAllPosts, getFeaturedPost, getListingPosts } from '../data/blogCatalog';
+import {
+  getAllPosts,
+  getFeaturedPost,
+  getListingPosts,
+  getPopulatedCategories,
+} from '../data/blogCatalog';
 
 /**
  * Blog listing: hero, featured article, article grid, load more, closing CTA.
@@ -39,6 +45,8 @@ export default function BlogsView() {
           Notes on building and running AI systems in production, from the engineers who deliver them.
         </p>
       </section>
+
+      <CategoryFilterBar categories={getPopulatedCategories(posts)} totalCount={posts.length} />
 
       {featured && <FeaturedBlog post={featured} />}
 

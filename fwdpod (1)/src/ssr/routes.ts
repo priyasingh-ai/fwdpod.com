@@ -1,4 +1,5 @@
-import { STATIC_BLOG_POSTS } from '../data/blogCatalog';
+import { getPopulatedCategories, STATIC_BLOG_POSTS } from '../data/blogCatalog';
+import { CATEGORY_PAGE_SIZE, categoryPath } from '../data/blogCategories';
 
 /**
  * Every indexable path, prerendered to static HTML at build time.
@@ -33,5 +34,16 @@ export function getPrerenderRoutes(): PrerenderRoute[] {
     // Every published article in content/blog/ gets its own page and sitemap entry.
     // Placeholder cards are not included: they have no article behind them.
     ...STATIC_BLOG_POSTS.map(post => ({ path: `/insights/${post.slug}`, lastmod: post.isoDate })),
+    // One page per category that has posts, plus its pagination pages. An
+    // empty category is not rendered and not listed: no thin pages.
+    ...getPopulatedCategories(STATIC_BLOG_POSTS).flatMap(category =>
+      Array.from(
+        { length: Math.max(1, Math.ceil(category.count / CATEGORY_PAGE_SIZE)) },
+        (_, index) => ({
+          path: categoryPath(category.slug, index + 1),
+          lastmod: category.lastmod,
+        })
+      )
+    ),
   ];
 }

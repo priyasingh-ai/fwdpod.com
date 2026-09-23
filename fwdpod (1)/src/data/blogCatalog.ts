@@ -10,7 +10,7 @@
  *   seo_title: "Shorter Title For The Tab"   # optional, falls back to title
  *   meta_description: "Shown as the card excerpt and the meta description."
  *   slug: your-post-title
- *   category: AI Development          # one of BLOG_CATEGORIES below
+ *   category: Forward Deployed Engineering   # a name or slug from blogCategories.ts
  *   date: 2026-09-23                  # YYYY-MM-DD
  *   image: /blog-images/your-post.jpg # optional, file goes in public/blog-images/
  *   image_alt: "What the image shows" # optional, falls back to the title
@@ -28,95 +28,18 @@
  */
 import { PLACEHOLDER_POSTS } from './blogPlaceholders';
 
-export interface BlogCategory {
-  name: string;
-  slug: string;
-  description: string;
-}
+import {
+  BLOG_CATEGORIES,
+  getCategory,
+  getCategoryName,
+  listAcceptedCategories,
+  resolveCategorySlug,
+  type BlogCategoryDef,
+  type BlogCategorySlug,
+} from './blogCategories';
 
-export const BLOG_CATEGORIES: BlogCategory[] = [
-  {
-    name: 'AI Engineering Pods',
-    slug: 'ai-engineering-pods',
-    description: 'Pre-assembled AI teams, pod models, and delivery structures',
-  },
-  {
-    name: 'AI Development',
-    slug: 'ai-development',
-    description: 'Building AI products from idea to production',
-  },
-  {
-    name: 'AI Agents',
-    slug: 'ai-agents',
-    description: 'Agentic AI, multi-agent systems, and enterprise orchestration',
-  },
-  {
-    name: 'LLM Development',
-    slug: 'llm-development',
-    description: 'Custom LLM applications and enterprise LLM use cases',
-  },
-  {
-    name: 'RAG Development',
-    slug: 'rag-development',
-    description: 'Retrieval-augmented generation and enterprise knowledge systems',
-  },
-  {
-    name: 'AI Leadership & Consulting',
-    slug: 'ai-leadership-consulting',
-    description: 'Fractional AI leadership, CAIO, and organizational AI strategy',
-  },
-  {
-    name: 'Startup & Business',
-    slug: 'startup-business',
-    description: 'Building AI teams and products at startup speed',
-  },
-  {
-    name: 'Enterprise AI Strategy',
-    slug: 'enterprise-ai-strategy',
-    description: 'Enterprise AI adoption, governance, and AI org structure',
-  },
-  {
-    name: 'AI Talent & Team Building',
-    slug: 'ai-talent-team-building',
-    description: 'Hiring AI engineers, team models, and talent strategy',
-  },
-  {
-    name: 'AI Product Delivery',
-    slug: 'ai-product-delivery',
-    description: 'AI delivery teams, product lifecycle, and ROI measurement',
-  },
-  {
-    name: 'Industry AI Use Cases',
-    slug: 'industry-ai-use-cases',
-    description: 'AI applications in healthcare, finance, SaaS, and mid-market',
-  },
-  {
-    name: 'Thought Leadership',
-    slug: 'thought-leadership',
-    description: 'Future of AI engineering, strategic perspectives, and industry trends',
-  },
-];
-
-// Maps legacy markdown category names to the new taxonomy
-const CATEGORY_ALIASES: Record<string, string> = {
-  'Fractional AI Leadership': 'AI Leadership & Consulting',
-  'Industry-Specific AI': 'Industry AI Use Cases',
-};
-
-export function normalizeCategory(raw: string): string {
-  return CATEGORY_ALIASES[raw] ?? raw;
-}
-
-export function getCategorySlug(categoryName: string): string {
-  return (
-    BLOG_CATEGORIES.find(c => c.name === categoryName)?.slug ??
-    categoryName.toLowerCase().replace(/[^a-z0-9]+/g, '-')
-  );
-}
-
-export function getCategoryFromSlug(slug: string): BlogCategory | undefined {
-  return BLOG_CATEGORIES.find(c => c.slug === slug);
-}
+export { BLOG_CATEGORIES, getCategory, getCategoryName } from './blogCategories';
+export type { BlogCategoryDef, BlogCategorySlug } from './blogCategories';
 
 export interface BlogFaq {
   question: string;
@@ -130,7 +53,10 @@ export interface BlogPost {
   seoTitle?: string;
   /** URL segment: the post is served at /insights/<slug>. */
   slug: string;
+  /** Display name of the post's category. */
   category: string;
+  /** Validated category slug — the one the category page is served at. */
+  categorySlug: BlogCategorySlug;
   /** One or two sentences, used on the card and as the meta description. */
   excerpt: string;
   /** Markdown body. Empty for placeholders. */
@@ -246,17 +172,32 @@ const rawFiles = import.meta.glob('../../content/blog/*.md', {
 }) as Record<string, string>;
 
 export const STATIC_BLOG_POSTS: BlogPost[] = Object.entries(rawFiles)
-  .map(([, raw]) => {
+  .map(([file, raw]) => {
+    const name = file.split('/').pop() ?? file;
     const parsed = parseFrontmatter(raw);
-    if (!parsed) return null;
+    if (!parsed) {
+      throw new Error(`content/blog/${name}: no frontmatter block found`);
+    }
     const { meta, body } = parsed;
-    if (!meta.slug || !meta.category) return null;
+    if (!meta.slug) {
+      throw new Error(`content/blog/${name}: frontmatter is missing "slug"`);
+    }
+    // Validated here rather than at render time: a typo should stop the build,
+    // not publish a post that no category page lists.
+    const categorySlug = resolveCategorySlug(meta.category ?? '');
+    if (!categorySlug) {
+      throw new Error(
+        `content/blog/${name}: category ${JSON.stringify(meta.category ?? '')} is not a known ` +
+          `category. Use one of: ${listAcceptedCategories()}`
+      );
+    }
     return {
       id: `static-${meta.slug}`,
       title: meta.title ?? meta.slug,
       seoTitle: meta.seo_title || undefined,
       slug: meta.slug,
-      category: normalizeCategory(meta.category),
+      category: getCategoryName(categorySlug),
+      categorySlug,
       excerpt: meta.meta_description ?? '',
       content: body,
       date: meta.date ? formatDate(meta.date) : '',
@@ -293,6 +234,32 @@ export function getFeaturedPost(posts: BlogPost[] = getAllPosts()): BlogPost | u
 export function getListingPosts(posts: BlogPost[] = getAllPosts()): BlogPost[] {
   const featured = getFeaturedPost(posts);
   return posts.filter(p => p.id !== featured?.id);
+}
+
+/** Posts in one category, newest first (getAllPosts is already sorted). */
+export function getPostsByCategory(categorySlug: string, posts: BlogPost[] = getAllPosts()): BlogPost[] {
+  return posts.filter(post => post.categorySlug === categorySlug);
+}
+
+export interface CategoryWithCount extends BlogCategoryDef {
+  count: number;
+  /** ISO date of the newest post, for <lastmod>. */
+  lastmod?: string;
+}
+
+/**
+ * Categories that actually have posts, in taxonomy order. An empty category is
+ * left out of the filter bar and the sitemap rather than shipping a thin page.
+ */
+export function getPopulatedCategories(posts: BlogPost[] = getAllPosts()): CategoryWithCount[] {
+  return BLOG_CATEGORIES.map(category => {
+    const inCategory = posts.filter(post => post.categorySlug === category.slug);
+    return {
+      ...category,
+      count: inCategory.length,
+      lastmod: inCategory.map(post => post.isoDate).filter(Boolean).sort().pop() ?? undefined,
+    };
+  }).filter(category => category.count > 0);
 }
 
 export function getPostBySlug(slug: string): BlogPost | undefined {

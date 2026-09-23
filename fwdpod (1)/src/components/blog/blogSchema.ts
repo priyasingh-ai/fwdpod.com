@@ -1,5 +1,6 @@
 import type { BlogPost } from '../../data/blogCatalog';
 import { INSIGHTS_PATH, postPath, toPlainText } from '../../data/blogCatalog';
+import { categoryPath, getCategory, type BlogCategoryDef } from '../../data/blogCategories';
 import { SITE_BASE_URL, SITE_NAME } from '../SEO';
 
 export const BLOG_TITLE = 'AI Engineering Insights & LLM Development Blog | Fwdpod';
@@ -60,6 +61,56 @@ export function buildBlogListSchema(posts: BlogPost[]) {
 }
 
 /**
+ * Category page: a CollectionPage listing the posts it shows, plus the
+ * breadcrumb trail. Only the posts on this page are listed, so the ItemList
+ * matches what a reader sees.
+ */
+export function buildCategorySchema(
+  category: BlogCategoryDef,
+  posts: BlogPost[],
+  page = 1
+) {
+  const pageUrl = `${SITE_BASE_URL}${categoryPath(category.slug, page)}`;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: category.seoTitle,
+        description: category.metaDescription,
+        isPartOf: { '@id': `${SITE_BASE_URL}/#website` },
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_BASE_URL}/` },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'Insights',
+              item: `${SITE_BASE_URL}${INSIGHTS_PATH}`,
+            },
+            { '@type': 'ListItem', position: 3, name: category.name, item: pageUrl },
+          ],
+        },
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListOrder: 'https://schema.org/ItemListOrderDescending',
+          numberOfItems: posts.length,
+          itemListElement: posts.map((post, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            url: postUrl(post),
+            name: post.title,
+          })),
+        },
+      },
+    ],
+  };
+}
+
+/**
  * Article page: one WebPage, one BlogPosting, and one FAQPage when the body
  * has an FAQ section. Nothing here is asserted that the page does not show.
  */
@@ -81,7 +132,13 @@ export function buildArticleSchema(post: BlogPost) {
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_BASE_URL}/` },
             { '@type': 'ListItem', position: 2, name: 'Insights', item: `${SITE_BASE_URL}${INSIGHTS_PATH}` },
-            { '@type': 'ListItem', position: 3, name: post.title, item: url },
+            {
+              '@type': 'ListItem',
+              position: 3,
+              name: getCategory(post.categorySlug)?.name ?? post.category,
+              item: `${SITE_BASE_URL}${categoryPath(post.categorySlug)}`,
+            },
+            { '@type': 'ListItem', position: 4, name: post.title, item: url },
           ],
         },
       },

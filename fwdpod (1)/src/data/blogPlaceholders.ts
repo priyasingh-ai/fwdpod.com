@@ -6,17 +6,7 @@
  * They deliberately carry no real claims, no images and no body text.
  */
 import type { BlogPost } from './blogCatalog';
-
-const CATEGORIES = [
-  'AI Engineering Pods',
-  'AI Development',
-  'AI Agents',
-  'LLM Development',
-  'RAG Development',
-  'Enterprise AI Strategy',
-  'AI Product Delivery',
-  'Thought Leadership',
-];
+import { BLOG_CATEGORIES } from './blogCategories';
 
 export const PLACEHOLDER_POSTS: BlogPost[] = Array.from({ length: 14 }, (_, i) => {
   const n = i + 1;
@@ -24,7 +14,8 @@ export const PLACEHOLDER_POSTS: BlogPost[] = Array.from({ length: 14 }, (_, i) =
     id: `placeholder-${n}`,
     title: `Blog title placeholder ${n}`,
     slug: `placeholder-${n}`,
-    category: CATEGORIES[i % CATEGORIES.length],
+    category: BLOG_CATEGORIES[i % BLOG_CATEGORIES.length].name,
+    categorySlug: BLOG_CATEGORIES[i % BLOG_CATEGORIES.length].slug,
     excerpt:
       'Short blog description placeholder. Two lines of summary copy sit here so the card height and text clamping can be checked before the real articles arrive.',
     content: '',

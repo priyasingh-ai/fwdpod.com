@@ -3,7 +3,7 @@ title: "What Is a Forward Deployed Engineer? The 2026 Definition"
 seo_title: "What Is a Forward Deployed Engineer? 2026 Definition"
 meta_description: "What is a forward deployed engineer? The 2026 definition: where the FDE role came from at Palantir, what FDEs do day to day, key skills, and the AI variant."
 slug: what-is-a-forward-deployed-engineer
-category: Insights
+category: forward-deployed-engineering
 date: 2026-09-23
 author: Fwdpod
 image: /blog-images/what-is-a-forward-deployed-engineer.png
