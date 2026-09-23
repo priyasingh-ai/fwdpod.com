@@ -12,7 +12,7 @@
  *   slug: your-post-title
  *   category: Forward Deployed Engineering   # a name or slug from blogCategories.ts
  *   date: 2026-09-23                  # YYYY-MM-DD
- *   image: /blog-images/your-post.jpg # optional, file goes in public/blog-images/
+ *   image: /blog-images/your-post.jpg # optional, 1600x900 (16:9), public/blog-images/
  *   image_alt: "What the image shows" # optional, falls back to the title
  *   keywords: "a, b, c"               # optional, comma separated
  *   featured: true                    # optional, one post at a time
