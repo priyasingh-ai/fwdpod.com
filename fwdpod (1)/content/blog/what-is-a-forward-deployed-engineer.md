@@ -17,7 +17,7 @@ The role started at Palantir, spread to AI labs such as OpenAI and Anthropic, an
 
 ## The forward deployed engineer meaning, in plain terms
 
-The forward deployed engineer meaning is easiest to grasp through a contrast Palantir itself uses. Its product engineers work on "one capability, many customers." Its forward deployed engineers work on "one customer, many capabilities" ([Palantir, *Dev versus Delta*](https://blog.palantir.com/dev-versus-delta-demystifying-engineering-roles-at-palantir-ad44c2a6e87)).
+The forward deployed engineer meaning is easiest to grasp through a contrast Palantir itself uses. Its product engineers work on "one capability, many customers." Its forward deployed engineers work on "one customer, many capabilities" (Palantir, *Dev versus Delta*).
 
 That single sentence explains most of what makes the job distinct:
 
@@ -32,13 +32,13 @@ A useful working definition for 2026: *a forward deployed engineer is a customer
 
 The FDE title comes from Palantir, which built its delivery model around engineers who deploy its platforms at customer sites. Internally, Palantir calls these engineers "Deltas." Its official title is Forward Deployed Software Engineer (FDSE).
 
-In a 2019 post on its engineering blog, Palantir described the split this way: "Devs (Software Engineers) develop and engineer our software platforms, Palantir Foundry and Palantir Gotham," while "Deltas (Forward Deployed Software Engineers) deploy our software platforms to customers" ([Palantir Blog](https://blog.palantir.com/dev-versus-delta-demystifying-engineering-roles-at-palantir-ad44c2a6e87)). The same post quotes an Abu Dhabi-based Delta who spends "a couple of days working at the customer premises" most weeks, "monitoring, debugging, deploying, or configuring our software," then returns to the office for code changes, pull request reviews, and solution planning.
+In a 2019 post on its engineering blog, Palantir described the split this way: "Devs (Software Engineers) develop and engineer our software platforms, Palantir Foundry and Palantir Gotham," while "Deltas (Forward Deployed Software Engineers) deploy our software platforms to customers" (Palantir Blog). The same post quotes an Abu Dhabi-based Delta who spends "a couple of days working at the customer premises" most weeks, "monitoring, debugging, deploying, or configuring our software," then returns to the office for code changes, pull request reviews, and solution planning.
 
-A later Palantir post describes the FDSE as "a software engineer who embeds directly with our customers to configure Palantir's existing software platforms to solve their toughest problems" ([Palantir Blog, *A Day in the Life of a Palantir Forward Deployed Software Engineer*](https://blog.palantir.com/a-day-in-the-life-of-a-palantir-forward-deployed-software-engineer-45ef2de257b1)). Note the word *configure*. At Palantir, Deltas mostly compose existing platform features for a customer rather than building every system from scratch.
+A later Palantir post describes the FDSE as "a software engineer who embeds directly with our customers to configure Palantir's existing software platforms to solve their toughest problems" (Palantir Blog, *A Day in the Life of a Palantir Forward Deployed Software Engineer*). Note the word *configure*. At Palantir, Deltas mostly compose existing platform features for a customer rather than building every system from scratch.
 
 ### Deltas and Echos
 
-Palantir pairs Deltas with a second forward role: the Deployment Strategist, "known internally as 'Echo'." According to Palantir, "Echos are more product-managers while Deltas are more technical," though in practice both roles blend product, engineering, and strategy work ([Palantir Blog, *A Day in the Life of a Palantir Deployment Strategist*](https://blog.palantir.com/a-day-in-the-life-of-a-palantir-deployment-strategist-951cb59a5a96)).
+Palantir pairs Deltas with a second forward role: the Deployment Strategist, "known internally as 'Echo'." According to Palantir, "Echos are more product-managers while Deltas are more technical," though in practice both roles blend product, engineering, and strategy work (Palantir Blog, *A Day in the Life of a Palantir Deployment Strategist*).
 
 This pairing matters for anyone copying the model: at Palantir, a technical engineer and a problem-framing strategist typically went in together.
 
@@ -46,17 +46,17 @@ This pairing matters for anyone copying the model: at Palantir, a technical engi
 
 The role spread because generative AI products have the same problem Palantir's platforms had: they are powerful in general and useless until they are wired into one organization's data, tools, and workflows.
 
-**2025: startups adopt the model.** In June 2025, Andreessen Horowitz published *Trading Margin for Moat: Why the Forward Deployed Engineer Is the Hottest Job in Startups*. Its argument was that enterprises buying AI "want to use it, but they need you to set it up," and that AI application companies were accepting lower services margins to do that setup work ([a16z](https://a16z.com/services-led-growth/)). The article counted 22 of OpenAI's 311 open roles at the time as FDE or solutions engineering positions.
+**2025: startups adopt the model.** In June 2025, Andreessen Horowitz published *Trading Margin for Moat: Why the Forward Deployed Engineer Is the Hottest Job in Startups*. Its argument was that enterprises buying AI "want to use it, but they need you to set it up," and that AI application companies were accepting lower services margins to do that setup work (a16z). The article counted 22 of OpenAI's 311 open roles at the time as FDE or solutions engineering positions.
 
-**Frontier labs build FDE teams.** OpenAI now advertises dedicated Forward Deployed Engineer roles, including general and industry-specific positions such as healthcare and semiconductors. Its San Francisco posting says FDEs "lead complex end-to-end deployments of frontier models in production alongside our most strategic customers" ([OpenAI Careers](https://openai.com/careers/forward-deployed-engineer-(fde)-sf-san-francisco/)). Anthropic hires FDEs into its Applied AI team, where the role "embeds directly with our most strategic customers to drive transformational AI adoption" ([Anthropic job posting](https://job-boards.greenhouse.io/anthropic/jobs/5302966008)).
+**Frontier labs build FDE teams.** OpenAI now advertises dedicated Forward Deployed Engineer roles, including general and industry-specific positions such as healthcare and semiconductors. Its San Francisco posting says FDEs "lead complex end-to-end deployments of frontier models in production alongside our most strategic customers" (OpenAI Careers). Anthropic hires FDEs into its Applied AI team, where the role "embeds directly with our most strategic customers to drive transformational AI adoption" (Anthropic job posting).
 
-**2026: FDEs become a business line.** On 11 May 2026, OpenAI announced the Deployment Company, backed by "more than $4 billion of initial investment," and agreed to acquire the applied AI firm Tomoro, which brought roughly 150 experienced forward deployed engineers at launch ([OpenAI](https://openai.com/index/openai-launches-the-deployment-company/)).
+**2026: FDEs become a business line.** On 11 May 2026, OpenAI announced the Deployment Company, backed by "more than $4 billion of initial investment," and agreed to acquire the applied AI firm Tomoro, which brought roughly 150 experienced forward deployed engineers at launch (OpenAI).
 
 The spread also changed what an FDE deploys. A Palantir Delta configured a mature platform; an AI lab FDE deploys a model whose behavior is probabilistic, so the job now includes evaluation, prompt and agent design, and guardrails.
 
 ## What does a forward deployed engineer actually do?
 
-In practice, a forward deployed engineer spends most of their time on one customer's problem, moving it through a repeatable sequence from discovery to production. The exact mix changes week to week. One Palantir FDE, quoted in *The Pragmatic Engineer*, described weeks spent "developing and reviewing my team's code, like a typical software engineer," and other weeks "scoping the future of a project with a client" ([The Pragmatic Engineer](https://newsletter.pragmaticengineer.com/p/forward-deployed-engineers)).
+In practice, a forward deployed engineer spends most of their time on one customer's problem, moving it through a repeatable sequence from discovery to production. The exact mix changes week to week. One Palantir FDE, quoted in *The Pragmatic Engineer*, described weeks spent "developing and reviewing my team's code, like a typical software engineer," and other weeks "scoping the future of a project with a client" (The Pragmatic Engineer).
 
 The table below maps the typical phases of an FDE engagement to the concrete work in each.
 
@@ -69,7 +69,7 @@ The table below maps the typical phases of an FDE engagement to the concrete wor
 | Production and handover | Ships, watches it under real load, trains the customer team, documents runbooks | A stable production system and an owner on the customer side |
 | Feedback | Reports gaps, bugs, and repeat patterns to the product or research team | Product changes that help the next customer |
 
-OpenAI's posting describes the same loop in its own words: "own technical delivery across multiple deployments from first prototype to stable production," "embed closely with customer teams," and "share field feedback that helps Research and Product understand where the models succeed" ([OpenAI Careers](https://openai.com/careers/forward-deployed-engineer-(fde)-sf-san-francisco/)).
+OpenAI's posting describes the same loop in its own words: "own technical delivery across multiple deployments from first prototype to stable production," "embed closely with customer teams," and "share field feedback that helps Research and Product understand where the models succeed" (OpenAI Careers).
 
 Requirements are rarely written down, so the FDE often defines the problem before anyone writes a ticket. Presence matters too: OpenAI lists up to 50% travel for this role, and Anthropic estimates 25% travel to customer sites.
 
@@ -92,7 +92,7 @@ A forward deployed AI engineer is an FDE whose main job is putting AI systems, u
 
 The core pattern (embedded, customer-owned outcome, ships code) stays the same. What changes is the material the engineer works with:
 
-- **The deliverables are AI-specific.** Anthropic's posting lists "MCP servers, sub-agents, and agent skills that will be used in production workflows" as typical FDE outputs ([Anthropic job posting](https://job-boards.greenhouse.io/anthropic/jobs/5302966008)).
+- **The deliverables are AI-specific.** Anthropic's posting lists "MCP servers, sub-agents, and agent skills that will be used in production workflows" as typical FDE outputs (Anthropic job posting).
 - **Evaluation replaces simple testing.** Model output varies, so the forward deployed AI engineer builds evaluation sets from the customer's own cases and tracks quality over time.
 - **Context is the hard part.** Retrieval over internal documents, tool access through APIs, and permission-aware data access decide whether an agent is useful. The a16z analysis frames this as integrating AI applications with internal databases, APIs, and workflows so models have business context.
 - **Model choice is a design decision.** A lab FDE deploys that lab's models. An independent forward deployed AI engineer may choose between providers or open-weight models per use case.
@@ -105,7 +105,7 @@ The short answer: a solutions engineer mainly helps a customer *buy* (demos, pro
 
 ## Is the FDE model always the right answer?
 
-No. The model has real limits, and a definition is incomplete without them. Writing in Forbes in April 2026, Peter Bendor-Samuel argued that FDEs are most valuable in dynamic, "agentic native" environments where systems change continuously, and that in stable enterprise systems built around controlled release cycles, embedded engineers making fast changes "can bypass these safeguards" ([Forbes](https://www.forbes.com/sites/peterbendorsamuel/2026/04/30/when-are-forward-deployed-engineers-essential-and-when-are-they-not/)). His summary: "The question is not whether they are good or bad; the question is where they fit."
+No. The model has real limits, and a definition is incomplete without them. Writing in Forbes in April 2026, Peter Bendor-Samuel argued that FDEs are most valuable in dynamic, "agentic native" environments where systems change continuously, and that in stable enterprise systems built around controlled release cycles, embedded engineers making fast changes "can bypass these safeguards" (Forbes). His summary: "The question is not whether they are good or bad; the question is where they fit."
 
 FDE work is also hard to scale linearly and can leave customers dependent on one person's knowledge if handover is weak. For a decision framework, see our guide on *when to hire a forward deployed engineer*; for budgets, see *what forward deployed engineering costs*.
 
@@ -126,7 +126,9 @@ Vendor FDEs know their own product deeply but have little reason to suggest a di
 
 ### How fwdpod approaches forward deployed engineering
 
-Fwdpod builds dedicated AI engineering pods for startups and enterprises, covering LLM development, RAG systems, AI agents, and product delivery. Its forward deployed engineering service places engineers inside a buyer's AI program for organizations in the US, UK, EU, and Gulf, with engineering delivery from India. If you are weighing a partner-delivered FDE against hiring, the *forward deployed engineers* page explains how the engagement works.
+[Fwdpod](/) builds dedicated [AI engineering pods](/catalogue) for startups and enterprises, covering [LLM development](/services/llm-development), [RAG systems](/services/rag-development), [AI agents](/services/ai-agents), and product delivery. Its forward deployed engineering service places engineers inside a buyer's AI program for organizations in the US, UK, EU, and Gulf, with engineering delivery from India.
+
+If you are weighing a partner-delivered FDE against hiring, you can [configure your AI engineering pod](/configure) and see how the team would be staffed.
 
 ## Key takeaways
 
@@ -165,14 +167,14 @@ Partly. Most FDE roles expect regular time at customer sites; for example, OpenA
 
 At Palantir, a Delta is a Forward Deployed Software Engineer focused on the technical deployment, while an Echo is a Deployment Strategist whose work is closer to product management. They usually work on the same customer project, and in practice their responsibilities overlap.
 
-## Sources and references
+## Sources & references
 
-1. Palantir Blog, "Dev versus Delta: Demystifying engineering roles at Palantir" (8 April 2019): [blog.palantir.com](https://blog.palantir.com/dev-versus-delta-demystifying-engineering-roles-at-palantir-ad44c2a6e87)
-2. Palantir Blog, "A Day in the Life of a Palantir Forward Deployed Software Engineer": [blog.palantir.com](https://blog.palantir.com/a-day-in-the-life-of-a-palantir-forward-deployed-software-engineer-45ef2de257b1)
-3. Palantir Blog, "A Day in the Life of a Palantir Deployment Strategist": [blog.palantir.com](https://blog.palantir.com/a-day-in-the-life-of-a-palantir-deployment-strategist-951cb59a5a96)
-4. Andreessen Horowitz (Joe Schmidt), "Trading Margin for Moat: Why the Forward Deployed Engineer Is the Hottest Job in Startups" (June 2025): [a16z.com](https://a16z.com/services-led-growth/)
-5. OpenAI Careers, "Forward Deployed Engineer (FDE) - SF" (accessed 23 September 2026): [openai.com](https://openai.com/careers/forward-deployed-engineer-(fde)-sf-san-francisco/)
-6. OpenAI, "OpenAI launches the OpenAI Deployment Company to help businesses build around intelligence" (11 May 2026): [openai.com](https://openai.com/index/openai-launches-the-deployment-company/)
-7. Anthropic, "Forward Deployed Engineer, Applied AI" job posting (accessed 23 September 2026): [job-boards.greenhouse.io](https://job-boards.greenhouse.io/anthropic/jobs/5302966008)
-8. Gergely Orosz, The Pragmatic Engineer, "What are Forward Deployed Engineers, and why are they so in demand?" (12 August 2025): [newsletter.pragmaticengineer.com](https://newsletter.pragmaticengineer.com/p/forward-deployed-engineers)
-9. Peter Bendor-Samuel, Forbes, "When Are Forward Deployed Engineers Essential, And When Are They Not?" (30 April 2026): [forbes.com](https://www.forbes.com/sites/peterbendorsamuel/2026/04/30/when-are-forward-deployed-engineers-essential-and-when-are-they-not/)
+1. Palantir — "Dev versus Delta: Demystifying engineering roles at Palantir" (8 April 2019)
+2. Palantir — "A Day in the Life of a Palantir Forward Deployed Software Engineer"
+3. Palantir — "A Day in the Life of a Palantir Deployment Strategist"
+4. Andreessen Horowitz (Joe Schmidt) — "Trading Margin for Moat: Why the Forward Deployed Engineer Is the Hottest Job in Startups" (June 2025)
+5. OpenAI Careers — "Forward Deployed Engineer (FDE) - SF" (accessed 23 September 2026)
+6. OpenAI — "OpenAI launches the OpenAI Deployment Company to help businesses build around intelligence" (11 May 2026)
+7. Anthropic — "Forward Deployed Engineer, Applied AI" job posting (accessed 23 September 2026)
+8. The Pragmatic Engineer (Gergely Orosz) — "What are Forward Deployed Engineers, and why are they so in demand?" (12 August 2025)
+9. Forbes (Peter Bendor-Samuel) — "When Are Forward Deployed Engineers Essential, And When Are They Not?" (30 April 2026)

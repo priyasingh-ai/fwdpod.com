@@ -111,15 +111,24 @@ export default function BlogPostView() {
         </h2>
         <p className="text-sm text-[#555555] leading-relaxed max-w-xl">
           Fwdpod builds dedicated AI engineering pods that work inside your product and
-          delivery process. Tell us what you are shipping and we will map out the team.
+          delivery process. Configure one against your roadmap, or browse the pods that
+          are already assembled.
         </p>
-        <Link
-          to="/contact"
-          className="inline-flex items-center gap-1.5 bg-[#0A0A0A] hover:bg-[#0066FF] text-white text-xs font-semibold px-6 py-3 rounded-full transition-colors"
-        >
-          Talk to Fwdpod
-          <span aria-hidden="true">→</span>
-        </Link>
+        <div className="flex flex-wrap items-center gap-3 pt-1">
+          <Link
+            to="/configure"
+            className="inline-flex items-center gap-1.5 bg-[#0A0A0A] hover:bg-[#0066FF] text-white text-xs font-semibold px-6 py-3 rounded-full transition-colors"
+          >
+            Configure your AI engineering pod
+            <span aria-hidden="true">→</span>
+          </Link>
+          <Link
+            to="/catalogue"
+            className="inline-flex items-center gap-1.5 border border-[#0A0A0A] text-[#0A0A0A] hover:bg-[#0A0A0A]/5 text-xs font-semibold px-6 py-3 rounded-full transition-colors"
+          >
+            Browse the pod catalogue
+          </Link>
+        </div>
       </section>
 
       {related.length > 0 && (
