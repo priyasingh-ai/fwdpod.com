@@ -31,8 +31,8 @@ export default function CategoryView() {
 
   const outOfRange = !Number.isInteger(page) || page < 1 || page > pageCount;
   // An unknown slug is a 404. A known category with nothing in it yet is a
-  // real page — its chip is on the bar — but noindex, so an empty listing
-  // never enters the index.
+  // real, indexable page: it is part of the published taxonomy and shows an
+  // empty-state panel until its first post lands.
   if (!category || outOfRange) return <NotFoundView />;
   const isEmpty = inCategory.length === 0;
 
@@ -49,8 +49,7 @@ export default function CategoryView() {
       <SEO
         title={`${category.seoTitle}${pageSuffix}`}
         description={category.metaDescription}
-        noindex={isEmpty}
-        jsonLd={isEmpty ? undefined : buildCategorySchema(category, visible, page)}
+        jsonLd={buildCategorySchema(category, visible, page)}
       />
 
       <nav aria-label="Breadcrumb" className="text-[10px] font-mono text-zinc-400">

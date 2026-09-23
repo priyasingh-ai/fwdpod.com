@@ -39,16 +39,16 @@ export function getPrerenderRoutes(): PrerenderRoute[] {
     // Every published article in content/blog/ gets its own page and sitemap entry.
     // Placeholder cards are not included: they have no article behind them.
     ...STATIC_BLOG_POSTS.map(post => ({ path: `/insights/${post.slug}`, lastmod: post.isoDate })),
-    // All five categories are rendered so every chip on the filter bar leads
-    // to a real page. One with no posts yet is noindex and, being unindexable,
-    // never reaches the sitemap.
+    // Every category gets a page and a sitemap entry, including one with no
+    // posts yet: the taxonomy is the site's published structure, so all five
+    // are crawlable and self-canonical from the start. lastmod is only set
+    // once a category has a post to date it by.
     ...getCategoriesWithCounts(STATIC_BLOG_POSTS).flatMap(category =>
       Array.from(
         { length: Math.max(1, Math.ceil(category.count / CATEGORY_PAGE_SIZE)) },
         (_, index) => ({
           path: categoryPath(category.slug, index + 1),
           lastmod: category.lastmod,
-          indexable: category.count > 0,
         })
       )
     ),
