@@ -1,4 +1,5 @@
 import type { BlogPost } from '../../data/blogCatalog';
+import { postPath, toPlainText } from '../../data/blogCatalog';
 import { SITE_BASE_URL, SITE_NAME } from '../SEO';
 
 export const BLOG_TITLE = 'AI Engineering Insights & LLM Development Blog | Fwdpod';
@@ -6,7 +7,7 @@ export const BLOG_DESCRIPTION =
   'Deep-dives into LLM agent architectures, RAG systems, voice AI pipelines, enterprise compliance AI, and the economics of productised AI engineering teams.';
 
 export function postUrl(post: BlogPost): string {
-  return `${SITE_BASE_URL}/blog/${post.slug}`;
+  return `${SITE_BASE_URL}${postPath(post)}`;
 }
 
 function postAuthor(post: BlogPost) {
@@ -58,9 +59,13 @@ export function buildBlogListSchema(posts: BlogPost[]) {
   };
 }
 
-/** Article page. */
+/**
+ * Article page: one WebPage, one BlogPosting, and one FAQPage when the body
+ * has an FAQ section. Nothing here is asserted that the page does not show.
+ */
 export function buildArticleSchema(post: BlogPost) {
   const url = postUrl(post);
+  const faqs = post.faqs ?? [];
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -83,17 +88,40 @@ export function buildArticleSchema(post: BlogPost) {
       {
         '@type': 'BlogPosting',
         '@id': `${url}#article`,
+        mainEntityOfPage: { '@id': `${url}#webpage` },
         headline: post.title,
         description: post.excerpt,
-        articleBody: post.content,
+        articleBody: toPlainText(post.content),
         articleSection: post.category,
+        keywords: post.keywords?.length ? post.keywords.join(', ') : post.category,
         author: postAuthor(post),
         publisher: { '@id': `${SITE_BASE_URL}/#organization` },
         datePublished: post.isoDate,
-        image: post.image ? `${SITE_BASE_URL}${post.image}` : undefined,
+        dateModified: post.isoDate,
+        image: post.image
+          ? {
+              '@type': 'ImageObject',
+              url: `${SITE_BASE_URL}${post.image}`,
+              caption: post.imageAlt ?? post.title,
+            }
+          : undefined,
         url,
         inLanguage: 'en-US',
       },
+      ...(faqs.length
+        ? [
+            {
+              '@type': 'FAQPage',
+              '@id': `${url}#faq`,
+              isPartOf: { '@id': `${url}#webpage` },
+              mainEntity: faqs.map(faq => ({
+                '@type': 'Question',
+                name: faq.question,
+                acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+              })),
+            },
+          ]
+        : []),
     ],
   };
 }

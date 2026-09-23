@@ -289,7 +289,7 @@ export default function App() {
           />
           <Route path="/live-pods" element={<LivePodsView />} />
           <Route path="/blog" element={<BlogsView />} />
-          <Route path="/blog/:slug" element={<BlogPostView />} />
+          <Route path="/insights/:slug" element={<BlogPostView />} />
           <Route
             path="/contact"
             element={

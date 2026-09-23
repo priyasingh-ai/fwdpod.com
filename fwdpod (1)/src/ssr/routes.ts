@@ -32,6 +32,6 @@ export function getPrerenderRoutes(): PrerenderRoute[] {
     ...STATIC_PATHS.map(path => ({ path })),
     // Every published article in content/blog/ gets its own page and sitemap entry.
     // Placeholder cards are not included: they have no article behind them.
-    ...STATIC_BLOG_POSTS.map(post => ({ path: `/blog/${post.slug}`, lastmod: post.isoDate })),
+    ...STATIC_BLOG_POSTS.map(post => ({ path: `/insights/${post.slug}`, lastmod: post.isoDate })),
   ];
 }

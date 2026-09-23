@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { BlogPost } from '../../data/blogCatalog';
+import { postPath } from '../../data/blogCatalog';
 import BlogImage from './BlogImage';
 
 /**
@@ -19,7 +20,7 @@ export default function FeaturedBlog({ post }: { post: BlogPost }) {
 
       <article>
         <Link
-          to={`/blog/${post.slug}`}
+          to={postPath(post)}
           className="group grid grid-cols-1 lg:grid-cols-2 gap-0 bg-white border border-zinc-200/85 rounded-3xl overflow-hidden shadow-sm hover:border-[#0066FF] hover:shadow-md transition-all duration-300 ease-out"
         >
           <div className="flex flex-col justify-center gap-4 p-8 md:p-10 order-2 lg:order-1">

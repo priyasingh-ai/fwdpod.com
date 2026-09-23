@@ -29,6 +29,10 @@ RewriteRule ^_pages/ - [L]
 
 RewriteRule ^$ _pages/index.html [L]
 
+# Articles live at /insights/<slug>; the listing is /blog. Someone who trims
+# an article URL back to /insights gets the listing, not a 404.
+RewriteRule ^insights/?$ https://www.fwdpod.com/blog [R=301,L]
+
 RewriteCond %{DOCUMENT_ROOT}/_pages/$0.html -f
 RewriteRule ^.+$ _pages/$0.html [L]
 

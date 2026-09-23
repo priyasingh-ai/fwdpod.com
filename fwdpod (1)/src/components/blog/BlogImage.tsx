@@ -28,7 +28,7 @@ export default function BlogImage({
     return (
       <img
         src={post.image}
-        alt={post.title}
+        alt={post.imageAlt ?? post.title}
         loading={priority ? 'eager' : 'lazy'}
         decoding={priority ? 'sync' : 'async'}
         fetchPriority={priority ? 'high' : 'auto'}

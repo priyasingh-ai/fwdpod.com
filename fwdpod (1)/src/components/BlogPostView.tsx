@@ -4,21 +4,28 @@ import { ArrowLeft } from 'lucide-react';
 import SEO from './SEO';
 import NotFoundView from './NotFoundView';
 import BlogImage from './blog/BlogImage';
+import BlogCard from './blog/BlogCard';
+import renderMarkdown from './blog/markdown';
 import { buildArticleSchema } from './blog/blogSchema';
-import { getPostBySlug } from '../data/blogCatalog';
+import { getAllPosts, getPostBySlug } from '../data/blogCatalog';
 
 /**
- * Article page at /blog/:slug.
+ * Article page at /insights/:slug.
  *
- * The body is the markdown from the post's .md file. Placeholder cards have no
- * body, so they render a short notice instead — the routing, metadata and
- * schema are already in place for when the real article arrives.
+ * The body is the markdown from the post's .md file, rendered by the shared
+ * renderer (headings, lists, tables, links). Placeholder cards have no body,
+ * so they render a short notice instead — routing, metadata and schema are
+ * already in place for when a real article arrives.
  */
 export default function BlogPostView() {
   const { slug } = useParams<{ slug: string }>();
   const post = slug ? getPostBySlug(slug) : undefined;
 
   if (!post) return <NotFoundView />;
+
+  const related = getAllPosts()
+    .filter(other => other.id !== post.id)
+    .slice(0, 3);
 
   return (
     <motion.div
@@ -28,7 +35,7 @@ export default function BlogPostView() {
       className="max-w-3xl mx-auto space-y-8 text-[#0A0A0A]"
     >
       <SEO
-        title={`${post.title} | Fwdpod Insights`}
+        title={`${post.seoTitle ?? post.title} | Fwdpod`}
         description={post.excerpt}
         ogType="article"
         articlePublishedTime={post.isoDate}
@@ -36,13 +43,25 @@ export default function BlogPostView() {
         jsonLd={buildArticleSchema(post)}
       />
 
-      <Link
-        to="/blog"
-        className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-black font-semibold transition-colors pb-2 border-b border-zinc-100"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        <span>Back to all insights</span>
-      </Link>
+      <nav aria-label="Breadcrumb" className="text-[10px] font-mono text-zinc-400">
+        <ol className="flex flex-wrap items-center gap-1.5">
+          <li>
+            <Link to="/" className="hover:text-[#0066FF] transition-colors">
+              Home
+            </Link>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li>
+            <Link to="/blog" className="hover:text-[#0066FF] transition-colors">
+              Insights
+            </Link>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li className="text-zinc-500 line-clamp-1" aria-current="page">
+            {post.title}
+          </li>
+        </ol>
+      </nav>
 
       <article className="space-y-8">
         <header className="space-y-4">
@@ -60,7 +79,7 @@ export default function BlogPostView() {
 
           <div className="flex items-center gap-4 text-[10px] font-mono text-zinc-400 pt-1">
             <span>{post.author}</span>
-            <span>{post.date}</span>
+            {post.isoDate ? <time dateTime={post.isoDate}>{post.date}</time> : <span>{post.date}</span>}
             {post.readTime ? <span>{post.readTime}</span> : null}
           </div>
         </header>
@@ -81,64 +100,53 @@ export default function BlogPostView() {
           </div>
         )}
       </article>
+
+      {/* TODO(copy): CTA wording to be confirmed. */}
+      <section
+        aria-labelledby="article-cta-heading"
+        className="border border-zinc-200/85 rounded-3xl bg-zinc-50/60 p-8 md:p-10 space-y-3"
+      >
+        <h2 id="article-cta-heading" className="text-xl md:text-2xl font-display font-medium tracking-tight">
+          Planning an AI deployment?
+        </h2>
+        <p className="text-sm text-[#555555] leading-relaxed max-w-xl">
+          Fwdpod builds dedicated AI engineering pods that work inside your product and
+          delivery process. Tell us what you are shipping and we will map out the team.
+        </p>
+        <Link
+          to="/contact"
+          className="inline-flex items-center gap-1.5 bg-[#0A0A0A] hover:bg-[#0066FF] text-white text-xs font-semibold px-6 py-3 rounded-full transition-colors"
+        >
+          Talk to Fwdpod
+          <span aria-hidden="true">→</span>
+        </Link>
+      </section>
+
+      {related.length > 0 && (
+        <section aria-labelledby="related-heading" className="space-y-6 pt-2">
+          <h2
+            id="related-heading"
+            className="text-[10px] font-mono uppercase tracking-widest text-[#555555] font-semibold"
+          >
+            Related insights
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+            {related.map(other => (
+              <div key={other.id} className="h-full">
+                <BlogCard post={other} />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <Link
+        to="/blog"
+        className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-black font-semibold transition-colors pt-2"
+      >
+        <ArrowLeft className="w-3.5 h-3.5" />
+        <span>Back to all insights</span>
+      </Link>
     </motion.div>
   );
-}
-
-/** Minimal markdown: headings, bullet and numbered lists, paragraphs. */
-function renderMarkdown(markdown: string) {
-  return markdown.split('\n\n').map((block, index) => {
-    const trimmed = block.trim();
-    if (!trimmed) return null;
-
-    if (trimmed.startsWith('### ')) {
-      return (
-        <h3 key={index} className="text-lg md:text-xl font-sans font-semibold text-zinc-900 tracking-tight pt-4">
-          {trimmed.slice(4).trim()}
-        </h3>
-      );
-    }
-    if (trimmed.startsWith('## ')) {
-      return (
-        <h2 key={index} className="text-xl md:text-2xl font-sans font-bold text-zinc-900 tracking-tight pt-5 border-b border-zinc-100 pb-2">
-          {trimmed.slice(3).trim()}
-        </h2>
-      );
-    }
-    if (trimmed.startsWith('# ')) {
-      // The post title is already this page's <h1>
-      return (
-        <h2 key={index} className="text-2xl md:text-3xl font-sans font-bold text-zinc-900 tracking-tight pt-5">
-          {trimmed.slice(2).trim()}
-        </h2>
-      );
-    }
-    if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
-      return (
-        <ul key={index} className="space-y-2.5 font-sans pl-5 list-disc text-sm text-zinc-700">
-          {trimmed.split('\n').map((line, i) => (
-            <li key={i} className="leading-relaxed">
-              {line.replace(/^[*-]\s*/, '')}
-            </li>
-          ))}
-        </ul>
-      );
-    }
-    if (/^\d+\./.test(trimmed)) {
-      return (
-        <ol key={index} className="space-y-2.5 font-sans pl-5 list-decimal text-sm text-zinc-700">
-          {trimmed.split('\n').map((line, i) => (
-            <li key={i} className="leading-relaxed">
-              {line.replace(/^\d+[.)]\s*/, '')}
-            </li>
-          ))}
-        </ol>
-      );
-    }
-    return (
-      <p key={index} className="whitespace-pre-line leading-relaxed">
-        {trimmed}
-      </p>
-    );
-  });
 }

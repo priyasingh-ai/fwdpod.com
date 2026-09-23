@@ -42,7 +42,9 @@ export default function BlogsView() {
 
       {featured && <FeaturedBlog post={featured} />}
 
-      <BlogGrid posts={listing} />
+      {/* Hidden while the featured post is the only article: an empty
+          "All articles" panel under a visible article reads as a fault. */}
+      {listing.length > 0 && <BlogGrid posts={listing} />}
 
       {/* ── Closing CTA ──────────────────────────────────────────────────── */}
       {/* TODO(copy): CTA wording is a placeholder. */}

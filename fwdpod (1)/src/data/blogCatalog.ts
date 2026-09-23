@@ -7,13 +7,23 @@
  *
  *   ---
  *   title: "Your Post Title"
+ *   seo_title: "Shorter Title For The Tab"   # optional, falls back to title
  *   meta_description: "Shown as the card excerpt and the meta description."
  *   slug: your-post-title
  *   category: AI Development          # one of BLOG_CATEGORIES below
  *   date: 2026-09-23                  # YYYY-MM-DD
  *   image: /blog-images/your-post.jpg # optional, file goes in public/blog-images/
+ *   image_alt: "What the image shows" # optional, falls back to the title
+ *   keywords: "a, b, c"               # optional, comma separated
  *   featured: true                    # optional, one post at a time
  *   ---
+ *
+ * Articles are served at /insights/<slug>; the listing stays at /blog. Use
+ * postPath() rather than writing either prefix by hand.
+ *
+ * A "## Frequently Asked Questions" section with "### Question" subheadings is
+ * picked up automatically and emitted as FAQPage schema — the questions stay
+ * in the body, so what the crawler reads is what the reader sees.
  */
 import { PLACEHOLDER_POSTS } from './blogPlaceholders';
 
@@ -107,10 +117,17 @@ export function getCategoryFromSlug(slug: string): BlogCategory | undefined {
   return BLOG_CATEGORIES.find(c => c.slug === slug);
 }
 
+export interface BlogFaq {
+  question: string;
+  answer: string;
+}
+
 export interface BlogPost {
   id: string;
   title: string;
-  /** URL segment: the post is served at /blog/<slug>. */
+  /** Shorter title for <title>, when the on-page headline is too long. */
+  seoTitle?: string;
+  /** URL segment: the post is served at /insights/<slug>. */
   slug: string;
   category: string;
   /** One or two sentences, used on the card and as the meta description. */
@@ -125,10 +142,21 @@ export interface BlogPost {
   author: string;
   /** Path under public/, e.g. /blog-images/my-post.jpg. Falls back to a panel. */
   image?: string;
+  /** Alt text for the image; the title is used when this is absent. */
+  imageAlt?: string;
+  /** Topic keywords from frontmatter, used in schema only. */
+  keywords?: string[];
+  /** Q&A parsed out of the body's FAQ section, for FAQPage schema. */
+  faqs?: BlogFaq[];
   /** Marks the one post shown in the featured slot. */
   featured?: boolean;
   /** True for the stand-in cards shown while no articles exist. */
   placeholder?: boolean;
+}
+
+/** The route an article is served at. One place, so the prefix can move. */
+export function postPath(post: Pick<BlogPost, 'slug'>): string {
+  return `/insights/${post.slug}`;
 }
 
 /** Kept for callers that predate the BlogPost rename. */
@@ -154,6 +182,53 @@ function formatDate(d: string): string {
   });
 }
 
+/** Markdown stripped back to plain sentences, for schema fields. */
+export function toPlainText(markdown: string): string {
+  return markdown
+    .replace(/!\[[^\]]*\]\((?:[^()\s]|\([^()\s]*\))*\)/g, '')
+    .replace(/\[([^\]]+)\]\((?:[^()\s]|\([^()\s]*\))*\)/g, '$1')
+    .replace(/[*`_]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Reads the body's FAQ section into Q&A pairs. The section is left in the
+ * body: schema must describe content the page actually shows.
+ */
+function extractFaqs(body: string): BlogFaq[] {
+  const lines = body.split('\n');
+  const start = lines.findIndex(line =>
+    /^##\s+(frequently asked questions|faqs?)\b/i.test(line.trim())
+  );
+  if (start === -1) return [];
+
+  const faqs: BlogFaq[] = [];
+  let question: string | null = null;
+  let answer: string[] = [];
+
+  const flush = () => {
+    const text = answer.join(' ').trim();
+    if (question && text) faqs.push({ question, answer: toPlainText(text) });
+    question = null;
+    answer = [];
+  };
+
+  for (const line of lines.slice(start + 1)) {
+    const trimmed = line.trim();
+    if (/^##\s/.test(trimmed)) break; // next H2 closes the section
+    if (/^###\s/.test(trimmed)) {
+      flush();
+      question = toPlainText(trimmed.replace(/^###\s+/, '').replace(/^\d+[.)]\s*/, ''));
+      continue;
+    }
+    if (question && trimmed) answer.push(trimmed);
+  }
+  flush();
+
+  return faqs;
+}
+
 function estimateReadTime(text: string): string {
   const mins = Math.max(4, Math.ceil(text.trim().split(/\s+/).length / 200));
   return `${mins} min read`;
@@ -175,6 +250,7 @@ export const STATIC_BLOG_POSTS: BlogPost[] = Object.entries(rawFiles)
     return {
       id: `static-${meta.slug}`,
       title: meta.title ?? meta.slug,
+      seoTitle: meta.seo_title || undefined,
       slug: meta.slug,
       category: normalizeCategory(meta.category),
       excerpt: meta.meta_description ?? '',
@@ -184,6 +260,11 @@ export const STATIC_BLOG_POSTS: BlogPost[] = Object.entries(rawFiles)
       readTime: estimateReadTime(body),
       author: 'Fwdpod',
       image: meta.image || undefined,
+      imageAlt: meta.image_alt || undefined,
+      keywords: meta.keywords
+        ? meta.keywords.split(',').map(k => k.trim()).filter(Boolean)
+        : undefined,
+      faqs: extractFaqs(body),
       featured: meta.featured === 'true',
     } as BlogPost;
   })
