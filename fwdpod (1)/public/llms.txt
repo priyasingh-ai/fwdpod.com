@@ -19,3 +19,7 @@
 ## Resources
 
 - [Contact Us](https://www.fwdpod.com/contact): Reach Fwdpod's operations team to discuss your AI engineering requirements. Deploy a dedicated AI pod in under one week.
+
+## Insights
+
+- [What Is a Forward Deployed Engineer? The 2026 Definition](https://www.fwdpod.com/insights/what-is-a-forward-deployed-engineer): The 2026 definition of the forward deployed engineer role: its origin at Palantir, what FDEs do day to day, the skills the AI labs hire for, and how the forward deployed AI engineer variant differs.

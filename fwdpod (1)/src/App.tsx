@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, NavLink, Link, Navigate, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Check,
@@ -34,6 +34,7 @@ import RagDevelopmentView from './components/RagDevelopmentView';
 import AiAgentsView from './components/AiAgentsView';
 import TeamAugmentationView from './components/TeamAugmentationView';
 import AiConsultingView from './components/AiConsultingView';
+import BlogPostView from './components/BlogPostView';
 import NotFoundView from './components/NotFoundView';
 
 // ── Route map — maps legacy page-name strings to URL paths ────────────────────
@@ -42,9 +43,18 @@ const ROUTE_MAP: Record<string, string> = {
   catalogue:   '/catalogue',
   configure:   '/configure',
   'live-pods': '/live-pods',
-  blogs:       '/blog',
+  blogs:       '/insights',
   contact:     '/contact',
 };
+
+/**
+ * /blog and /blog/<slug> moved to /insights. The server 301s them, so a crawler
+ * never reaches this; it only catches in-app navigation to a stale path.
+ */
+function LegacyBlogRedirect() {
+  const { slug } = useParams<{ slug: string }>();
+  return <Navigate to={slug ? `/insights/${slug}` : '/insights'} replace />;
+}
 
 // ── Shared NavLink className helper ──────────────────────────────────────────
 const desktopNavClass = ({ isActive }: { isActive: boolean }) =>
@@ -127,7 +137,7 @@ export default function App() {
             <NavLink to="/" end className={desktopNavClass} onClick={() => trackNavClick('Home', '/')}>Home</NavLink>
             <NavLink to="/catalogue" className={desktopNavClass} onClick={() => trackNavClick('Pod Catalogue', '/catalogue')}>Pod Catalogue</NavLink>
             <NavLink to="/live-pods" className={desktopNavClass} onClick={() => trackNavClick('Live Telemetry', '/live-pods')}>Live Telemetry</NavLink>
-            <NavLink to="/blog" className={desktopNavClass} onClick={() => trackNavClick('Insights', '/blog')}>Insights</NavLink>
+            <NavLink to="/insights" className={desktopNavClass} onClick={() => trackNavClick('Insights', '/insights')}>Insights</NavLink>
             {/* Manifesto opens a modal — stays as button (not a page) */}
             <button
               onClick={() => { setManifestoModal(true); trackManifestoEvent('open'); }}
@@ -215,7 +225,7 @@ export default function App() {
                         )}
                       </NavLink>
 
-                      <NavLink to="/blog" onClick={() => { closeMobileMenu(); trackNavClick('Insights (mobile)', '/blog'); }} className={mobileNavClass}>
+                      <NavLink to="/insights" onClick={() => { closeMobileMenu(); trackNavClick('Insights (mobile)', '/insights'); }} className={mobileNavClass}>
                         {({ isActive }) => (
                           <>
                             <span>Insights</span>
@@ -287,7 +297,10 @@ export default function App() {
             }
           />
           <Route path="/live-pods" element={<LivePodsView />} />
-          <Route path="/blog" element={<BlogsView />} />
+          <Route path="/insights" element={<BlogsView />} />
+          <Route path="/insights/:slug" element={<BlogPostView />} />
+          <Route path="/blog" element={<LegacyBlogRedirect />} />
+          <Route path="/blog/:slug" element={<LegacyBlogRedirect />} />
           <Route
             path="/contact"
             element={
@@ -636,7 +649,7 @@ export default function App() {
                     </Link>
                   </li>
                   <li>
-                    <Link to="/blog" className="hover:text-[#0A0A0A] hover:underline transition-all">
+                    <Link to="/insights" className="hover:text-[#0A0A0A] hover:underline transition-all">
                       Insights &amp; Blogs
                     </Link>
                   </li>

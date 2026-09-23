@@ -187,7 +187,7 @@ Test each URL at <https://search.google.com/test/rich-results>, then again at <h
 |---|---|
 | `https://www.fwdpod.com/` | FAQ detected, **0 errors**. Google only shows FAQ results for well-known government and health sites, so it won't appear in search; that isn't a failure |
 | `https://www.fwdpod.com/services/ai-agents` | Breadcrumbs detected, **0 errors** |
-| `https://www.fwdpod.com/blog/ai-delivery-lifecycle` | Article and Breadcrumbs detected, **0 errors**. A warning about a missing `image` is expected: the articles have no images yet |
+| `https://www.fwdpod.com/insights/what-is-a-forward-deployed-engineer` | Article and Breadcrumbs detected, **0 errors**. A warning about a missing `image` is expected: the articles have no images yet |
 
 **Pass:** 0 errors for all three URLs in both tools. Warnings are fine, but write them down.
 

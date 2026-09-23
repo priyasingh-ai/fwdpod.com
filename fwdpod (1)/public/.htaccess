@@ -4,6 +4,17 @@ RewriteBase /
 # Unmatched URLs get the prerendered not-found page with a real 404 status
 ErrorDocument 404 /_pages/404.html
 
+# ── Legacy /blog URLs ────────────────────────────────────────────
+# The insights listing moved from /blog to /insights, and articles from
+# /blog/<slug> to /insights/<slug>. These run before the canonical rule and
+# name the canonical host themselves, so an old link costs exactly one hop
+# even over http or the apex domain. Nothing is served at /blog any more, so
+# there is nothing to loop back to.
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^blog/(.+?)/?$ https://www.fwdpod.com/insights/$1 [R=301,L]
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^blog/?$ https://www.fwdpod.com/insights [R=301,L]
+
 # ── Canonical URL: a single 301 to https://www.fwdpod.com ────────────────────
 # One hop covers http://, the apex host and trailing slashes together, and the
 # query string is carried over. /.well-known (AutoSSL validation) is exempt.
@@ -19,8 +30,8 @@ RewriteRule ^ https://www.fwdpod.com%1 [R=301,L]
 
 # ── Prerendered pages ─────────────────────────────────────────────────────────
 # scripts/prerender.mjs writes one HTML file per route into /_pages
-# (/ -> _pages/index.html, /blog/foo -> _pages/blog/foo.html). Keeping them in a
-# subfolder means no clean URL ever collides with a real directory.
+# (/ -> _pages/index.html, /insights/foo -> _pages/insights/foo.html). Keeping
+# them in a subfolder means no clean URL ever collides with a real directory.
 
 # Direct requests for /_pages/... are not public URLs
 RewriteCond %{ENV:REDIRECT_STATUS} ^$

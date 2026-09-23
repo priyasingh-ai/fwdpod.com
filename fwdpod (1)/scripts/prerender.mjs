@@ -51,6 +51,18 @@ function assertIndexable(routePath, head) {
   if (head.includes('noindex')) throw new Error(`Route ${routePath} is marked noindex`);
 }
 
+// Articles must not link off fwdpod.com: sources are named in plain text, and
+// the outbound links are what a knowledge hub gives away.
+function assertNoExternalLinks(routePath, appHtml) {
+  if (!routePath.startsWith('/insights/')) return;
+  const external = [...appHtml.matchAll(/<a\s[^>]*href="(https?:\/\/[^"]+)"/g)]
+    .map(m => m[1])
+    .filter(href => !href.startsWith(SITE_BASE_URL));
+  if (external.length) {
+    throw new Error(`Route ${routePath} links to external sites: ${external.join(', ')}`);
+  }
+}
+
 function xmlEscape(value) {
   return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
@@ -80,6 +92,7 @@ for (const route of routes) {
   const result = render(route.path);
   if (result.notFound) throw new Error(`Route ${route.path} rendered the not-found page`);
   assertIndexable(route.path, result.head);
+  assertNoExternalLinks(route.path, result.appHtml);
   writePage(outputFileFor(route.path), result);
 }
 

@@ -1,3 +1,33 @@
+/**
+ * Blog data layer.
+ *
+ * Articles are markdown files in content/blog/, read at build time. To publish,
+ * drop in a .md file with this frontmatter and rebuild — routing, the listing,
+ * the sitemap and the article page all follow automatically:
+ *
+ *   ---
+ *   title: "Your Post Title"
+ *   seo_title: "Shorter Title For The Tab"   # optional, falls back to title
+ *   meta_description: "Shown as the card excerpt and the meta description."
+ *   slug: your-post-title
+ *   category: AI Development          # one of BLOG_CATEGORIES below
+ *   date: 2026-09-23                  # YYYY-MM-DD
+ *   image: /blog-images/your-post.jpg # optional, file goes in public/blog-images/
+ *   image_alt: "What the image shows" # optional, falls back to the title
+ *   keywords: "a, b, c"               # optional, comma separated
+ *   featured: true                    # optional, one post at a time
+ *   ---
+ *
+ * The listing is INSIGHTS_PATH (/insights) and an article is
+ * /insights/<slug>. Use INSIGHTS_PATH and postPath() rather than writing
+ * either path by hand: /blog is a permanent redirect and must not come back.
+ *
+ * A "## Frequently Asked Questions" section with "### Question" subheadings is
+ * picked up automatically and emitted as FAQPage schema — the questions stay
+ * in the body, so what the crawler reads is what the reader sees.
+ */
+import { PLACEHOLDER_POSTS } from './blogPlaceholders';
+
 export interface BlogCategory {
   name: string;
   slug: string;
@@ -88,19 +118,53 @@ export function getCategoryFromSlug(slug: string): BlogCategory | undefined {
   return BLOG_CATEGORIES.find(c => c.slug === slug);
 }
 
-export interface StaticBlogPost {
+export interface BlogFaq {
+  question: string;
+  answer: string;
+}
+
+export interface BlogPost {
   id: string;
   title: string;
+  /** Shorter title for <title>, when the on-page headline is too long. */
+  seoTitle?: string;
+  /** URL segment: the post is served at /insights/<slug>. */
   slug: string;
   category: string;
+  /** One or two sentences, used on the card and as the meta description. */
   excerpt: string;
+  /** Markdown body. Empty for placeholders. */
   content: string;
+  /** Display date, e.g. "Sep 23, 2026". */
   date: string;
-  /** Publication date (YYYY-MM-DD) from frontmatter, for schema and sitemaps. */
+  /** YYYY-MM-DD, for schema and <lastmod>. */
   isoDate?: string;
   readTime: string;
   author: string;
+  /** Path under public/, e.g. /blog-images/my-post.jpg. Falls back to a panel. */
+  image?: string;
+  /** Alt text for the image; the title is used when this is absent. */
+  imageAlt?: string;
+  /** Topic keywords from frontmatter, used in schema only. */
+  keywords?: string[];
+  /** Q&A parsed out of the body's FAQ section, for FAQPage schema. */
+  faqs?: BlogFaq[];
+  /** Marks the one post shown in the featured slot. */
+  featured?: boolean;
+  /** True for the stand-in cards shown while no articles exist. */
+  placeholder?: boolean;
 }
+
+/** The listing route. Everything that links to it reads this. */
+export const INSIGHTS_PATH = '/insights';
+
+/** The route an article is served at. One place, so the prefix can move. */
+export function postPath(post: Pick<BlogPost, 'slug'>): string {
+  return `${INSIGHTS_PATH}/${post.slug}`;
+}
+
+/** Kept for callers that predate the BlogPost rename. */
+export type StaticBlogPost = BlogPost;
 
 function parseFrontmatter(raw: string): { meta: Record<string, string>; body: string } | null {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
@@ -122,6 +186,53 @@ function formatDate(d: string): string {
   });
 }
 
+/** Markdown stripped back to plain sentences, for schema fields. */
+export function toPlainText(markdown: string): string {
+  return markdown
+    .replace(/!\[[^\]]*\]\((?:[^()\s]|\([^()\s]*\))*\)/g, '')
+    .replace(/\[([^\]]+)\]\((?:[^()\s]|\([^()\s]*\))*\)/g, '$1')
+    .replace(/[*`_]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Reads the body's FAQ section into Q&A pairs. The section is left in the
+ * body: schema must describe content the page actually shows.
+ */
+function extractFaqs(body: string): BlogFaq[] {
+  const lines = body.split('\n');
+  const start = lines.findIndex(line =>
+    /^##\s+(frequently asked questions|faqs?)\b/i.test(line.trim())
+  );
+  if (start === -1) return [];
+
+  const faqs: BlogFaq[] = [];
+  let question: string | null = null;
+  let answer: string[] = [];
+
+  const flush = () => {
+    const text = answer.join(' ').trim();
+    if (question && text) faqs.push({ question, answer: toPlainText(text) });
+    question = null;
+    answer = [];
+  };
+
+  for (const line of lines.slice(start + 1)) {
+    const trimmed = line.trim();
+    if (/^##\s/.test(trimmed)) break; // next H2 closes the section
+    if (/^###\s/.test(trimmed)) {
+      flush();
+      question = toPlainText(trimmed.replace(/^###\s+/, '').replace(/^\d+[.)]\s*/, ''));
+      continue;
+    }
+    if (question && trimmed) answer.push(trimmed);
+  }
+  flush();
+
+  return faqs;
+}
+
 function estimateReadTime(text: string): string {
   const mins = Math.max(4, Math.ceil(text.trim().split(/\s+/).length / 200));
   return `${mins} min read`;
@@ -134,7 +245,7 @@ const rawFiles = import.meta.glob('../../content/blog/*.md', {
   eager: true,
 }) as Record<string, string>;
 
-export const STATIC_BLOG_POSTS: StaticBlogPost[] = Object.entries(rawFiles)
+export const STATIC_BLOG_POSTS: BlogPost[] = Object.entries(rawFiles)
   .map(([, raw]) => {
     const parsed = parseFrontmatter(raw);
     if (!parsed) return null;
@@ -143,15 +254,50 @@ export const STATIC_BLOG_POSTS: StaticBlogPost[] = Object.entries(rawFiles)
     return {
       id: `static-${meta.slug}`,
       title: meta.title ?? meta.slug,
+      seoTitle: meta.seo_title || undefined,
       slug: meta.slug,
       category: normalizeCategory(meta.category),
       excerpt: meta.meta_description ?? '',
       content: body,
-      date: meta.date ? formatDate(meta.date) : 'Jun 12, 2026',
+      date: meta.date ? formatDate(meta.date) : '',
       isoDate: meta.date && !Number.isNaN(Date.parse(meta.date)) ? meta.date : undefined,
       readTime: estimateReadTime(body),
       author: 'Fwdpod',
-    } as StaticBlogPost;
+      image: meta.image || undefined,
+      imageAlt: meta.image_alt || undefined,
+      keywords: meta.keywords
+        ? meta.keywords.split(',').map(k => k.trim()).filter(Boolean)
+        : undefined,
+      faqs: extractFaqs(body),
+      featured: meta.featured === 'true',
+    } as BlogPost;
   })
-  .filter((p): p is StaticBlogPost => p !== null)
-  .sort((a, b) => a.title.localeCompare(b.title));
+  .filter((p): p is BlogPost => p !== null)
+  .sort((a, b) => (b.isoDate ?? '').localeCompare(a.isoDate ?? '') || a.title.localeCompare(b.title));
+
+/**
+ * Posts for the listing and the article pages: real articles once any exist,
+ * otherwise the placeholder cards, so the layout can be reviewed before the
+ * content lands. Adding one .md file replaces every placeholder.
+ */
+export function getAllPosts(): BlogPost[] {
+  return STATIC_BLOG_POSTS.length > 0 ? STATIC_BLOG_POSTS : PLACEHOLDER_POSTS;
+}
+
+/** The post shown in the featured slot: the flagged one, else the newest. */
+export function getFeaturedPost(posts: BlogPost[] = getAllPosts()): BlogPost | undefined {
+  return posts.find(p => p.featured) ?? posts[0];
+}
+
+/** Everything except the featured post, in listing order. */
+export function getListingPosts(posts: BlogPost[] = getAllPosts()): BlogPost[] {
+  const featured = getFeaturedPost(posts);
+  return posts.filter(p => p.id !== featured?.id);
+}
+
+export function getPostBySlug(slug: string): BlogPost | undefined {
+  return getAllPosts().find(p => p.slug === slug);
+}
+
+/** True while the listing is showing stand-in cards rather than real articles. */
+export const USING_PLACEHOLDERS = STATIC_BLOG_POSTS.length === 0;
