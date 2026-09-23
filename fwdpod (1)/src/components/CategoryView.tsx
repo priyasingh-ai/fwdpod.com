@@ -73,21 +73,25 @@ export default function CategoryView() {
         </ol>
       </nav>
 
-      <header className="max-w-2xl space-y-4">
-        <span className="text-xs font-mono text-[#0066FF] uppercase tracking-widest font-semibold block">
-          Category
-        </span>
-        <h1 className="text-4xl md:text-5xl font-display font-medium tracking-tight">
-          {category.name}
-        </h1>
-        <p className="text-sm text-[#555555] leading-relaxed">{category.description}</p>
-      </header>
+      <header className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="max-w-2xl space-y-4">
+          <span className="text-xs font-mono text-[#0066FF] uppercase tracking-widest font-semibold block">
+            Category
+          </span>
+          <h1 className="text-4xl md:text-5xl font-display font-medium tracking-tight">
+            {category.name}
+          </h1>
+          <p className="text-sm text-[#555555] leading-relaxed">{category.description}</p>
+        </div>
 
-      <CategoryFilterBar
-        categories={getCategoriesWithCounts(posts)}
-        activeSlug={category.slug}
-        totalCount={posts.length}
-      />
+        <div className="md:shrink-0 md:pb-1">
+          <CategoryFilterBar
+            categories={getCategoriesWithCounts(posts)}
+            activeSlug={category.slug}
+            totalCount={posts.length}
+          />
+        </div>
+      </header>
 
       <section aria-labelledby="category-articles-heading" className="space-y-8">
         <div className="flex items-end justify-between gap-6">
