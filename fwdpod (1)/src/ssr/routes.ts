@@ -11,7 +11,7 @@ const STATIC_PATHS = [
   '/catalogue',
   '/configure',
   '/live-pods',
-  '/blog',
+  '/insights',
   '/contact',
   '/services/ai-development',
   '/services/llm-development',

@@ -18,8 +18,9 @@
  *   featured: true                    # optional, one post at a time
  *   ---
  *
- * Articles are served at /insights/<slug>; the listing stays at /blog. Use
- * postPath() rather than writing either prefix by hand.
+ * The listing is INSIGHTS_PATH (/insights) and an article is
+ * /insights/<slug>. Use INSIGHTS_PATH and postPath() rather than writing
+ * either path by hand: /blog is a permanent redirect and must not come back.
  *
  * A "## Frequently Asked Questions" section with "### Question" subheadings is
  * picked up automatically and emitted as FAQPage schema — the questions stay
@@ -154,9 +155,12 @@ export interface BlogPost {
   placeholder?: boolean;
 }
 
+/** The listing route. Everything that links to it reads this. */
+export const INSIGHTS_PATH = '/insights';
+
 /** The route an article is served at. One place, so the prefix can move. */
 export function postPath(post: Pick<BlogPost, 'slug'>): string {
-  return `/insights/${post.slug}`;
+  return `${INSIGHTS_PATH}/${post.slug}`;
 }
 
 /** Kept for callers that predate the BlogPost rename. */

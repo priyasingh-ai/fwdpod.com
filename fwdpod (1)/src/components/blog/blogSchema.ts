@@ -1,5 +1,5 @@
 import type { BlogPost } from '../../data/blogCatalog';
-import { postPath, toPlainText } from '../../data/blogCatalog';
+import { INSIGHTS_PATH, postPath, toPlainText } from '../../data/blogCatalog';
 import { SITE_BASE_URL, SITE_NAME } from '../SEO';
 
 export const BLOG_TITLE = 'AI Engineering Insights & LLM Development Blog | Fwdpod';
@@ -18,13 +18,13 @@ function postAuthor(post: BlogPost) {
 
 /** Listing page: the Blog entity and the posts it shows. */
 export function buildBlogListSchema(posts: BlogPost[]) {
-  const pageUrl = `${SITE_BASE_URL}/blog`;
+  const pageUrl = `${SITE_BASE_URL}${INSIGHTS_PATH}`;
   return {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'WebPage',
-        '@id': `${SITE_BASE_URL}/#blog`,
+        '@id': `${pageUrl}#webpage`,
         url: pageUrl,
         name: BLOG_TITLE,
         description: BLOG_DESCRIPTION,
@@ -80,7 +80,7 @@ export function buildArticleSchema(post: BlogPost) {
           '@type': 'BreadcrumbList',
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_BASE_URL}/` },
-            { '@type': 'ListItem', position: 2, name: 'Insights', item: `${SITE_BASE_URL}/blog` },
+            { '@type': 'ListItem', position: 2, name: 'Insights', item: `${SITE_BASE_URL}${INSIGHTS_PATH}` },
             { '@type': 'ListItem', position: 3, name: post.title, item: url },
           ],
         },

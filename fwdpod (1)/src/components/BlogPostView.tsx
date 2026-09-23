@@ -7,7 +7,7 @@ import BlogImage from './blog/BlogImage';
 import BlogCard from './blog/BlogCard';
 import renderMarkdown from './blog/markdown';
 import { buildArticleSchema } from './blog/blogSchema';
-import { getAllPosts, getPostBySlug } from '../data/blogCatalog';
+import { getAllPosts, getPostBySlug, INSIGHTS_PATH } from '../data/blogCatalog';
 
 /**
  * Article page at /insights/:slug.
@@ -52,7 +52,7 @@ export default function BlogPostView() {
           </li>
           <li aria-hidden="true">/</li>
           <li>
-            <Link to="/blog" className="hover:text-[#0066FF] transition-colors">
+            <Link to={INSIGHTS_PATH} className="hover:text-[#0066FF] transition-colors">
               Insights
             </Link>
           </li>
@@ -150,7 +150,7 @@ export default function BlogPostView() {
       )}
 
       <Link
-        to="/blog"
+        to={INSIGHTS_PATH}
         className="inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-black font-semibold transition-colors pt-2"
       >
         <ArrowLeft className="w-3.5 h-3.5" />

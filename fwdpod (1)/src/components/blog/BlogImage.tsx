@@ -14,9 +14,9 @@ interface BlogImageProps {
  * `image` field in a post's frontmatter (file goes in public/blog-images/).
  * Without one, a plain brand-tinted panel keeps the card's shape.
  *
- * Images live in public/blog-images/, not public/blog/: a real directory named
- * after a route makes Apache redirect /blog to /blog/ before the rewrite rules
- * run, which breaks the page.
+ * Images live in public/blog-images/: a real directory whose name matches a
+ * route makes Apache redirect that route to its trailing-slash form before the
+ * rewrite rules run, which breaks the page. Never add public/insights/.
  */
 export default function BlogImage({
   post,
