@@ -3,8 +3,14 @@ import { Link } from 'react-router-dom';
 import SEO from './SEO';
 import FeaturedBlog from './blog/FeaturedBlog';
 import BlogGrid from './blog/BlogGrid';
+import CategoryFilterBar from './blog/CategoryFilterBar';
 import { BLOG_DESCRIPTION, BLOG_TITLE, buildBlogListSchema } from './blog/blogSchema';
-import { getAllPosts, getFeaturedPost, getListingPosts } from '../data/blogCatalog';
+import {
+  getAllPosts,
+  getFeaturedPost,
+  getCategoriesWithCounts,
+  getListingPosts,
+} from '../data/blogCatalog';
 
 /**
  * Blog listing: hero, featured article, article grid, load more, closing CTA.
@@ -28,16 +34,22 @@ export default function BlogsView() {
 
       {/* ── Page heading ─────────────────────────────────────────────────── */}
       {/* TODO(copy): eyebrow, H1 and the supporting line are placeholders. */}
-      <section className="max-w-2xl space-y-4 pt-2">
-        <span className="text-xs font-mono text-[#0066FF] uppercase tracking-widest font-semibold block">
-          Knowledge hub
-        </span>
-        <h1 className="text-4xl md:text-5xl font-display font-medium tracking-tight">
-          Fwdpod Insights
-        </h1>
-        <p className="text-sm text-[#555555] leading-relaxed">
-          Notes on building and running AI systems in production, from the engineers who deliver them.
-        </p>
+      <section className="flex flex-col gap-6 pt-2 md:flex-row md:items-end md:justify-between">
+        <div className="max-w-2xl space-y-4">
+          <span className="text-xs font-mono text-[#0066FF] uppercase tracking-widest font-semibold block">
+            Knowledge hub
+          </span>
+          <h1 className="text-4xl md:text-5xl font-display font-medium tracking-tight">
+            Fwdpod Insights
+          </h1>
+          <p className="text-sm text-[#555555] leading-relaxed">
+            Notes on building and running AI systems in production, from the engineers who deliver them.
+          </p>
+        </div>
+
+        <div className="md:shrink-0 md:pb-1">
+          <CategoryFilterBar categories={getCategoriesWithCounts(posts)} totalCount={posts.length} />
+        </div>
       </section>
 
       {featured && <FeaturedBlog post={featured} />}

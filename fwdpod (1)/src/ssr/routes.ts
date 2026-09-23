@@ -1,4 +1,5 @@
-import { STATIC_BLOG_POSTS } from '../data/blogCatalog';
+import { getCategoriesWithCounts, STATIC_BLOG_POSTS } from '../data/blogCatalog';
+import { CATEGORY_PAGE_SIZE, categoryPath } from '../data/blogCategories';
 
 /**
  * Every indexable path, prerendered to static HTML at build time.
@@ -25,6 +26,11 @@ export interface PrerenderRoute {
   path: string;
   /** ISO 8601 date the content last changed, when known. */
   lastmod?: string;
+  /**
+   * False for pages that are rendered and reachable but deliberately kept out
+   * of the index and the sitemap — an empty category page, for now.
+   */
+  indexable?: boolean;
 }
 
 export function getPrerenderRoutes(): PrerenderRoute[] {
@@ -33,5 +39,18 @@ export function getPrerenderRoutes(): PrerenderRoute[] {
     // Every published article in content/blog/ gets its own page and sitemap entry.
     // Placeholder cards are not included: they have no article behind them.
     ...STATIC_BLOG_POSTS.map(post => ({ path: `/insights/${post.slug}`, lastmod: post.isoDate })),
+    // Every category gets a page and a sitemap entry, including one with no
+    // posts yet: the taxonomy is the site's published structure, so all five
+    // are crawlable and self-canonical from the start. lastmod is only set
+    // once a category has a post to date it by.
+    ...getCategoriesWithCounts(STATIC_BLOG_POSTS).flatMap(category =>
+      Array.from(
+        { length: Math.max(1, Math.ceil(category.count / CATEGORY_PAGE_SIZE)) },
+        (_, index) => ({
+          path: categoryPath(category.slug, index + 1),
+          lastmod: category.lastmod,
+        })
+      )
+    ),
   ];
 }

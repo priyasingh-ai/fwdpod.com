@@ -35,6 +35,7 @@ import AiAgentsView from './components/AiAgentsView';
 import TeamAugmentationView from './components/TeamAugmentationView';
 import AiConsultingView from './components/AiConsultingView';
 import BlogPostView from './components/BlogPostView';
+import CategoryView from './components/CategoryView';
 import NotFoundView from './components/NotFoundView';
 
 // ── Route map — maps legacy page-name strings to URL paths ────────────────────
@@ -298,6 +299,8 @@ export default function App() {
           />
           <Route path="/live-pods" element={<LivePodsView />} />
           <Route path="/insights" element={<BlogsView />} />
+          <Route path="/insights/category/:slug" element={<CategoryView />} />
+          <Route path="/insights/category/:slug/page/:page" element={<CategoryView />} />
           <Route path="/insights/:slug" element={<BlogPostView />} />
           <Route path="/blog" element={<LegacyBlogRedirect />} />
           <Route path="/blog/:slug" element={<LegacyBlogRedirect />} />

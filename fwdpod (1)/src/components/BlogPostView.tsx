@@ -7,7 +7,8 @@ import BlogImage from './blog/BlogImage';
 import BlogCard from './blog/BlogCard';
 import renderMarkdown from './blog/markdown';
 import { buildArticleSchema } from './blog/blogSchema';
-import { getAllPosts, getPostBySlug, INSIGHTS_PATH } from '../data/blogCatalog';
+import { getAllPosts, getPostBySlug, getPostsByCategory, INSIGHTS_PATH } from '../data/blogCatalog';
+import { categoryPath } from '../data/blogCategories';
 
 /**
  * Article page at /insights/:slug.
@@ -23,7 +24,8 @@ export default function BlogPostView() {
 
   if (!post) return <NotFoundView />;
 
-  const related = getAllPosts()
+  // Same category first: "more of what you were reading", not just "more".
+  const related = getPostsByCategory(post.categorySlug, getAllPosts())
     .filter(other => other.id !== post.id)
     .slice(0, 3);
 
@@ -57,6 +59,15 @@ export default function BlogPostView() {
             </Link>
           </li>
           <li aria-hidden="true">/</li>
+          <li>
+            <Link
+              to={categoryPath(post.categorySlug)}
+              className="hover:text-[#0066FF] transition-colors"
+            >
+              {post.category}
+            </Link>
+          </li>
+          <li aria-hidden="true">/</li>
           <li className="text-zinc-500 line-clamp-1" aria-current="page">
             {post.title}
           </li>
@@ -65,9 +76,12 @@ export default function BlogPostView() {
 
       <article className="space-y-8">
         <header className="space-y-4">
-          <span className="text-[10px] font-mono uppercase tracking-wider text-[#0066FF] bg-[#0066FF]/5 px-2.5 py-0.5 rounded-full font-semibold inline-block">
+          <Link
+            to={categoryPath(post.categorySlug)}
+            className="text-[10px] font-mono uppercase tracking-wider text-[#0066FF] bg-[#0066FF]/5 hover:bg-[#0066FF]/10 px-2.5 py-0.5 rounded-full font-semibold inline-block transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0066FF]"
+          >
             {post.category}
-          </span>
+          </Link>
 
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium leading-tight tracking-tight">
             {post.title}
@@ -133,12 +147,20 @@ export default function BlogPostView() {
 
       {related.length > 0 && (
         <section aria-labelledby="related-heading" className="space-y-6 pt-2">
-          <h2
-            id="related-heading"
-            className="text-[10px] font-mono uppercase tracking-widest text-[#555555] font-semibold"
-          >
-            Related insights
-          </h2>
+          <div className="flex items-end justify-between gap-6">
+            <h2
+              id="related-heading"
+              className="text-[10px] font-mono uppercase tracking-widest text-[#555555] font-semibold"
+            >
+              More in {post.category}
+            </h2>
+            <Link
+              to={categoryPath(post.categorySlug)}
+              className="text-[10px] font-mono text-[#0066FF] hover:underline"
+            >
+              View all →
+            </Link>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
             {related.map(other => (
               <div key={other.id} className="h-full">

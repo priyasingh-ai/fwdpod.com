@@ -14,13 +14,18 @@ interface BlogImageProps {
  * `image` field in a post's frontmatter (file goes in public/blog-images/).
  * Without one, a plain brand-tinted panel keeps the card's shape.
  *
+ * The image is contained, never cropped. Featured images are designed
+ * graphics with text and logos near the edges, and object-cover was cutting
+ * those edges off. Export at 1600x900 (16:9) to fill the box exactly; any
+ * other ratio letterboxes against the panel instead of losing content.
+ *
  * Images live in public/blog-images/: a real directory whose name matches a
  * route makes Apache redirect that route to its trailing-slash form before the
  * rewrite rules run, which breaks the page. Never add public/insights/.
  */
 export default function BlogImage({
   post,
-  aspect = 'aspect-[16/10]',
+  aspect = 'aspect-[16/9]',
   priority = false,
   className = '',
 }: BlogImageProps) {
@@ -32,7 +37,7 @@ export default function BlogImage({
         loading={priority ? 'eager' : 'lazy'}
         decoding={priority ? 'sync' : 'async'}
         fetchPriority={priority ? 'high' : 'auto'}
-        className={`w-full ${aspect} object-cover bg-zinc-100 ${className}`}
+        className={`w-full ${aspect} object-contain bg-zinc-50 ${className}`}
       />
     );
   }

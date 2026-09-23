@@ -47,12 +47,10 @@ export default function FeaturedBlog({ post }: { post: BlogPost }) {
             </span>
           </div>
 
-          <div className="order-1 lg:order-2 h-full">
-            <BlogImage
-              post={post}
-              aspect="aspect-[16/10] lg:aspect-auto lg:h-full lg:min-h-[320px]"
-              priority
-            />
+          <div className="order-1 lg:order-2 h-full flex items-center bg-zinc-50">
+            {/* Fixed 16:9 and centred: stretching this to the text column's
+                height would crop the artwork's sides. */}
+            <BlogImage post={post} aspect="aspect-[16/9]" priority />
           </div>
         </Link>
       </article>
