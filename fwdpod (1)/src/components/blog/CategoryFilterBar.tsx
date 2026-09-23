@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { ChevronDown, Search } from 'lucide-react';
 import { categoryPath } from '../../data/blogCategories';
 import { INSIGHTS_PATH, type CategoryWithCount } from '../../data/blogCatalog';
@@ -19,14 +20,48 @@ interface CategoryFilterBarProps {
  * Built on <details> rather than a <select> or a JS menu for two reasons. The
  * options are real links to prerendered category pages, so each filtered view
  * stays a crawlable URL and every option is in the served HTML whether the
- * panel is open or shut. And it works with the keyboard, and without
+ * panel is open or shut. And it opens with the keyboard, and without
  * JavaScript, on its own.
+ *
+ * Closing it does need script: <details> has no notion of "dismiss". It shuts
+ * on navigation (moving between two category pages reuses this element, so the
+ * panel would otherwise stay open over the new page), on a click outside, and
+ * on Escape.
  */
 export default function CategoryFilterBar({
   categories,
   activeSlug,
   totalCount,
 }: CategoryFilterBarProps) {
+  const ref = useRef<HTMLDetailsElement>(null);
+  const { pathname } = useLocation();
+
+  // Shut whenever the route changes, including category -> category, where
+  // React keeps this element and its open state.
+  useEffect(() => {
+    if (ref.current) ref.current.open = false;
+  }, [pathname]);
+
+  useEffect(() => {
+    const close = () => {
+      if (ref.current) ref.current.open = false;
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      if (ref.current?.open && !ref.current.contains(event.target as Node)) close();
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape' || !ref.current?.open) return;
+      close();
+      ref.current.querySelector('summary')?.focus();
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, []);
+
   if (categories.length === 0) return null;
 
   const active = categories.find(category => category.slug === activeSlug);
@@ -34,7 +69,15 @@ export default function CategoryFilterBar({
   const count = active ? active.count : totalCount;
 
   return (
-    <details className="group relative w-full md:w-[22rem]">
+    <details
+      ref={ref}
+      className="group relative w-full md:w-[22rem]"
+      // Picking the category you are already on does not change the route,
+      // so close on the click itself rather than relying on navigation.
+      onClick={event => {
+        if ((event.target as HTMLElement).closest('a') && ref.current) ref.current.open = false;
+      }}
+    >
       <summary
         aria-label="Filter insights by category"
         className="flex cursor-pointer list-none items-center gap-3 rounded-full border border-zinc-200 bg-white px-5 py-3 shadow-sm transition-colors hover:border-[#0066FF] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0066FF] [&::-webkit-details-marker]:hidden"
