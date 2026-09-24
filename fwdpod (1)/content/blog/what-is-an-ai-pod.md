@@ -6,6 +6,8 @@ slug: what-is-an-ai-pod
 category: AI Pods & Engineering Teams
 date: 2026-09-24
 author: Fwdpod
+image: /blog-images/what-is-an-ai-pod.jpg
+image_alt: "Four engineers around a laptop in a pod room, labelled as product manager, AI/ML engineer, data engineer and full-stack engineer, with an AI solution flow from data to model to deploy to impact on the whiteboard behind them"
 keywords: "what is an AI pod, AI engineering pod, dedicated AI engineering team, what makes an AI pod different from a dev team, when is an AI pod a bad fit"
 ---
 
