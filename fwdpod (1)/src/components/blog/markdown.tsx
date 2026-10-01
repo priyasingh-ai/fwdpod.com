@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
  * Markdown for article bodies.
  *
  * Supports what the articles actually use: headings (h2/h3/h4), paragraphs,
- * bullet and numbered lists, tables, blockquotes, rules, and the inline set
- * (links, bold, italic, code). Small on purpose — articles stay plain .md
- * files in content/blog/ with no rendering dependency to install.
+ * bullet and numbered lists, tables, fenced code blocks, blockquotes, rules,
+ * and the inline set (links, bold, italic, code). Small on purpose — articles
+ * stay plain .md files in content/blog/ with no rendering dependency to install.
  *
  * Tables scroll horizontally on narrow screens rather than stretching the
  * page. External links open in a new tab; internal ones use the router so
@@ -22,7 +22,7 @@ export function toPlainText(markdown: string): string {
   return markdown
     .replace(/!\[[^\]]*\]\((?:[^()\s]|\([^()\s]*\))*\)/g, '')
     .replace(/\[([^\]]+)\]\((?:[^()\s]|\([^()\s]*\))*\)/g, '$1')
-    .replace(/[*`_]/g, '')
+    .replace(/[*`]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -139,12 +139,36 @@ function renderTable(lines: string[], key: number) {
   );
 }
 
+// A fenced code block. Lifted out before the body is split on blank lines,
+// because code keeps its own blank lines.
+const FENCE_PATTERN = /^```[^\n]*\n([\s\S]*?)\n```[ \t]*$/gm;
+
+function renderCode(code: string, key: number) {
+  return (
+    <pre
+      key={key}
+      className="not-prose overflow-x-auto rounded-2xl bg-zinc-950 text-zinc-100 font-mono text-[12.5px] leading-relaxed p-5 my-2"
+    >
+      <code>{code}</code>
+    </pre>
+  );
+}
+
 /** Renders a markdown body into elements. */
 export default function renderMarkdown(markdown: string) {
-  return markdown
-    .replace(/\r\n/g, '\n')
-    .split(/\n{2,}/)
+  const source = markdown.replace(/\r\n/g, '\n');
+  const blocks: Array<string | { code: string }> = [];
+  let last = 0;
+  for (const match of source.matchAll(FENCE_PATTERN)) {
+    blocks.push(...source.slice(last, match.index).split(/\n{2,}/));
+    blocks.push({ code: match[1] });
+    last = match.index! + match[0].length;
+  }
+  blocks.push(...source.slice(last).split(/\n{2,}/));
+
+  return blocks
     .map((block, index) => {
+      if (typeof block !== 'string') return renderCode(block.code, index);
       const trimmed = block.trim();
       if (!trimmed) return null;
       const lines = trimmed.split('\n');

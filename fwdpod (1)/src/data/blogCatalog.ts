@@ -112,12 +112,16 @@ function formatDate(d: string): string {
   });
 }
 
-/** Markdown stripped back to plain sentences, for schema fields. */
+/**
+ * Markdown stripped back to plain sentences, for schema fields. Underscores
+ * stay: articles never use _emphasis_, but they do name identifiers such as
+ * thread_id, which must not collapse to "threadid".
+ */
 export function toPlainText(markdown: string): string {
   return markdown
     .replace(/!\[[^\]]*\]\((?:[^()\s]|\([^()\s]*\))*\)/g, '')
     .replace(/\[([^\]]+)\]\((?:[^()\s]|\([^()\s]*\))*\)/g, '$1')
-    .replace(/[*`_]/g, '')
+    .replace(/[*`]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
