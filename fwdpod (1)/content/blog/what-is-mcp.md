@@ -126,7 +126,7 @@ The official MCP security best practices name specific attacks. Here they are in
 
 Two more points for enterprise review. A tool is only as safe as its permissions: a server that exposes a delete operation gives the model a delete button. And prompt injection still applies, because text inside a document a server returns can try to steer the model, so high-impact actions should need human approval.
 
-Treat these controls as part of the security review for any MCP work, the same gate any vendor with access to your data goes through. Our guide to [how enterprises buy AI engineering capacity](/insights/how-enterprises-buy-ai-engineering-capacity) sets out where that review sits in the buying process.
+Treat these controls as part of the security review for any MCP work, the same gate any vendor with access to your data goes through. Our guide to [how enterprises buy AI engineering capacity](/insights/how-enterprises-buy-ai-engineering-capacity) sets out where that review sits in the buying process, and our guide to [data security in offshore AI development](/insights/data-security-offshore-ai-development) lists the controls to demand from the team building your servers.
 
 ## Does your enterprise AI stack need an MCP server?
 

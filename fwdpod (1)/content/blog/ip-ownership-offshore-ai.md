@@ -95,7 +95,7 @@ The practical point: AI-assisted code that an engineer did not meaningfully chan
 6. **Open-source disclosure.** A list of every component and its licence at each release, and written approval before any copyleft component ships.
 7. **AI tool and model terms.** Disclosed tools and model APIs, a commercial-use warranty, and API accounts in your name where practical.
 8. **Handover and escrow.** On exit or request: repositories, weights, prompts, eval sets, datasets, pipelines, credentials and runbooks, in named formats, within a set number of days. Consider escrow for larger programs.
-9. **Confidentiality.** Covers your data, prompts, weights and eval sets, and survives termination. Security controls themselves belong in a separate schedule.
+9. **Confidentiality.** Covers your data, prompts, weights and eval sets, and survives termination. Security controls themselves belong in a separate schedule; our guide to [data security in offshore AI development](/insights/data-security-offshore-ai-development) lists twelve to put in it.
 10. **No training on your data.** The vendor may not use your data, prompts or outputs to train or improve models for anyone else.
 11. **Governing law and enforcement.** Pick a law and forum that can actually be enforced against the vendor's assets.
 12. **No IP hostage.** Make sure a payment dispute cannot block transfer of work already delivered, whichever of the [AI development engagement models](/insights/ai-engagement-models-explained) you choose.

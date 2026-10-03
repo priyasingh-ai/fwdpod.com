@@ -158,7 +158,7 @@ For LangGraph, LangSmith tracing needs no instrumentation code: the docs say you
 Three habits make traces useful rather than noisy:
 
 1. **Use the same ID everywhere.** Put your business key in the LangGraph `thread_id`, the trace metadata and your application logs.
-2. **Decide what may leave your network.** Traces contain prompts, tool inputs and outputs. For regulated data, confirm the masking options available on your LangSmith plan and where it is hosted (cloud or self-hosted) before you enable tracing in production.
+2. **Decide what may leave your network.** Traces contain prompts, tool inputs and outputs. For regulated data, confirm the masking options available on your LangSmith plan and where it is hosted (cloud or self-hosted) before you enable tracing in production. Our guide to [data security in offshore AI development](/insights/data-security-offshore-ai-development) covers how to handle prompts, traces and logs when an outside team builds the agent.
 3. **Pair traces with checkpoints.** A trace shows what the model saw; `get_state_history()` shows what the graph stored. You usually need both to explain a bad run.
 
 ## How do you test and evaluate a LangGraph agent?
