@@ -101,7 +101,7 @@ Put simply, a forward deployed AI engineer builds like an applied AI engineer on
 
 ## How is an FDE different from a solutions engineer?
 
-The short answer: a solutions engineer mainly helps a customer *buy* (demos, proofs of concept, technical answers during a sales cycle), while a forward deployed engineer helps a customer *succeed after buying* by writing and owning production code inside their environment. The titles blur in smaller companies. We cover the full comparison in our guide to *forward deployed engineer vs solutions engineer*.
+The short answer: a solutions engineer mainly helps a customer *buy* (demos, proofs of concept, technical answers during a sales cycle), while a forward deployed engineer helps a customer *succeed after buying* by writing and owning production code inside their environment. The titles blur in smaller companies. We cover the full comparison in our guide to [forward deployed engineer vs solutions engineer](/insights/fde-vs-solutions-engineer).
 
 ## Is the FDE model always the right answer?
 
