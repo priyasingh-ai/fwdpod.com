@@ -4,9 +4,17 @@ import { postPath } from '../../data/blogCatalog';
 import BlogImage from './BlogImage';
 
 /**
- * The lead article: content left, image right on desktop, stacked on mobile.
- * Mark a post with `featured: true` in its frontmatter to put it here;
+ * The lead article: content left, image right on wide screens, stacked below
+ * xl. Mark a post with `featured: true` in its frontmatter to put it here;
  * otherwise the newest post takes the slot.
+ *
+ * The image column must never be taller than the image, or the panel shows as
+ * bands above and below it — and since the text column's height depends on
+ * the title and excerpt, that happened for some posts and not others. Below xl
+ * the card stacks, so the column is the image's own 16:9. From xl the image
+ * takes 3/5 of the width and its 16:9 sets the row height; the text is shorter
+ * than that at every xl width, and if a long title ever outgrows it the image
+ * fills the extra height rather than leaving a band.
  */
 export default function FeaturedBlog({ post }: { post: BlogPost }) {
   return (
@@ -21,9 +29,9 @@ export default function FeaturedBlog({ post }: { post: BlogPost }) {
       <article>
         <Link
           to={postPath(post)}
-          className="group grid grid-cols-1 lg:grid-cols-2 gap-0 bg-white border border-zinc-200/85 rounded-3xl overflow-hidden shadow-sm hover:border-[#0066FF] hover:shadow-md transition-all duration-300 ease-out"
+          className="group grid grid-cols-1 xl:grid-cols-[2fr_3fr] gap-0 bg-white border border-zinc-200/85 rounded-3xl overflow-hidden shadow-sm hover:border-[#0066FF] hover:shadow-md transition-all duration-300 ease-out"
         >
-          <div className="flex flex-col justify-center gap-4 p-8 md:p-10 order-2 lg:order-1">
+          <div className="flex flex-col justify-center gap-4 p-8 md:p-10 order-2 xl:order-1">
             <span className="text-[10px] font-mono uppercase tracking-wider text-[#0066FF] bg-[#0066FF]/5 px-2.5 py-0.5 rounded-full font-semibold self-start">
               {post.category}
             </span>
@@ -47,10 +55,13 @@ export default function FeaturedBlog({ post }: { post: BlogPost }) {
             </span>
           </div>
 
-          <div className="order-1 lg:order-2 h-full flex items-center bg-zinc-50">
-            {/* Fixed 16:9 and centred: stretching this to the text column's
-                height would crop the artwork's sides. */}
-            <BlogImage post={post} aspect="aspect-[16/9]" priority />
+          <div className="order-1 xl:order-2 relative xl:aspect-[16/9]">
+            <BlogImage
+              post={post}
+              aspect="aspect-[16/9] xl:aspect-auto xl:absolute xl:inset-0 xl:h-full"
+              priority
+              className="xl:object-cover"
+            />
           </div>
         </Link>
       </article>
