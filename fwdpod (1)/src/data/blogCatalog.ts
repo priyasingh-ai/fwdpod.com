@@ -15,7 +15,6 @@
  *   image: /blog-images/your-post.jpg # optional, 1600x900 (16:9), public/blog-images/
  *   image_alt: "What the image shows" # optional, falls back to the title
  *   keywords: "a, b, c"               # optional, comma separated
- *   featured: true                    # optional, one post at a time
  *   ---
  *
  * The listing is INSIGHTS_PATH (/insights) and an article is
@@ -75,8 +74,6 @@ export interface BlogPost {
   keywords?: string[];
   /** Q&A parsed out of the body's FAQ section, for FAQPage schema. */
   faqs?: BlogFaq[];
-  /** Marks the one post shown in the featured slot. */
-  featured?: boolean;
   /** True for the stand-in cards shown while no articles exist. */
   placeholder?: boolean;
 }
@@ -214,7 +211,6 @@ export const STATIC_BLOG_POSTS: BlogPost[] = Object.entries(rawFiles)
         ? meta.keywords.split(',').map(k => k.trim()).filter(Boolean)
         : undefined,
       faqs: extractFaqs(body),
-      featured: meta.featured === 'true',
     } as BlogPost;
   })
   .filter((p): p is BlogPost => p !== null)
@@ -227,17 +223,6 @@ export const STATIC_BLOG_POSTS: BlogPost[] = Object.entries(rawFiles)
  */
 export function getAllPosts(): BlogPost[] {
   return STATIC_BLOG_POSTS.length > 0 ? STATIC_BLOG_POSTS : PLACEHOLDER_POSTS;
-}
-
-/** The post shown in the featured slot: the flagged one, else the newest. */
-export function getFeaturedPost(posts: BlogPost[] = getAllPosts()): BlogPost | undefined {
-  return posts.find(p => p.featured) ?? posts[0];
-}
-
-/** Everything except the featured post, in listing order. */
-export function getListingPosts(posts: BlogPost[] = getAllPosts()): BlogPost[] {
-  const featured = getFeaturedPost(posts);
-  return posts.filter(p => p.id !== featured?.id);
 }
 
 /** Posts in one category, newest first (getAllPosts is already sorted). */

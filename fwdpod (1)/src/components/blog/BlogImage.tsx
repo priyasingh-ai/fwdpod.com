@@ -2,9 +2,9 @@ import type { BlogPost } from '../../data/blogCatalog';
 
 interface BlogImageProps {
   post: BlogPost;
-  /** Tailwind aspect ratio utility, so cards and the featured slot can differ. */
+  /** Tailwind aspect ratio utility, so cards and the article page can differ. */
   aspect?: string;
-  /** The featured image loads eagerly; grid images stay lazy. */
+  /** The article's hero image loads eagerly; grid images stay lazy. */
   priority?: boolean;
   className?: string;
 }
