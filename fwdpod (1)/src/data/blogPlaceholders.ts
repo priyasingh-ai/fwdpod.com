@@ -22,6 +22,7 @@ export const PLACEHOLDER_POSTS: BlogPost[] = Array.from({ length: 14 }, (_, i) =
     date: 'Placeholder date',
     readTime: '0 min read',
     author: 'Fwdpod',
+    featured: n === 1,
     placeholder: true,
   };
 });

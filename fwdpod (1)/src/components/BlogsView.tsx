@@ -1,20 +1,27 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import SEO from './SEO';
+import FeaturedBlog from './blog/FeaturedBlog';
 import BlogGrid from './blog/BlogGrid';
 import CategoryFilterBar from './blog/CategoryFilterBar';
 import { BLOG_DESCRIPTION, BLOG_TITLE, buildBlogListSchema } from './blog/blogSchema';
-import { getAllPosts, getCategoriesWithCounts } from '../data/blogCatalog';
+import {
+  getAllPosts,
+  getFeaturedPost,
+  getCategoriesWithCounts,
+  getListingPosts,
+} from '../data/blogCatalog';
 
 /**
- * Blog listing: hero, article grid, load more, closing CTA. There is no
- * featured slot: the newest post simply leads the grid.
+ * Blog listing: hero, featured article, article grid, load more, closing CTA.
  * Header, <main> and footer come from App.tsx and are untouched.
  *
  * Cards are driven by the data layer (content/blog/*.md), not written in JSX.
  */
 export default function BlogsView() {
   const posts = getAllPosts();
+  const featured = getFeaturedPost(posts);
+  const listing = getListingPosts(posts);
 
   return (
     <motion.div
@@ -45,7 +52,11 @@ export default function BlogsView() {
         </div>
       </section>
 
-      <BlogGrid posts={posts} />
+      {featured && <FeaturedBlog post={featured} />}
+
+      {/* Hidden while the featured post is the only article: an empty
+          "All articles" panel under a visible article reads as a fault. */}
+      {listing.length > 0 && <BlogGrid posts={listing} />}
 
       {/* ── Closing CTA ──────────────────────────────────────────────────── */}
       {/* TODO(copy): CTA wording is a placeholder. */}
