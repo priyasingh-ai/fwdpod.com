@@ -107,7 +107,7 @@ The short answer: a solutions engineer mainly helps a customer *buy* (demos, pro
 
 No. The model has real limits, and a definition is incomplete without them. Writing in April 2026, industry analyst Peter Bendor-Samuel argued that FDEs are most valuable in dynamic, "agentic native" environments where systems change continuously, and that in stable enterprise systems built around controlled release cycles, embedded engineers making fast changes "can bypass these safeguards". His summary: "The question is not whether they are good or bad; the question is where they fit."
 
-FDE work is also hard to scale linearly and can leave customers dependent on one person's knowledge if handover is weak. For a decision framework, see our guide on *when to hire a forward deployed engineer*; for budgets, see *what forward deployed engineering costs*.
+FDE work is also hard to scale linearly and can leave customers dependent on one person's knowledge if handover is weak. For a decision framework, see our guide on [when to hire a forward deployed engineer](/insights/when-to-hire-a-forward-deployed-engineer); for budgets, see *what forward deployed engineering costs*.
 
 ## In-house FDE vs an FDE delivered by a partner
 

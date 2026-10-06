@@ -107,7 +107,7 @@ It depends on your stage.
 - A previous pilot worked in the demo and stalled on the way to production
 - You need someone accountable for a production outcome, not a recommendation
 
-Before signing, ask the vendor three questions: Who writes the code, and in whose repository? [Who owns it at the end](/insights/ip-ownership-offshore-ai)? How is that engineer's performance measured? Our guide to [AI development engagement models](/insights/ai-engagement-models-explained) sets forward deployed engineering beside the other ways to buy the work, with who carries the risk in each. For more on the role, browse our [Forward Deployed Engineering](/insights/category/forward-deployed-engineering) guides.
+Before signing, ask the vendor three questions: Who writes the code, and in whose repository? [Who owns it at the end](/insights/ip-ownership-offshore-ai)? How is that engineer's performance measured? Our guide to [AI development engagement models](/insights/ai-engagement-models-explained) sets forward deployed engineering beside the other ways to buy the work, with who carries the risk in each, and our guide on [when to hire a forward deployed engineer](/insights/when-to-hire-a-forward-deployed-engineer) covers whether you need one at all. For more on the role, browse our [Forward Deployed Engineering](/insights/category/forward-deployed-engineering) guides.
 
 ## How fwdpod approaches this
 
