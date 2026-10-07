@@ -90,7 +90,7 @@ If two or more of these are missing, fix them first. The FDE will still be valua
 
 **Using an FDE to avoid a product decision.** An embedded engineer can build anything the business asks for, which makes it tempting to skip deciding what matters. The Andreessen Horowitz analysis notes that heavy customization carries a real cost, "lower gross margins and higher burn rates" for the vendors doing it. For buyers, the equivalent cost is bespoke software that someone has to maintain. Decide what you want before you ask someone to build it.
 
-Once you have decided an FDE is right, the next step is checking that the person a vendor offers will actually build. Our comparison of [forward deployed engineer vs solutions engineer](/insights/fde-vs-solutions-engineer) gives the questions that separate the two, and our guide to [who owns the IP when you outsource AI development](/insights/ip-ownership-offshore-ai) covers what the contract must say about the code they leave behind.
+Once you have decided an FDE is right, the next step is checking that the person a vendor offers will actually build. Our comparison of [forward deployed engineer vs solutions engineer](/insights/fde-vs-solutions-engineer) gives the questions that separate the two, and our guide to [who owns the IP when you outsource AI development](/insights/ip-ownership-offshore-ai) covers what the contract must say about the code they leave behind. To compare vendors side by side, our guide to [choosing a forward deployed engineering company](/insights/choosing-a-forward-deployed-engineering-company) gives nine questions and a scorecard.
 
 ## How fwdpod approaches this
 
