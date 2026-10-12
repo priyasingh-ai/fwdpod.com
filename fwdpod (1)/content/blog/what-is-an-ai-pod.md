@@ -93,7 +93,7 @@ Composition varies with the problem, so treat this as a summary, not a template.
 - **MLOps / LLMOps**, covering deployment, monitoring and cost control
 - **Delivery or product lead**, who keeps the pod pointed at the business outcome
 
-On size, the industry pattern follows the two-pizza logic: small enough that communication overhead stays low, which in practice usually means a single-digit headcount. A narrow proof of concept may need only two or three people; a multi-system agent rollout may need more, sometimes split into two pods. You can see how the roles are grouped in practice in the [pod catalogue](/catalogue).
+On size, the industry pattern follows the two-pizza logic: small enough that communication overhead stays low, which in practice usually means a single-digit headcount. A narrow proof of concept may need only two or three people; a multi-system agent rollout may need more, sometimes split into two pods. You can see how the roles are grouped in practice in the [pod catalogue](/catalogue). For what each seat owns and how the mix shifts from discovery to hardening, see our guide to [the six roles inside an AI engineering pod](/insights/roles-in-an-ai-engineering-pod).
 
 ## Why can a pod ship faster than a hire-and-build team?
 
